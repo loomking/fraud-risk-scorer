@@ -1,0 +1,65 @@
+{
+  "threshold_config_version": "v1.0.0",
+  "timestamp": "2026-08-30T17:07:24.469881",
+  "optimal_threshold": {
+    "threshold": 0.014924623115577889,
+    "tp": 2756,
+    "tn": 68972,
+    "fp": 16567,
+    "fn": 286,
+    "precision": 0.14262795632148217,
+    "recall": 0.905982905982906,
+    "f1": 0.2464565168790521,
+    "review_rate": 0.21813933010464998,
+    "fraud_capture": 0.905982905982906,
+    "fp_cost_per_item": 50.0,
+    "fn_cost_per_item": 3000.0,
+    "total_fp_cost": 828350.0,
+    "total_fn_cost": 858000.0,
+    "total_cost": 1686350.0,
+    "cost_per_1000_txns": 19037.37821880539
+  },
+  "sensitivity_analysis": [
+    {
+      "fp_cost_assumption": 25.0,
+      "fn_cost_assumption": 3000.0,
+      "optimal_threshold": 0.01,
+      "review_rate": 0.299499892753525,
+      "fraud_capture": 0.9391847468770546,
+      "total_cost": 1146825.0,
+      "cost_per_1000_txns": 12946.62512276899,
+      "precision": 0.1076894082171127,
+      "recall": 0.9391847468770546,
+      "f1": 0.19322331935614773
+    },
+    {
+      "fp_cost_assumption": 50.0,
+      "fn_cost_assumption": 3000.0,
+      "optimal_threshold": 0.014924623115577889,
+      "review_rate": 0.21813933010464998,
+      "fraud_capture": 0.905982905982906,
+      "total_cost": 1686350.0,
+      "cost_per_1000_txns": 19037.37821880539,
+      "precision": 0.14262795632148217,
+      "recall": 0.905982905982906,
+      "f1": 0.2464565168790521
+    },
+    {
+      "fp_cost_assumption": 100.0,
+      "fn_cost_assumption": 3000.0,
+      "optimal_threshold": 0.03462311557788945,
+      "review_rate": 0.13478059629040087,
+      "fraud_capture": 0.8458251150558843,
+      "total_cost": 2343600.0,
+      "cost_per_1000_txns": 26457.140921868122,
+      "precision": 0.21551218695033084,
+      "recall": 0.8458251150558843,
+      "f1": 0.34350176890728257
+    }
+  ],
+  "cost_assumptions": {
+    "fp_cost_inr": 50.0,
+    "fn_cost_inr": 3000.0,
+    "note": "These are illustrative assumptions, NOT researched facts."
+  }
+}

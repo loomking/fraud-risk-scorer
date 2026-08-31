@@ -1,0 +1,135 @@
+{
+  "model_version": "v1.0.0",
+  "model_hash": "cb6885300d9b",
+  "timestamp": "2026-08-30T17:07:25.676403",
+  "n_features": 463,
+  "best_iteration": 497,
+  "metrics": {
+    "split": "TEST",
+    "model": "XGBoost",
+    "model_version": "v1.0.0",
+    "roc_auc": 0.9332582829080524,
+    "pr_auc": 0.6445205449195041,
+    "precision": 0.14893849260492278,
+    "recall": 0.8851767758676614,
+    "f1": 0.25497524058675136,
+    "brier_score": 0.018071260303258896,
+    "threshold": 0.014924623115577889,
+    "confusion_matrix": [
+      [
+        69904,
+        15594
+      ],
+      [
+        354,
+        2729
+      ]
+    ],
+    "total_samples": 88581,
+    "positive_samples": 3083,
+    "negative_samples": 85498,
+    "best_iteration": null
+  },
+  "feature_importance_top20": [
+    {
+      "rank": 1,
+      "feature": "V258",
+      "importance": 0.07123291492462158
+    },
+    {
+      "rank": 2,
+      "feature": "V187",
+      "importance": 0.06161407381296158
+    },
+    {
+      "rank": 3,
+      "feature": "V257",
+      "importance": 0.05122935399413109
+    },
+    {
+      "rank": 4,
+      "feature": "uid_prior_fraud_rate",
+      "importance": 0.03244258090853691
+    },
+    {
+      "rank": 5,
+      "feature": "V70",
+      "importance": 0.029829205945134163
+    },
+    {
+      "rank": 6,
+      "feature": "V294",
+      "importance": 0.026752078905701637
+    },
+    {
+      "rank": 7,
+      "feature": "V91",
+      "importance": 0.025422388687729836
+    },
+    {
+      "rank": 8,
+      "feature": "C8",
+      "importance": 0.015081025660037994
+    },
+    {
+      "rank": 9,
+      "feature": "V95",
+      "importance": 0.011341727338731289
+    },
+    {
+      "rank": 10,
+      "feature": "V69",
+      "importance": 0.011069564148783684
+    },
+    {
+      "rank": 11,
+      "feature": "card6_freq",
+      "importance": 0.011042412370443344
+    },
+    {
+      "rank": 12,
+      "feature": "C14",
+      "importance": 0.010970518924295902
+    },
+    {
+      "rank": 13,
+      "feature": "V244",
+      "importance": 0.01042081881314516
+    },
+    {
+      "rank": 14,
+      "feature": "V243",
+      "importance": 0.010170658119022846
+    },
+    {
+      "rank": 15,
+      "feature": "V201",
+      "importance": 0.01010188553482294
+    },
+    {
+      "rank": 16,
+      "feature": "V30",
+      "importance": 0.008196629583835602
+    },
+    {
+      "rank": 17,
+      "feature": "V317",
+      "importance": 0.007400789763778448
+    },
+    {
+      "rank": 18,
+      "feature": "C4",
+      "importance": 0.006932375021278858
+    },
+    {
+      "rank": 19,
+      "feature": "card6",
+      "importance": 0.0067885397002100945
+    },
+    {
+      "rank": 20,
+      "feature": "V315",
+      "importance": 0.006647653877735138
+    }
+  ]
+}

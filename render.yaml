@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: fraud-risk-scorer
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        value: sqlite:///./fraud_risk.db

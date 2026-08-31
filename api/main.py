@@ -7,9 +7,12 @@ Backend owns feature engineering, model inference, calibration, thresholding, pe
 
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from src.db.session import init_db
 from api.routes.score import router as score_router
@@ -23,6 +26,8 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 logger = logging.getLogger(__name__)
+
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 
 
 @asynccontextmanager
@@ -50,7 +55,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Routes
+# API Routes
 app.include_router(score_router, prefix="/score", tags=["Scoring"])
 app.include_router(evidence_router, prefix="/evidence", tags=["Evidence"])
 app.include_router(audit_router, prefix="/audit", tags=["Audit"])
@@ -60,3 +65,14 @@ app.include_router(report_router, prefix="/report", tags=["Report"])
 @app.get("/health")
 def health_check():
     return {"status": "ok", "service": "fraud-risk-scorer"}
+
+
+# Serve frontend — must be AFTER API routes so /score etc. take priority
+@app.get("/")
+def serve_frontend():
+    return FileResponse(FRONTEND_DIR / "index.html")
+
+
+# Serve any static assets from frontend/
+if FRONTEND_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
