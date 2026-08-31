@@ -27,7 +27,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -69,10 +69,9 @@ def health_check():
 # Serve frontend — must be AFTER API routes so /score etc. take priority
 @app.get("/")
 def serve_frontend():
-    return FileResponse(FRONTEND_DIR / "index.html")
+    return FileResponse(FRONTEND_DIR / "fraud_dashboard.html")
 
 
-# Serve any static assets from frontend/dist
+# Serve any static assets from frontend/
 if FRONTEND_DIR.exists():
-    app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIR / "assets")), name="assets")
-    app.mount("/vite.svg", StaticFiles(directory=str(FRONTEND_DIR)), name="vite")
+    app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
