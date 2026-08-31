@@ -99,7 +99,10 @@ Confusion matrix at threshold 0.0100: TN=63,271 | FP=22,227 | FN=251 | TP=2,832
 ### Threshold Selection (Section 16)
 - **Never 0.5.** Cost-based selection on validation data.
 - FP cost: ₹50 (manual review + friction) — **illustrative assumption, NOT researched**
-- FN cost: ₹12,536 (expected fraud loss). Derived from training data mean fraud amount ($149.24). Assumes dataset is in USD and 1 USD = 84.00 INR (August 2026).
+- FN cost: ₹12,536 (expected fraud loss). 
+  - **Derivation**: Computed from the training data's mean fraud amount ($149.24). 
+  - **Methodological Choice**: The mean ($149.24) was deliberately chosen over the median ($75.00) because fraud losses are heavily right-skewed by rare, massive transactions. A cost model must weight against the catastrophic financial impact of these outliers, not just the median case.
+  - **Currency Assumption**: Assumes dataset is in USD (not officially confirmed by Kaggle) and uses a conversion rate of 1 USD = 84.00 INR (August 2026).
 - **Optimal threshold: 0.0100** (frozen before test evaluation)
 
 ### Threshold Sensitivity (Validation Set, Section 17)

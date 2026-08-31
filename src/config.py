@@ -30,6 +30,9 @@ THRESHOLD_CONFIG_VERSION = os.getenv("THRESHOLD_CONFIG_VERSION", "v1.0.0")
 # ── Business cost assumptions (INR) ──────────────────────────────────────────
 # FP_COST: manual review cost + customer friction per false positive (illustrative assumption, NOT researched)
 # FN_COST: expected fraud loss per false negative. Derived from training data mean fraud amount ($149.24).
+# NOTE: The mean ($149.24) is deliberately chosen over the median ($75.00) as a methodological choice.
+# Fraud amounts are heavily right-skewed by rare outliers. The cost model must weight against the 
+# catastrophic financial impact of these large outliers, which the median ignores.
 # NOTE: The dataset currency is not officially confirmed as USD by Kaggle/Vesta (this is an assumption).
 # Conversion rate used: 1 USD = 84.00 INR (Assumed rate for August 2026). $149.24 * 84.00 = ~₹12536.
 FP_COST_INR = float(os.getenv("FP_COST_INR", "50.0"))
