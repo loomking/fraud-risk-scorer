@@ -28,3 +28,12 @@
 - **How detected:** Phase 2 pipeline completed all model training and evaluation but crashed at report generation.
 - **How fixed:** Added `encoding="utf-8"` to `output_path.write_text(report, encoding="utf-8")`.
 - **Validation:** Report generated successfully with ₹ symbols intact.
+
+## 4. Transaction UNIQUE Constraint on Re-Score
+
+- **Date:** 2026-08-31
+- **What happened:** API tests failed with `IntegrityError: UNIQUE constraint failed: transactions.transaction_id` when re-scoring the same transaction.
+- **Root cause:** The score endpoint used `db.merge()` which merges by primary key (`id`, auto-increment) — not by the `transaction_id` unique column. On re-runs, it tried to INSERT a new row with the same `transaction_id`.
+- **How detected:** Test suite failed on 3/48 tests after the on-disk SQLite DB already contained records from a previous run.
+- **How fixed:** Replaced `db.merge()` with explicit upsert: query for existing transaction by `transaction_id`, update if found, insert if not.
+- **Validation:** All 48 tests pass on repeated runs.

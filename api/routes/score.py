@@ -97,12 +97,12 @@ def score_transaction(request: ScoreRequest, db: Session = Depends(get_db)):
     feature_hash = hashlib.sha256(feature_vector.tobytes()).hexdigest()[:12]
 
     # Persist to database
-    # Transaction record
-    db_txn = Transaction(
-        transaction_id=request.TransactionID,
-        raw_data=txn_data,
-    )
-    db.merge(db_txn)
+    # Transaction record — upsert (re-scoring same transaction is allowed)
+    existing_txn = db.query(Transaction).filter_by(transaction_id=request.TransactionID).first()
+    if existing_txn:
+        existing_txn.raw_data = txn_data
+    else:
+        db.add(Transaction(transaction_id=request.TransactionID, raw_data=txn_data))
 
     # Score record
     db_score = Score(
