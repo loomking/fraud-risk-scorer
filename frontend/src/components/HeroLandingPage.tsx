@@ -1,14 +1,54 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Search, Menu, X } from 'lucide-react';
 import { motion } from 'motion/react';
+import Hls from "hls.js";
 
 export default function HeroLandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoSrc = "https://stream.mux.com/T6oQJQ02cQ6N01TR6iHwZkKFkbepS34dkkIc9iukgy400g.m3u8";
+
+  useEffect(() => {
+    // Setup Background Video
+    const video = videoRef.current;
+    if (video) {
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(videoSrc);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play().catch(e => console.log("Auto-play prevented:", e));
+        });
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = videoSrc;
+        video.addEventListener("loadedmetadata", () => {
+          video.play().catch(e => console.log("Auto-play prevented:", e));
+        });
+      }
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0B0B0F] font-['Instrument_Sans'] text-white selection:bg-[#FF7A5C]/30 relative overflow-hidden flex flex-col">
+      {/* Background Video Layer */}
+      <video
+        ref={videoRef}
+        muted
+        loop
+        playsInline
+        className="fixed inset-0 w-full h-full object-cover opacity-20 pointer-events-none mix-blend-screen"
+        poster="https://images.unsplash.com/photo-1647356191320-d7a1f80ca777?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGRhcmslMjB0ZWNobm9sb2d5JTIwbmV1cmFsJTIwbmV0d29ya3xlbnwxfHx8fDE3Njg5NzIyNTV8MA&ixlib=rb-4.1.0&q=80&w=1080"
+      />
+      
+      {/* Video Overlay */}
+      <div className="fixed inset-0 bg-[#0B0B0F]/60 backdrop-blur-[2px] pointer-events-none" />
+
+      {/* Decorative Gradients */}
+      <div className="fixed top-[-20%] left-[10%] w-[500px] h-[500px] bg-[#FF7A5C]/10 blur-[150px] mix-blend-screen pointer-events-none rounded-full" />
+      <div className="fixed bottom-[-10%] right-[10%] w-[600px] h-[600px] bg-[#E8E4FF]/10 blur-[150px] mix-blend-screen pointer-events-none rounded-full" />
+
       {/* Navbar */}
-      <header className="sticky top-0 z-50 h-[72px] bg-[#0B0B0F] border-b border-white/[0.08] flex items-center justify-between px-6 md:px-12">
+      <header className="sticky top-0 z-50 h-[72px] bg-[#0B0B0F]/80 backdrop-blur-md border-b border-white/[0.08] flex items-center justify-between px-6 md:px-12">
         {/* Left Side: Logo & Links */}
         <div className="flex items-center gap-12">
           {/* Logo */}
