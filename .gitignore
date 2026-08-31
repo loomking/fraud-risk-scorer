@@ -34,6 +34,8 @@ data/processed/
 !/models/threshold_sweep.json
 !/models/threshold_config.json
 !/models/calibration_report.json
+!/models/categorical_encoder.joblib
+!/models/frequency_encoder.joblib
 *.pkl
 *.json.gz
 
