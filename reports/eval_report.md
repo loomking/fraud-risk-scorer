@@ -1,6 +1,6 @@
 # Fraud Risk Scorer — Evaluation Report
 
-> Generated programmatically at 2026-08-30T16:57:30.274301Z
+> Generated programmatically at 2026-08-30T17:07:25.677752Z
 > Every metric below is reproducible from repository code.
 
 ## Model Information
@@ -19,30 +19,30 @@
 
 | Metric | Value |
 |---|---|
-| **PR-AUC** | **0.6591** |
-| ROC-AUC | 0.9482 |
-| Precision | 0.1404 |
-| Recall | 0.9034 |
-| F1 | 0.2430 |
-| Brier Score | 0.0160 |
+| **PR-AUC** | **0.6445** |
+| ROC-AUC | 0.9333 |
+| Precision | 0.1489 |
+| Recall | 0.8852 |
+| F1 | 0.2550 |
+| Brier Score | 0.0181 |
 
 ## Confusion Matrix (Test Set, threshold=0.0149)
 
 |  | Predicted Legit | Predicted Fraud |
 |---|---|---|
-| **Actual Legit** | TN=3553 | FP=802 |
-| **Actual Fraud** | FN=14 | TP=131 |
+| **Actual Legit** | TN=69904 | FP=15594 |
+| **Actual Fraud** | FN=354 | TP=2729 |
 
 ## Business Metrics (Test Set)
 
 | Metric | Value |
 |---|---|
 | Threshold | 0.0149 |
-| Fraud Capture Rate | 0.856 |
-| Review Rate | 0.182 |
+| Fraud Capture Rate | 0.906 |
+| Review Rate | 0.218 |
 | FP Cost Assumption (₹) | 50 |
 | FN Cost Assumption (₹) | 3000 |
-| Expected Cost/1000 txns (₹) | 18700 |
+| Expected Cost/1000 txns (₹) | 19037 |
 
 > **Note:** FP and FN costs are illustrative assumptions, NOT researched facts.
 
@@ -50,51 +50,51 @@
 
 | FP Cost (₹) | Optimal Threshold | Review Rate | Fraud Capture | Cost/1000 txns (₹) |
 |---|---|---|---|---|
-| ₹25 | 0.0100 | 0.299 | 0.919 | ₹12906 |
-| ₹50 | 0.0149 | 0.182 | 0.856 | ₹18700 |
-| ₹100 | 0.0297 | 0.117 | 0.784 | ₹25733 |
+| ₹25 | 0.0100 | 0.299 | 0.939 | ₹12947 |
+| ₹50 | 0.0149 | 0.218 | 0.906 | ₹19037 |
+| ₹100 | 0.0346 | 0.135 | 0.846 | ₹26457 |
 
 ## Calibration (Section 15)
 
 | Property | Value |
 |---|---|
 | Method | isotonic |
-| Brier (uncalibrated) | 0.0362 |
-| Brier (calibrated) | 0.0136 |
-| Improvement | 0.0226 |
+| Brier (uncalibrated) | 0.0567 |
+| Brier (calibrated) | 0.0168 |
+| Improvement | 0.0399 |
 
 ## Top 20 Feature Importance
 
 | Rank | Feature | Importance |
 |---|---|---|
-| 1 | V140 | 0.0321 |
-| 2 | V139 | 0.0294 |
-| 3 | uid_prior_fraud_rate | 0.0255 |
-| 4 | V171 | 0.0241 |
-| 5 | V258 | 0.0239 |
-| 6 | C5 | 0.0165 |
-| 7 | card3 | 0.0165 |
-| 8 | card6_freq | 0.0165 |
-| 9 | V271 | 0.0163 |
-| 10 | C8 | 0.0145 |
-| 11 | V253 | 0.0127 |
-| 12 | V317 | 0.0123 |
-| 13 | V230 | 0.0122 |
-| 14 | V283 | 0.0106 |
-| 15 | R_emaildomain | 0.0095 |
-| 16 | V201 | 0.0093 |
-| 17 | V30 | 0.0084 |
-| 18 | C2 | 0.0083 |
-| 19 | V70 | 0.0080 |
-| 20 | V126 | 0.0078 |
+| 1 | V258 | 0.0712 |
+| 2 | V187 | 0.0616 |
+| 3 | V257 | 0.0512 |
+| 4 | uid_prior_fraud_rate | 0.0324 |
+| 5 | V70 | 0.0298 |
+| 6 | V294 | 0.0268 |
+| 7 | V91 | 0.0254 |
+| 8 | C8 | 0.0151 |
+| 9 | V95 | 0.0113 |
+| 10 | V69 | 0.0111 |
+| 11 | card6_freq | 0.0110 |
+| 12 | C14 | 0.0110 |
+| 13 | V244 | 0.0104 |
+| 14 | V243 | 0.0102 |
+| 15 | V201 | 0.0101 |
+| 16 | V30 | 0.0082 |
+| 17 | V317 | 0.0074 |
+| 18 | C4 | 0.0069 |
+| 19 | card6 | 0.0068 |
+| 20 | V315 | 0.0066 |
 
 ## Data Split
 
 | Split | Rows | Fraud Count | Fraud % | DT Range |
 |---|---|---|---|---|
-| Train | 21000 | 604 | 2.88% | 86400–534378 |
-| Val | 4500 | 111 | 2.47% | 534391–663352 |
-| Test | 4500 | 145 | 3.22% | 663356–757979 |
+| Train | 413378 | 14538 | 3.52% | 86400–10437996 |
+| Val | 88581 | 3042 | 3.43% | 10438003–13151840 |
+| Test | 88581 | 3083 | 3.48% | 13151880–15811131 |
 
 ## Real vs Synthetic Components (Section 19)
 
