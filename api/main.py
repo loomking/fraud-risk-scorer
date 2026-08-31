@@ -27,8 +27,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
-
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend" / "dist"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -73,6 +72,7 @@ def serve_frontend():
     return FileResponse(FRONTEND_DIR / "index.html")
 
 
-# Serve any static assets from frontend/
+# Serve any static assets from frontend/dist
 if FRONTEND_DIR.exists():
-    app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
+    app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIR / "assets")), name="assets")
+    app.mount("/vite.svg", StaticFiles(directory=str(FRONTEND_DIR)), name="vite")

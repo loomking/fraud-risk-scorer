@@ -67,7 +67,7 @@ secrets.toml
 
 # ── Node / frontend ───────────────────────────────────────────────────────────
 frontend/node_modules/
-frontend/dist/
+# frontend/dist/  (We commit this for Docker/Render deployment)
 frontend/.next/
 frontend/build/
 
