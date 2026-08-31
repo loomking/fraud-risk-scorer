@@ -164,12 +164,6 @@ def build_causal_historical_features(df: pd.DataFrame) -> pd.DataFrame:
         .reset_index(level=0, drop=True)
     )
 
-    # Prior fraud rate for this uid — ONLY from strictly earlier transactions
-    df["uid_prior_fraud_rate"] = (
-        grouped["isFraud"]
-        .apply(lambda x: x.expanding().mean().shift(1))
-        .reset_index(level=0, drop=True)
-    )
 
     # Time since last transaction by this uid
     df["uid_time_since_last"] = (
@@ -180,7 +174,7 @@ def build_causal_historical_features(df: pd.DataFrame) -> pd.DataFrame:
 
     # Fill NaN for first-time uids (no history)
     for col in ["uid_avg_amt_hist", "uid_max_amt_hist",
-                "uid_prior_fraud_rate", "uid_time_since_last"]:
+                "uid_time_since_last"]:
         df[col] = df[col].fillna(-1)  # Sentinel for "no prior history"
 
     logger.info(f"  Built causal historical features for {df['uid'].nunique()} unique uids")

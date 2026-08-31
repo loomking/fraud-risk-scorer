@@ -1,28 +1,28 @@
 {
   "model_version": "v1.0.0",
-  "model_hash": "cb6885300d9b",
-  "timestamp": "2026-08-31T07:30:10.060806",
-  "n_features": 463,
+  "model_hash": "03d05c244ada",
+  "timestamp": "2026-08-31T08:08:03.703127",
+  "n_features": 462,
   "best_iteration": 497,
   "metrics": {
     "split": "TEST",
     "model": "XGBoost",
     "model_version": "v1.0.0",
-    "roc_auc": 0.9332582829080524,
-    "pr_auc": 0.6445205449195041,
-    "precision": 0.07156933429464071,
-    "recall": 0.9659422640285437,
-    "f1": 0.1332647170697872,
-    "brier_score": 0.018071260303258896,
-    "threshold": 0.0033218815476799804,
+    "roc_auc": 0.8926407635266324,
+    "pr_auc": 0.49682654455084324,
+    "precision": 0.06276060697244551,
+    "recall": 0.9471294193966915,
+    "f1": 0.11772057489568426,
+    "brier_score": 0.02262927033007145,
+    "threshold": 0.003921477313384676,
     "confusion_matrix": [
       [
-        46866,
-        38632
+        41892,
+        43606
       ],
       [
-        105,
-        2978
+        163,
+        2920
       ]
     ],
     "total_samples": 88581,
@@ -34,102 +34,102 @@
     {
       "rank": 1,
       "feature": "V258",
-      "importance": 0.07123291492462158
+      "importance": 0.11687382310628891
     },
     {
       "rank": 2,
-      "feature": "V187",
-      "importance": 0.06161407381296158
+      "feature": "V70",
+      "importance": 0.06475746631622314
     },
     {
       "rank": 3,
       "feature": "V257",
-      "importance": 0.05122935399413109
+      "importance": 0.055818237364292145
     },
     {
       "rank": 4,
-      "feature": "uid_prior_fraud_rate",
-      "importance": 0.03244258090853691
+      "feature": "V294",
+      "importance": 0.03359764441847801
     },
     {
       "rank": 5,
-      "feature": "V70",
-      "importance": 0.029829205945134163
+      "feature": "V201",
+      "importance": 0.029864907264709473
     },
     {
       "rank": 6,
-      "feature": "V294",
-      "importance": 0.026752078905701637
+      "feature": "V91",
+      "importance": 0.024996565654873848
     },
     {
       "rank": 7,
-      "feature": "V91",
-      "importance": 0.025422388687729836
+      "feature": "C8",
+      "importance": 0.019103923812508583
     },
     {
       "rank": 8,
-      "feature": "C8",
-      "importance": 0.015081025660037994
+      "feature": "V308",
+      "importance": 0.01389637403190136
     },
     {
       "rank": 9,
-      "feature": "V95",
-      "importance": 0.011341727338731289
+      "feature": "V187",
+      "importance": 0.013852794654667377
     },
     {
       "rank": 10,
-      "feature": "V69",
-      "importance": 0.011069564148783684
+      "feature": "C14",
+      "importance": 0.011936853639781475
     },
     {
       "rank": 11,
-      "feature": "card6_freq",
-      "importance": 0.011042412370443344
+      "feature": "card6",
+      "importance": 0.010347768664360046
     },
     {
       "rank": 12,
-      "feature": "C14",
-      "importance": 0.010970518924295902
+      "feature": "V283",
+      "importance": 0.010235474444925785
     },
     {
       "rank": 13,
-      "feature": "V244",
-      "importance": 0.01042081881314516
+      "feature": "C4",
+      "importance": 0.009685687720775604
     },
     {
       "rank": 14,
-      "feature": "V243",
-      "importance": 0.010170658119022846
+      "feature": "V312",
+      "importance": 0.008301310241222382
     },
     {
       "rank": 15,
-      "feature": "V201",
-      "importance": 0.01010188553482294
+      "feature": "addr2",
+      "importance": 0.00769953615963459
     },
     {
       "rank": 16,
-      "feature": "V30",
-      "importance": 0.008196629583835602
+      "feature": "C5",
+      "importance": 0.007502090651541948
     },
     {
       "rank": 17,
-      "feature": "V317",
-      "importance": 0.007400789763778448
+      "feature": "V336",
+      "importance": 0.006686164531856775
     },
     {
       "rank": 18,
-      "feature": "C4",
-      "importance": 0.006932375021278858
+      "feature": "addr2_freq",
+      "importance": 0.006226005498319864
     },
     {
       "rank": 19,
-      "feature": "card6",
-      "importance": 0.0067885397002100945
+      "feature": "V317",
+      "importance": 0.005884788930416107
     },
     {
       "rank": 20,
-      "feature": "V315",
-      "importance": 0.006647653877735138
+      "feature": "M4",
+      "importance": 0.005610257387161255
     }
   ]
 }

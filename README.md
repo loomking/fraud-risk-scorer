@@ -85,32 +85,32 @@ Fraud and chargeback risk scoring for payment transactions using the IEEE-CIS Fr
 > **Scenario A (Headline):** FN Cost derived from MEAN fraud amount (₹12,536).
 > **Scenario B:** FN Cost derived from MEDIAN fraud amount (₹6,300).
 >
-> **CRITICAL DEPLOYMENT NOTE:** Scenario A (mean-based, threshold 0.0033) is the frozen threshold actually deployed in the live system. Scenario B (median-based) is presented as a comparative analysis, not currently active.
+> **CRITICAL DEPLOYMENT NOTE:** Scenario A (mean-based, threshold 0.0039) is the frozen threshold actually deployed in the live system. Scenario B (median-based) is presented as a comparative analysis, not currently active.
 >
-> *Note on Review Rate:* The 46.97% review rate in Scenario A reflects the outsized influence of the mean fraud amount, which is highly sensitive to a small number of catastrophic fraud transactions; the median-based Scenario B produces a materially lower, more operationally realistic review rate (34.19%).
+> *Note on Review Rate:* The 52.53% review rate in Scenario A reflects the outsized influence of the mean fraud amount, which is highly sensitive to a small number of catastrophic fraud transactions; the median-based Scenario B produces a materially lower, more operationally realistic review rate (47.12%).
 
 | Metric | Scenario A (Mean, ₹12,536 FN) | Scenario B (Median, ₹6,300 FN) |
 |---|---|---|
-| Threshold | **0.0033** (Frozen) | 0.0075 |
-| Recall (fraud capture, Test) | **96.59%** (2,978 / 3,083) | 93.45% (2,881 / 3,083) |
-| Review rate (Test) | 46.97% | 34.19% |
-| Precision (Test) | 7.16% | 9.51% |
-| ROC-AUC (Test) | 0.9333 | 0.9333 |
-| PR-AUC (Test) | 0.6445 | 0.6445 |
+| Threshold | **0.0039** (Frozen) | 0.0079 |
+| Recall (fraud capture, Test) | **94.71%** (2,920 / 3,083) | 93.55% (2,884 / 3,083) |
+| Review rate (Test) | 52.53% | 47.12% |
+| Precision (Test) | 6.28% | 6.91% |
+| ROC-AUC (Test) | 0.8926 | 0.8926 |
+| PR-AUC (Test) | 0.4968 | 0.4968 |
 
-Confusion matrix at threshold 0.0033 (Scenario A, Test Set): TN=46,866 | FP=38,632 | FN=105 | TP=2,978
+Confusion matrix at threshold 0.0039 (Scenario A, Test Set): TN=41,892 | FP=43,606 | FN=163 | TP=2,920
 
 ### Probability Calibration (Section 15)
 - Isotonic regression calibration on validation predictions
-- Brier score improvement: 0.0567 → 0.0168
+- Brier score improvement: 0.0688 → 0.0220
 
 ### Threshold Selection (Section 16)
 - **Never 0.5.** Cost-based selection on validation data.
 - FP cost: ₹50 (manual review + friction) — **illustrative assumption, NOT researched**
 - FN cost derivation methodology:
   - **Currency Assumption**: Assumes dataset is in USD (not officially confirmed by Kaggle). Uses 1 USD = 84.00 INR (August 2026).
-  - **Scenario A (Mean)**: Expected loss = $149.24 → ₹12,536. Chosen because fraud losses are heavily right-skewed by rare, massive transactions, and a cost model must weight against catastrophic impact. Drives optimal threshold down to **0.0033**.
-  - **Scenario B (Median)**: Expected loss = $75.00 → ₹6,300. Evaluated because the mean is heavily skewed by outliers, and the median provides a more operationally realistic review rate. Drives optimal threshold to **0.0075**.
+  - **Scenario A (Mean)**: Expected loss = $149.24 → ₹12,536. Chosen because fraud losses are heavily right-skewed by rare, massive transactions, and a cost model must weight against catastrophic impact. Drives optimal threshold down to **0.0039**.
+  - **Scenario B (Median)**: Expected loss = $75.00 → ₹6,300. Evaluated because the mean is heavily skewed by outliers, and the median provides a more operationally realistic review rate. Drives optimal threshold to **0.0079**.
 
 ### Threshold Sensitivity (Validation Set, Section 17)
 
@@ -118,9 +118,9 @@ Confusion matrix at threshold 0.0033 (Scenario A, Test Set): TN=46,866 | FP=38,6
 
 | FP Cost (₹) | Threshold | Review Rate (Val) | Fraud Capture (Val) | Cost/1000 (₹) |
 |---|---|---|---|---|
-| 25 | 0.0018 | 60.9% | 99.0% | 18,771 |
-| 50 | 0.0033 | 50.1% | 98.0% | 32,130 |
-| 100 | 0.0075 | 36.6% | 95.7% | 51,989 |
+| 25 | 0.0019 | 68.1% | 98.8% | 21,275 |
+| 50 | 0.0039 | 56.2% | 97.5% | 37,032 |
+| 100 | 0.0079 | 50.5% | 96.3% | 63,286 |
 
 ## Evidence Agent Architecture (Section 22-26)
 

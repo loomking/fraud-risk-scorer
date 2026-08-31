@@ -58,7 +58,6 @@ def build_evidence_context(
             "uid_txn_count_hist",
             "uid_avg_amt_hist",
             "uid_max_amt_hist",
-            "uid_prior_fraud_rate",
             "uid_time_since_last",
             "has_identity",
         ]:
