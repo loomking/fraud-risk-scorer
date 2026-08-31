@@ -99,7 +99,7 @@ Confusion matrix at threshold 0.0149: TN=69,904 | FP=15,594 | FN=354 | TP=2,729
 ### Threshold Selection (Section 16)
 - **Never 0.5.** Cost-based selection on validation data.
 - FP cost: ₹50 (manual review + friction) — **illustrative assumption, NOT researched**
-- FN cost: ₹3,000 (expected fraud loss)
+- FN cost: ₹3,000 (expected fraud loss) — **illustrative assumption, NOT researched**
 - **Optimal threshold: 0.0149** (frozen before test evaluation)
 
 ### Threshold Sensitivity (Validation Set, Section 17)

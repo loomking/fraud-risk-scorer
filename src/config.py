@@ -30,7 +30,7 @@ THRESHOLD_CONFIG_VERSION = os.getenv("THRESHOLD_CONFIG_VERSION", "v1.0.0")
 # ── Business cost assumptions (INR) ──────────────────────────────────────────
 # NOTE: These are illustrative assumptions, NOT researched facts.
 # FP_COST: manual review cost + customer friction per false positive
-# FN_COST: expected fraud loss per false negative (derived from training data)
+# FN_COST: expected fraud loss per false negative (illustrative assumption)
 FP_COST_INR = float(os.getenv("FP_COST_INR", "50.0"))
 FN_COST_INR = float(os.getenv("FN_COST_INR", "3000.0"))
 

@@ -35,7 +35,7 @@ def compute_cost_at_threshold(
 
     Cost model:
       FP cost: manual review + customer friction (illustrative assumption, NOT researched)
-      FN cost: expected fraud loss (derived from training fraud amounts)
+      FN cost: expected fraud loss (illustrative assumption)
     """
     y_pred = (y_proba >= threshold).astype(int)
 
