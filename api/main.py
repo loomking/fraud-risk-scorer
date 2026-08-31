@@ -74,5 +74,7 @@ def serve_frontend():
 
 # Serve any static assets from frontend/dist
 if FRONTEND_DIR.exists():
-    app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIR / "assets")), name="assets")
+    assets_dir = FRONTEND_DIR / "assets"
+    if assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
     app.mount("/vite.svg", StaticFiles(directory=str(FRONTEND_DIR)), name="vite")
