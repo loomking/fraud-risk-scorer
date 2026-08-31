@@ -4,12 +4,29 @@ import TopMetricBar from "./components/TopMetricBar";
 import ScoringForm from "./components/ScoringForm";
 import ThresholdControl from "./components/ThresholdControl";
 import TransactionsTable from "./components/TransactionsTable";
+import HeroLandingPage from "./components/HeroLandingPage";
 
 const API = (window.location.origin === "null" || window.location.protocol === "file:" || window.location.hostname === "localhost") 
     ? "http://localhost:10000" 
     : window.location.origin;
 
 export default function App() {
+  const [route, setRoute] = useState(window.location.hash || '#');
+
+  useEffect(() => {
+    const onHashChange = () => setRoute(window.location.hash || '#');
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  if (route === '#') {
+    return <HeroLandingPage />;
+  }
+
+  return <DashboardApp />;
+}
+
+function DashboardApp() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoSrc = "https://stream.mux.com/T6oQJQ02cQ6N01TR6iHwZkKFkbepS34dkkIc9iukgy400g.m3u8";
 
