@@ -51,26 +51,26 @@ def get_report(db: Session = Depends(get_db)):
     except Exception:
         pass
 
-    # Calculate total unique transactions scored
-    total_scored = db.query(Transaction).count()
+    # Calculate total score events (not deduplicated)
+    total_scored = db.query(Score).count()
 
-    # Recent scored transactions (deduplicated by transaction_id using GROUP BY or getting recent)
-    # Since SQLite doesn't support DISTINCT ON, we'll fetch recent transactions directly and then their latest score.
-    recent_txns = db.query(Transaction).order_by(Transaction.created_at.desc()).limit(50).all()
+    # Recent scored transactions (all events, not deduplicated by transaction_id)
+    recent_scores = db.query(Score).order_by(Score.created_at.desc()).limit(50).all()
     recent_transactions = []
-    for txn in recent_txns:
-        s = db.query(Score).filter(Score.transaction_id == txn.transaction_id).order_by(Score.created_at.desc()).first()
-        if s:
-            amt = txn.raw_data.get("TransactionAmt", 0) if txn and txn.raw_data else 0
-            recent_transactions.append({
-                "transaction_id": s.transaction_id,
-                "risk_probability": s.calibrated_probability,
-                "threshold": s.threshold,
-                "decision": s.decision,
-                "model_version": s.model_version,
-                "amount": amt,
-                "created_at": s.created_at.isoformat() if s.created_at else "",
-            })
+    for s in recent_scores:
+        txn = db.query(Transaction).filter(
+            Transaction.transaction_id == s.transaction_id
+        ).first()
+        amt = txn.raw_data.get("TransactionAmt", 0) if txn and txn.raw_data else 0
+        recent_transactions.append({
+            "transaction_id": s.transaction_id,
+            "risk_probability": s.calibrated_probability,
+            "threshold": s.threshold,
+            "decision": s.decision,
+            "model_version": s.model_version,
+            "amount": amt,
+            "created_at": s.created_at.isoformat() if s.created_at else "",
+        })
 
     return ReportResponse(
         model_version=MODEL_VERSION,

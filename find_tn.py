@@ -25,7 +25,7 @@ print(f"Total TNs below threshold: {len(tns)}")
 if len(tns) == 0:
     print("GENUINELY NO REAL TEST-SET TRANSACTION SCORES BELOW THRESHOLD.")
 else:
-    # Join with raw to get actual string values for card4, card6, ProductCD
+    tns = tns.drop(columns=["card4", "card6", "ProductCD"], errors="ignore")
     tns = tns.merge(test_raw[["TransactionID", "card4", "card6", "ProductCD"]], on="TransactionID", how="left")
     
     # Just grab the first 3
