@@ -31,6 +31,7 @@ data/processed/
 !/models/xgboost_feature_columns.joblib
 !/models/xgboost_model.joblib
 !/models/xgboost_metadata.json
+!/models/threshold_sweep.json
 !/models/threshold_config.json
 !/models/calibration_report.json
 *.pkl
