@@ -37,3 +37,12 @@
 - **How detected:** Test suite failed on 3/48 tests after the on-disk SQLite DB already contained records from a previous run.
 - **How fixed:** Replaced `db.merge()` with explicit upsert: query for existing transaction by `transaction_id`, update if found, insert if not.
 - **Validation:** All 48 tests pass on repeated runs.
+
+## 5. Silently Missing Machine Learning Code (.gitignore Failure)
+
+- **Date:** 2026-08-31
+- **What happened:** The entire `src/models/` directory (containing all ML logic: training, evaluation, calibration, and thresholding) was completely missing from the git repository. 
+- **Root cause:** When configuring `.gitignore` to ignore large model artifacts (like `xgboost_model.joblib`), the rule `models/` was used instead of `/models/`. Git interpreted this as a recursive wildcard, silently ignoring any directory named `models` anywhere in the repository, including `src/models/`.
+- **How detected:** ~15 hours after the code was written. The model code was written on August 30 at ~21:40, but when a bug fix to `evaluate.py` was made on August 31 at ~12:40, `git status` failed to show the file as modified. A `git ls-files` check revealed the folder had never been tracked.
+- **How fixed:** Changed the `.gitignore` rule to `/models/` to anchor it to the repository root. Ran `git add src/models/` to formally track the ML source code.
+- **Validation:** `git ls-files src/models/` now correctly lists the Python scripts, and changes to the ML logic successfully appear in `git status` and commits.
