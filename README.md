@@ -53,9 +53,9 @@ Fraud and chargeback risk scoring for payment transactions using the IEEE-CIS Fr
 ## Feature Engineering
 
 ### Temporal Split (Section 9)
-- **Train:** earliest ~70% (21,000 rows in dev subset)
-- **Validation:** next ~15% (4,500 rows)
-- **Test:** final ~15% (4,500 rows)
+- **Train:** earliest ~70% (413,378 rows, 14,538 fraud at 3.52%)
+- **Validation:** next ~15% (88,581 rows, 3,042 fraud at 3.43%)
+- **Test:** final ~15% (88,581 rows, 3,083 fraud at 3.48%)
 - No random splitting anywhere. Verified with automated tests.
 
 ### Leakage Prevention (Section 10)
@@ -66,23 +66,24 @@ Fraud and chargeback risk scoring for payment transactions using the IEEE-CIS Fr
 
 ### Imbalance Handling (Section 12)
 - ~3.5% positive (fraud) rate
-- XGBoost: `scale_pos_weight = neg_count / pos_count ≈ 33.8`
+- XGBoost: `scale_pos_weight = neg_count / pos_count ≈ 27.4`
 - Baseline LR: `class_weight='balanced'`
 
 ## Model Approach
 
 ### Baseline (Section 13.1)
 - Logistic Regression with balanced class weights
-- ROC-AUC: 0.8070 (dev subset) — below 0.95, no leakage signal
+- ROC-AUC: 0.8070 — below 0.95, confirming no leakage
 
 ### Main Model (Section 13.2)
 - **XGBoost** with early stopping on temporal validation
 - `n_estimators=500, max_depth=6, learning_rate=0.05`
-- Best iteration: 131 (PR-AUC metric)
+- Best iteration: 497 (PR-AUC metric)
+- **Test ROC-AUC: 0.9333 | Test PR-AUC: 0.6445**
 
 ### Probability Calibration (Section 15)
 - Isotonic regression calibration on validation predictions
-- Brier score improvement: 0.0362 → 0.0136
+- Brier score improvement: 0.0567 → 0.0168
 
 ### Threshold Selection (Section 16)
 - **Never 0.5.** Cost-based selection on validation data.
@@ -93,9 +94,9 @@ Fraud and chargeback risk scoring for payment transactions using the IEEE-CIS Fr
 ### Threshold Sensitivity (Section 17)
 | FP Cost (₹) | Threshold | Review Rate | Fraud Capture | Cost/1000 (₹) |
 |---|---|---|---|---|
-| 25 | 0.0100 | 29.9% | 91.9% | 12,906 |
-| 50 | 0.0149 | 18.2% | 85.6% | 18,700 |
-| 100 | 0.0297 | 11.7% | 78.4% | 25,733 |
+| 25 | 0.0100 | 29.9% | 93.9% | 12,947 |
+| 50 | 0.0149 | 21.8% | 90.6% | 19,037 |
+| 100 | 0.0346 | 13.5% | 84.6% | 26,457 |
 
 ## Evidence Agent Architecture (Section 22-26)
 
@@ -122,20 +123,16 @@ uv sync --all-extras
 kaggle competitions download -c ieee-fraud-detection -p data/raw/
 cd data/raw && unzip ieee-fraud-detection.zip && cd ../..
 
-# 3. Run Phase 2 pipeline (trains model, calibrates, evaluates)
-uv run python -m src.pipeline_phase2
+# 3. Run full pipeline (trains model, calibrates, evaluates on all 590k rows)
+uv run python -m src.pipeline_phase2 --full
 
 # 4. Run tests (48 tests)
 uv run pytest tests/ -v
 
-# 5. Start API server
+# 5. Start API server (serves frontend + API)
 uv run uvicorn api.main:app --reload --port 8000
 
-# 6. Open frontend
-# Open frontend/index.html in a browser
-
-# 7. Run full data pipeline (optional — takes longer)
-uv run python -m src.pipeline_phase2 --full
+# 6. Open dashboard at http://localhost:8000
 ```
 
 ## API Endpoints
