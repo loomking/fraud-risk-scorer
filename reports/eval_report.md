@@ -1,6 +1,6 @@
 # Fraud Risk Scorer — Evaluation Report
 
-> Generated programmatically at 2026-08-31T07:07:45.870693Z
+> Generated programmatically at 2026-08-31T07:23:21.604254Z
 > Every metric below is reproducible from repository code.
 
 ## Model Information
@@ -21,28 +21,28 @@
 |---|---|
 | **PR-AUC** | **0.6445** |
 | ROC-AUC | 0.9333 |
-| Precision | 0.1489 |
-| Recall | 0.8852 |
-| F1 | 0.2550 |
+| Precision | 0.1130 |
+| Recall | 0.9186 |
+| F1 | 0.2013 |
 | Brier Score | 0.0181 |
 
-## Confusion Matrix (Test Set, threshold=0.0149)
+## Confusion Matrix (Test Set, threshold=0.0100)
 
 |  | Predicted Legit | Predicted Fraud |
 |---|---|---|
-| **Actual Legit** | TN=69904 | FP=15594 |
-| **Actual Fraud** | FN=354 | TP=2729 |
+| **Actual Legit** | TN=63271 | FP=22227 |
+| **Actual Fraud** | FN=251 | TP=2832 |
 
 ## Business Metrics (Test Set)
 
 | Metric | Value |
 |---|---|
-| Threshold | 0.0149 |
-| Fraud Capture Rate | 0.8852 |
-| Review Rate | 0.2069 |
+| Threshold | 0.0100 |
+| Fraud Capture Rate | 0.9186 |
+| Review Rate | 0.2829 |
 | FP Cost Assumption (₹) | 50 |
-| FN Cost Assumption (₹) | 3000 |
-| Expected Cost/1000 txns (₹) | 20791 |
+| FN Cost Assumption (₹) | 12536 |
+| Expected Cost/1000 txns (₹) | 48068 |
 
 > **Note:** FP and FN costs are illustrative assumptions, NOT researched facts.
 
@@ -52,9 +52,9 @@
 
 | FP Cost (₹) | Optimal Threshold | Review Rate | Fraud Capture | Cost/1000 txns (₹) |
 |---|---|---|---|---|
-| ₹25 | 0.0100 | 0.299 | 0.939 | ₹12947 |
-| ₹50 | 0.0149 | 0.218 | 0.906 | ₹19037 |
-| ₹100 | 0.0346 | 0.135 | 0.846 | ₹26457 |
+| ₹25 | 0.0100 | 0.299 | 0.939 | ₹32862 |
+| ₹50 | 0.0100 | 0.299 | 0.939 | ₹39544 |
+| ₹100 | 0.0100 | 0.299 | 0.939 | ₹52906 |
 
 ## Calibration (Section 15)
 

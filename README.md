@@ -85,12 +85,12 @@ Fraud and chargeback risk scoring for payment transactions using the IEEE-CIS Fr
 |---|---|
 | ROC-AUC | 0.9333 |
 | PR-AUC | 0.6445 |
-| Recall (fraud capture) | **88.52%** (2,729 / 3,083) |
-| Precision | 14.89% |
-| Review rate | 20.69% |
+| Recall (fraud capture) | **91.86%** (2,832 / 3,083) |
+| Precision | 11.30% |
+| Review rate | 28.29% |
 | Brier score | 0.0181 |
 
-Confusion matrix at threshold 0.0149: TN=69,904 | FP=15,594 | FN=354 | TP=2,729
+Confusion matrix at threshold 0.0100: TN=63,271 | FP=22,227 | FN=251 | TP=2,832
 
 ### Probability Calibration (Section 15)
 - Isotonic regression calibration on validation predictions
@@ -99,8 +99,8 @@ Confusion matrix at threshold 0.0149: TN=69,904 | FP=15,594 | FN=354 | TP=2,729
 ### Threshold Selection (Section 16)
 - **Never 0.5.** Cost-based selection on validation data.
 - FP cost: ₹50 (manual review + friction) — **illustrative assumption, NOT researched**
-- FN cost: ₹3,000 (expected fraud loss) — **illustrative assumption, NOT researched**
-- **Optimal threshold: 0.0149** (frozen before test evaluation)
+- FN cost: ₹12,536 (expected fraud loss). Derived from training data mean fraud amount ($149.24). Assumes dataset is in USD and 1 USD = 84.00 INR (August 2026).
+- **Optimal threshold: 0.0100** (frozen before test evaluation)
 
 ### Threshold Sensitivity (Validation Set, Section 17)
 
@@ -108,9 +108,9 @@ Confusion matrix at threshold 0.0149: TN=69,904 | FP=15,594 | FN=354 | TP=2,729
 
 | FP Cost (₹) | Threshold | Review Rate | Fraud Capture | Cost/1000 (₹) |
 |---|---|---|---|---|
-| 25 | 0.0100 | 29.9% | 93.9% | 12,947 |
-| 50 | 0.0149 | 21.8% | 90.6% | 19,037 |
-| 100 | 0.0346 | 13.5% | 84.6% | 26,457 |
+| 25 | 0.0100 | 29.9% | 93.9% | 32,862 |
+| 50 | 0.0100 | 29.9% | 93.9% | 39,544 |
+| 100 | 0.0100 | 29.9% | 93.9% | 52,906 |
 
 ## Evidence Agent Architecture (Section 22-26)
 
