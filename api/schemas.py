@@ -107,6 +107,7 @@ class ReportResponse(BaseModel):
     threshold: float
     fp_cost_assumption: float
     fn_cost_assumption: float
+    total_scored: int = 0
     metrics: dict[str, Any]
     sensitivity: list[dict[str, Any]]
     recent_transactions: list[dict[str, Any]]

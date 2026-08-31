@@ -1,6 +1,6 @@
 # Fraud Risk Scorer — Evaluation Report
 
-> Generated programmatically at 2026-08-31T08:08:03.705135Z
+> Generated programmatically at 2026-08-31T08:46:54.994091Z
 > Every metric below is reproducible from repository code.
 
 ## Model Information
@@ -19,56 +19,51 @@
 
 | Metric | Value |
 |---|---|
-| **PR-AUC** | **0.4968** |
-| ROC-AUC | 0.8926 |
-| Precision | 0.0628 |
-| Recall | 0.9471 |
-| F1 | 0.1177 |
-| Brier Score | 0.0226 |
+| **PR-AUC** | **0.5064** |
+| ROC-AUC | 0.9010 |
+| Precision | 0.0587 |
+| Recall | 0.9595 |
+| F1 | 0.1107 |
+| Brier Score | 0.0225 |
 
-## Confusion Matrix (Test Set, threshold=0.0039)
+## Confusion Matrix (Test Set, threshold=0.0038)
 
 |  | Predicted Legit | Predicted Fraud |
 |---|---|---|
-| **Actual Legit** | TN=41892 | FP=43606 |
-| **Actual Fraud** | FN=163 | TP=2920 |
+| **Actual Legit** | TN=38101 | FP=47397 |
+| **Actual Fraud** | FN=125 | TP=2958 |
 
 ## Business Metrics (Test Set)
 
-> **Scenario A (Headline):** FN Cost derived from MEAN fraud amount (₹12,536).
-> **Scenario B:** FN Cost derived from MEDIAN fraud amount (₹6,300).
->
-> **CRITICAL DEPLOYMENT NOTE:** Scenario A (mean-based, threshold 0.0039) is the frozen threshold actually deployed in the live system. Scenario B (median-based) is presented as a comparative analysis, not currently active.
->
-> *Note on Review Rate:* The 0.5252 (52.52%) review rate in Scenario A reflects the outsized influence of the mean fraud amount, which is highly sensitive to a small number of catastrophic fraud transactions; the median-based Scenario B produces a materially lower, more operationally realistic review rate (0.4712).
+| Metric | Value |
+|---|---|
+| Threshold | 0.0038 |
+| Fraud Capture Rate | 0.9595 |
+| Review Rate | 0.5685 |
+| FP Cost Assumption (₹) | 50 |
+| FN Cost Assumption (₹) | 12536 |
+| Expected Cost/1000 txns (₹) | 44444 |
 
-| Metric | Scenario A (Mean, ₹12536 FN) | Scenario B (Median, ₹6300 FN) |
-|---|---|---|
-| Threshold | 0.0039 (Frozen) | 0.0079 |
-| Fraud Capture Rate (Test) | 0.9471 | 0.9355 |
-| Review Rate (Test) | 0.5252 | 0.4712 |
-| FP Cost Assumption (₹) | 50 | 50 |
-| FN Cost Assumption (₹) | 12536 | 6300 |
+> **Note:** FP and FN costs are illustrative assumptions, NOT researched facts.
 
-> **Note:** Dataset currency is assumed to be USD (1 USD = 84.00 INR, August 2026).
 ## Threshold Sensitivity Analysis (Validation Set, Section 17)
 
 > Sensitivity analysis computed on validation set (threshold selection must not use test data).
 
 | FP Cost (₹) | Optimal Threshold | Review Rate | Fraud Capture | Cost/1000 txns (₹) |
 |---|---|---|---|---|
-| ₹25 | 0.0019 | 0.681 | 0.988 | ₹21275 |
-| ₹50 | 0.0039 | 0.562 | 0.975 | ₹37032 |
-| ₹100 | 0.0079 | 0.505 | 0.963 | ₹63286 |
+| ₹25 | 0.0017 | 0.747 | 0.990 | ₹22070 |
+| ₹50 | 0.0038 | 0.575 | 0.977 | ₹36845 |
+| ₹100 | 0.0076 | 0.437 | 0.951 | ₹61644 |
 
 ## Calibration (Section 15)
 
 | Property | Value |
 |---|---|
 | Method | isotonic |
-| Brier (uncalibrated) | 0.0688 |
-| Brier (calibrated) | 0.0220 |
-| Improvement | 0.0468 |
+| Brier (uncalibrated) | 0.0603 |
+| Brier (calibrated) | 0.0214 |
+| Improvement | 0.0390 |
 
 ## Top 20 Feature Importance
 

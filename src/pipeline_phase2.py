@@ -6,6 +6,7 @@ Usage:
 """
 
 import argparse
+import joblib
 import json
 import logging
 import sys
@@ -71,10 +72,14 @@ def run_phase2(use_full_data: bool = False) -> dict:
 
     # ── Features ──────────────────────────────────────────────────────────
     logger.info("\n--- Feature engineering ---")
-    train_feat, val_feat, test_feat, freq_encoder, feature_columns = build_features(
+    train_feat, val_feat, test_feat, freq_encoder, cat_encoder, feature_columns = build_features(
         train_df, val_df, test_df
     )
     save_splits(train_feat, val_feat, test_feat)
+    
+    # Save encoders
+    joblib.dump(freq_encoder, MODEL_ARTIFACTS_DIR / "frequency_encoder.joblib")
+    joblib.dump(cat_encoder, MODEL_ARTIFACTS_DIR / "categorical_encoder.joblib")
 
     # ── Train XGBoost ─────────────────────────────────────────────────────
     logger.info("\n--- Training XGBoost ---")

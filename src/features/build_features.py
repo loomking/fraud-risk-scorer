@@ -235,20 +235,41 @@ FREQ_ENCODE_COLUMNS = [
 # 5. CATEGORICAL ENCODING
 # ─────────────────────────────────────────────────────────────────────────────
 
-def encode_categoricals(df: pd.DataFrame) -> pd.DataFrame:
+class CategoricalEncoder:
     """
-    Simple label encoding for low-to-medium cardinality categoricals.
-    Handles unknowns by mapping to -1.
+    Robust categorical encoder that learns mappings strictly from the training set.
+    Unseen categories at inference are mapped to a reserved -1 token.
     """
-    df = df.copy()
-    cat_cols = df.select_dtypes(include=["object", "category"]).columns.tolist()
+    def __init__(self):
+        self.mappings: dict[str, dict[Any, int]] = {}
+        self.cat_cols: list[str] = []
+        self._fitted = False
 
-    for col in cat_cols:
-        df[col] = df[col].fillna("__MISSING__")
-        # Map to integer codes
-        df[col] = df[col].astype("category").cat.codes
+    def fit(self, train_df: pd.DataFrame) -> "CategoricalEncoder":
+        """Learn unique categories from the training split only."""
+        self.cat_cols = train_df.select_dtypes(include=["object", "category"]).columns.tolist()
+        for col in self.cat_cols:
+            # Sort unique values for deterministic encoding
+            unique_vals = sorted(train_df[col].fillna("__MISSING__").astype(str).unique())
+            # Map each unique value to an integer >= 0
+            self.mappings[col] = {val: i for i, val in enumerate(unique_vals)}
+        self._fitted = True
+        return self
 
-    return df
+    def transform(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Apply mapping. Unknown categories -> -1."""
+        assert self._fitted, "CategoricalEncoder must be fit before transform"
+        df = df.copy()
+        for col in self.cat_cols:
+            if col in df.columns:
+                # Map using the dict, fallback to -1, then cast to int
+                # Using .map() on Series and filling NaN with -1
+                mapped = df[col].fillna("__MISSING__").astype(str).map(self.mappings[col])
+                df[col] = mapped.fillna(-1).astype(int)
+        return df
+
+    def fit_transform(self, train_df: pd.DataFrame) -> pd.DataFrame:
+        return self.fit(train_df).transform(train_df)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -313,9 +334,10 @@ def build_features(
     test_df = freq_encoder.transform(test_df)
 
     # Step 6: Encode remaining categoricals
-    train_df = encode_categoricals(train_df)
-    val_df = encode_categoricals(val_df)
-    test_df = encode_categoricals(test_df)
+    cat_encoder = CategoricalEncoder()
+    train_df = cat_encoder.fit_transform(train_df)
+    val_df = cat_encoder.transform(val_df)
+    test_df = cat_encoder.transform(test_df)
 
     # Step 7: Determine feature columns (exclude non-features)
     feature_columns = [c for c in train_df.columns if c not in EXCLUDE_COLUMNS]
@@ -326,4 +348,4 @@ def build_features(
     logger.info(f"  Feature columns: {len(feature_columns)}")
     logger.info(f"  Excluded: {EXCLUDE_COLUMNS}")
 
-    return train_df, val_df, test_df, freq_encoder, feature_columns
+    return train_df, val_df, test_df, freq_encoder, cat_encoder, feature_columns

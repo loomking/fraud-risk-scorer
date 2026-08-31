@@ -36,3 +36,22 @@ The results proved exactly how much this single leaked feature was inflating the
 A PR-AUC drop from 0.64 to 0.49 is massive, but it represents *reality*. If we had deployed the original model, its production performance would have cratered compared to the test set metrics because the `uid_prior_fraud_rate` feature would have been populated with missing or heavily delayed data in real life.
 
 By catching this target leakage during the audit phase, we preserved the integrity of our pipeline. This is a stronger demonstration of rigor than the feature itself ever was of predictive power.
+
+# Failure Story 4: Train/Serve Skew in Categorical Encoding
+
+While manually auditing why `card6` appeared in the top-20 feature importance list despite not having a frequency encoding, we uncovered a severe bug in our categorical handling that caused both train/test leakage and a silent failure during live inference.
+
+## The Bug: Three Separate Mappings and a Silent Failure
+
+1. **Scrambled Mappings During Training**: Our `encode_categoricals()` function was independently applying `.astype("category").cat.codes` to the `train`, `val`, and `test` dataframes after the temporal split. Because `.cat.codes` maps strings to integers alphabetically based solely on the unique values present in that specific dataframe, the integer mapping was entirely inconsistent across splits. For instance, `debit` could map to `0` in train but `1` in val. XGBoost was evaluating on a scrambled mapping.
+2. **Total Failure at Live Inference**: In `api/routes/score.py`, the backend did not even apply `.cat.codes`. When casting the incoming JSON string to float (`float(txn_data["card6"])`), it naturally threw a `ValueError` for values like `"debit"`. A silent `try/except` block caught this and left the feature at `0.0`. Thus, any categorical predictive power seen during evaluation was physically impossible to replicate in production.
+
+## The Fix: Single Source of Truth
+
+We deprecated the split-dependent `.cat.codes` approach and implemented a custom `CategoricalEncoder`.
+- **Fit on Train Only**: The encoder strictly learns unique categories from the training split.
+- **Artifact Persistence**: It serializes this mapping dictionary to `categorical_encoder.joblib`.
+- **Deterministic Fallback**: During validation, testing, and live inference, unseen categories are explicitly mapped to `-1` (UNKNOWN).
+- **Loud Failures**: The silent `try/except` around float casting in `score.py` was removed. If an inherently invalid type is sent for a numerical field, the API fails loudly (HTTP 500/422) and logs the error, ensuring we never silently score corrupted data again.
+
+By checking the exact code path rather than just the evaluation metrics, we identified and eliminated a bug that would have rendered base categoricals like `card4` and `card6` useless in production.

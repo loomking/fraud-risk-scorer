@@ -1,28 +1,28 @@
 {
   "model_version": "v1.0.0",
-  "model_hash": "03d05c244ada",
-  "timestamp": "2026-08-31T08:08:03.703127",
+  "model_hash": "7a938817ae30",
+  "timestamp": "2026-08-31T08:46:54.991090",
   "n_features": 462,
-  "best_iteration": 497,
+  "best_iteration": 499,
   "metrics": {
     "split": "TEST",
     "model": "XGBoost",
     "model_version": "v1.0.0",
-    "roc_auc": 0.8926407635266324,
-    "pr_auc": 0.49682654455084324,
-    "precision": 0.06276060697244551,
-    "recall": 0.9471294193966915,
-    "f1": 0.11772057489568426,
-    "brier_score": 0.02262927033007145,
-    "threshold": 0.003921477313384676,
+    "roc_auc": 0.9009971018133011,
+    "pr_auc": 0.5064387193510086,
+    "precision": 0.05874292523086089,
+    "recall": 0.9594550762244567,
+    "f1": 0.11070773606796662,
+    "brier_score": 0.022507058456540108,
+    "threshold": 0.003779506851299324,
     "confusion_matrix": [
       [
-        41892,
-        43606
+        38101,
+        47397
       ],
       [
-        163,
-        2920
+        125,
+        2958
       ]
     ],
     "total_samples": 88581,

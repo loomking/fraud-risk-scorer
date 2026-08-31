@@ -36,18 +36,20 @@ router = APIRouter()
 _model = None
 _feature_columns = None
 _threshold = None
+_cat_encoder = None
 
 
 def _load_artifacts():
-    global _model, _feature_columns, _threshold
+    global _model, _feature_columns, _threshold, _cat_encoder
     if _model is None:
         _model = joblib.load(MODEL_ARTIFACTS_DIR / "calibrated_model.joblib")
         _feature_columns = joblib.load(MODEL_ARTIFACTS_DIR / "xgboost_feature_columns.joblib")
+        _cat_encoder = joblib.load(MODEL_ARTIFACTS_DIR / "categorical_encoder.joblib")
         with open(MODEL_ARTIFACTS_DIR / "threshold_config.json") as f:
             config = json.load(f)
             _threshold = config["optimal_threshold"]["threshold"]
         logger.info(f"Model artifacts loaded. Threshold: {_threshold:.4f}")
-    return _model, _feature_columns, _threshold
+    return _model, _feature_columns, _threshold, _cat_encoder
 
 
 @router.post("", response_model=ScoreResponse)
@@ -57,7 +59,7 @@ def score_transaction(request: ScoreRequest, db: Session = Depends(get_db)):
 
     Pipeline: Input → Feature Vector → Model → Calibration → Threshold → PASS/FLAG
     """
-    model, feature_columns, threshold = _load_artifacts()
+    model, feature_columns, threshold, cat_encoder = _load_artifacts()
 
     # Convert request to dict
     txn_data = request.model_dump()
@@ -68,10 +70,14 @@ def score_transaction(request: ScoreRequest, db: Session = Depends(get_db)):
     feature_vector = np.zeros(len(feature_columns))
     for i, col in enumerate(feature_columns):
         if col in txn_data and txn_data[col] is not None:
-            try:
-                feature_vector[i] = float(txn_data[col])
-            except (ValueError, TypeError):
-                pass
+            val = txn_data[col]
+            if col in cat_encoder.mappings:
+                str_val = str(val) if val != "" else "__MISSING__"
+                mapped_val = cat_encoder.mappings[col].get(str_val, -1)
+                feature_vector[i] = float(mapped_val)
+            else:
+                # Fail loudly on invalid cast (Section 39)
+                feature_vector[i] = float(val)
 
     # Special derived features
     col_map = {c: i for i, c in enumerate(feature_columns)}

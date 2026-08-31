@@ -51,23 +51,26 @@ def get_report(db: Session = Depends(get_db)):
     except Exception:
         pass
 
-    # Recent scored transactions
-    recent_scores = db.query(Score).order_by(Score.created_at.desc()).limit(50).all()
+    # Calculate total unique transactions scored
+    total_scored = db.query(Transaction).count()
+
+    # Recent scored transactions (deduplicated by transaction_id using GROUP BY or getting recent)
+    # Since SQLite doesn't support DISTINCT ON, we'll fetch recent transactions directly and then their latest score.
+    recent_txns = db.query(Transaction).order_by(Transaction.created_at.desc()).limit(50).all()
     recent_transactions = []
-    for s in recent_scores:
-        txn = db.query(Transaction).filter(
-            Transaction.transaction_id == s.transaction_id
-        ).first()
-        amt = txn.raw_data.get("TransactionAmt", 0) if txn and txn.raw_data else 0
-        recent_transactions.append({
-            "transaction_id": s.transaction_id,
-            "risk_probability": s.calibrated_probability,
-            "threshold": s.threshold,
-            "decision": s.decision,
-            "model_version": s.model_version,
-            "amount": amt,
-            "created_at": s.created_at.isoformat() if s.created_at else "",
-        })
+    for txn in recent_txns:
+        s = db.query(Score).filter(Score.transaction_id == txn.transaction_id).order_by(Score.created_at.desc()).first()
+        if s:
+            amt = txn.raw_data.get("TransactionAmt", 0) if txn and txn.raw_data else 0
+            recent_transactions.append({
+                "transaction_id": s.transaction_id,
+                "risk_probability": s.calibrated_probability,
+                "threshold": s.threshold,
+                "decision": s.decision,
+                "model_version": s.model_version,
+                "amount": amt,
+                "created_at": s.created_at.isoformat() if s.created_at else "",
+            })
 
     return ReportResponse(
         model_version=MODEL_VERSION,
@@ -75,6 +78,7 @@ def get_report(db: Session = Depends(get_db)):
         threshold=threshold,
         fp_cost_assumption=FP_COST_INR,
         fn_cost_assumption=FN_COST_INR,
+        total_scored=total_scored,
         metrics=metrics,
         sensitivity=sensitivity,
         recent_transactions=recent_transactions,
