@@ -35,16 +35,20 @@
 
 ## Business Metrics (Test Set)
 
-| Metric | Value |
-|---|---|
-| Threshold | 0.0033 |
-| Fraud Capture Rate | 0.9659 |
-| Review Rate | 0.4697 |
-| FP Cost Assumption (₹) | 50 |
-| FN Cost Assumption (₹) | 12536 |
-| Expected Cost/1000 txns (₹) | 36666 |
+> **Scenario A (Headline):** FN Cost derived from MEAN fraud amount (₹12,536).
+> **Scenario B:** FN Cost derived from MEDIAN fraud amount (₹6,300).
+>
+> *Note on Review Rate:* The 0.4697 (46.97%) review rate in Scenario A reflects the outsized influence of the mean fraud amount, which is highly sensitive to a small number of catastrophic fraud transactions; the median-based Scenario B produces a materially lower, more operationally realistic review rate (0.3419).
 
-> **Note:** FP and FN costs are illustrative assumptions, NOT researched facts.
+| Metric | Scenario A (Mean, ₹12536 FN) | Scenario B (Median, ₹6300 FN) |
+|---|---|---|
+| Threshold | 0.0033 | 0.0075 |
+| Fraud Capture Rate | 0.9659 | 0.9345 |
+| Review Rate | 0.4697 | 0.3419 |
+| FP Cost Assumption (₹) | 50 | 50 |
+| FN Cost Assumption (₹) | 12536 | 6300 |
+
+> **Note:** Dataset currency is assumed to be USD (1 USD = 84.00 INR, August 2026).
 
 ## Threshold Sensitivity Analysis (Validation Set, Section 17)
 
