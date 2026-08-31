@@ -1,6 +1,6 @@
 {
   "threshold_config_version": "v1.0.0",
-  "timestamp": "2026-08-30T17:07:24.469881",
+  "timestamp": "2026-08-31T07:07:44.619092",
   "optimal_threshold": {
     "threshold": 0.014924623115577889,
     "tp": 2756,

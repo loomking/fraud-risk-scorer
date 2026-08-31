@@ -26,13 +26,13 @@ data/processed/
 
 # ── Model artifacts ───────────────────────────────────────────────────────
 # Ignore large training artifacts, but TRACK the files needed for API deployment
-models/
-!models/calibrated_model.joblib
-!models/xgboost_feature_columns.joblib
-!models/xgboost_model.joblib
-!models/xgboost_metadata.json
-!models/threshold_config.json
-!models/calibration_report.json
+/models/
+!/models/calibrated_model.joblib
+!/models/xgboost_feature_columns.joblib
+!/models/xgboost_model.joblib
+!/models/xgboost_metadata.json
+!/models/threshold_config.json
+!/models/calibration_report.json
 *.pkl
 *.json.gz
 

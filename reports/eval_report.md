@@ -1,6 +1,6 @@
 # Fraud Risk Scorer — Evaluation Report
 
-> Generated programmatically at 2026-08-30T17:07:25.677752Z
+> Generated programmatically at 2026-08-31T07:07:45.870693Z
 > Every metric below is reproducible from repository code.
 
 ## Model Information
@@ -38,15 +38,17 @@
 | Metric | Value |
 |---|---|
 | Threshold | 0.0149 |
-| Fraud Capture Rate | 0.906 |
-| Review Rate | 0.218 |
+| Fraud Capture Rate | 0.8852 |
+| Review Rate | 0.2069 |
 | FP Cost Assumption (₹) | 50 |
 | FN Cost Assumption (₹) | 3000 |
-| Expected Cost/1000 txns (₹) | 19037 |
+| Expected Cost/1000 txns (₹) | 20791 |
 
 > **Note:** FP and FN costs are illustrative assumptions, NOT researched facts.
 
-## Threshold Sensitivity Analysis (Section 17)
+## Threshold Sensitivity Analysis (Validation Set, Section 17)
+
+> Sensitivity analysis computed on validation set (threshold selection must not use test data).
 
 | FP Cost (₹) | Optimal Threshold | Review Rate | Fraud Capture | Cost/1000 txns (₹) |
 |---|---|---|---|---|

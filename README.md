@@ -79,7 +79,18 @@ Fraud and chargeback risk scoring for payment transactions using the IEEE-CIS Fr
 - **XGBoost** with early stopping on temporal validation
 - `n_estimators=500, max_depth=6, learning_rate=0.05`
 - Best iteration: 497 (PR-AUC metric)
-- **Test ROC-AUC: 0.9333 | Test PR-AUC: 0.6445**
+
+### Test Set Performance (88,581 untouched rows)
+| Metric | Value |
+|---|---|
+| ROC-AUC | 0.9333 |
+| PR-AUC | 0.6445 |
+| Recall (fraud capture) | **88.52%** (2,729 / 3,083) |
+| Precision | 14.89% |
+| Review rate | 20.69% |
+| Brier score | 0.0181 |
+
+Confusion matrix at threshold 0.0149: TN=69,904 | FP=15,594 | FN=354 | TP=2,729
 
 ### Probability Calibration (Section 15)
 - Isotonic regression calibration on validation predictions
@@ -91,7 +102,10 @@ Fraud and chargeback risk scoring for payment transactions using the IEEE-CIS Fr
 - FN cost: ₹3,000 (expected fraud loss)
 - **Optimal threshold: 0.0149** (frozen before test evaluation)
 
-### Threshold Sensitivity (Section 17)
+### Threshold Sensitivity (Validation Set, Section 17)
+
+> Computed on validation set (88,581 rows). Threshold selection must not use test data.
+
 | FP Cost (₹) | Threshold | Review Rate | Fraud Capture | Cost/1000 (₹) |
 |---|---|---|---|---|
 | 25 | 0.0100 | 29.9% | 93.9% | 12,947 |
