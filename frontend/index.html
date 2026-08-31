@@ -339,11 +339,11 @@
                                 </div>
                                 <div className="grid grid-cols-3 gap-4">
                                     <div className="flex flex-col gap-1">
-                                        <label className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Card1 <span className="normal-case font-normal opacity-70 ml-1">(internal token)</span></label>
+                                        <label className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Card Identifier <span className="normal-case font-normal opacity-70 ml-1">(internal token)</span></label>
                                         <input className="input-field font-mono" type="number" value={form.card1} onChange={e => setForm({...form, card1: e.target.value})} />
                                     </div>
                                     <div className="flex flex-col gap-1">
-                                        <label className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Card4 <span className="normal-case font-normal opacity-70 ml-1">(network brand)</span></label>
+                                        <label className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Network Brand</label>
                                         <select className="input-field" value={form.card4} onChange={e => setForm({...form, card4: e.target.value})}>
                                             <option value="visa">visa</option>
                                             <option value="mastercard">mastercard</option>
@@ -352,7 +352,7 @@
                                         </select>
                                     </div>
                                     <div className="flex flex-col gap-1">
-                                        <label className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Card6 <span className="normal-case font-normal opacity-70 ml-1">(credit/debit)</span></label>
+                                        <label className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Funding Type</label>
                                         <select className="input-field" value={form.card6} onChange={e => setForm({...form, card6: e.target.value})}>
                                             <option value="debit">debit</option>
                                             <option value="credit">credit</option>
@@ -394,7 +394,7 @@
                                 </div>
                                 {/* Label for current preset */}
                                 <div className="text-[11px] text-on-surface-variant">
-                                    {THRESHOLD_PRESETS.find(p => Math.abs(p.value - activeThreshold) < 0.001)?.label || 'Custom'}
+                                    {(THRESHOLD_PRESETS.find(p => Math.abs(p.value - activeThreshold) < 0.001) || {}).label || 'Custom'}
                                 </div>
                                 {/* Live stats from PR curve */}
                                 <div className="grid grid-cols-3 gap-2">

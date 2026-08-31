@@ -1,4 +1,4 @@
-# Fraud Risk Scorer — Razorpay AI Buildathon Track 2
+# Fraud Risk Scorer
 
 > **AI Risk Manager**: A fraud decision system whose predictions are temporally valid, whose threshold reflects an explicit business cost, whose evidence is mechanically grounded to supplied transaction data, and whose decisions are reconstructable after the fact.
 
@@ -8,7 +8,7 @@
 Raw Transaction → Feature Pipeline → Risk Probability → Business Threshold → PASS/FLAG → Grounded Evidence → Source Fields → Audit Trail
 ```
 
-A judge can take any transaction and follow this chain end-to-end.
+An auditor can take any transaction and follow this chain end-to-end.
 
 ## Architecture
 
@@ -77,7 +77,7 @@ The model is trained on the IEEE-CIS Fraud Detection dataset (provided by Vesta 
 ### b. Model Versions & The Portability Tradeoff
 We deliberately developed two versions of the model to highlight the tradeoff between theoretical accuracy and operational reality:
 *   **v1.0.0 (462 features):** Achieved exceptional performance (ROC-AUC 0.90, PR-AUC 0.51) by utilizing the full IEEE-CIS dataset, which includes hundreds of proprietary, anonymized "V-columns" (Vesta-engineered features). However, this model **cannot be run on live form input** because those V-features are undocumented and impossible to compute from raw transaction data. 
-*   **v2.0.1 (22 features):** Engineered entirely from just 7 raw fields that a live form can realistically collect (Time, Amount, Product, Card1, Card4, Card6, Email Domain). Performance dropped (ROC-AUC 0.81, PR-AUC 0.16), but this model **can run live**. We explicitly trade theoretical accuracy for portability and live-demo honesty. This is a deliberate design choice, not a shortfall we are hiding.
+*   **v2.0.1 (22 features):** Engineered entirely from just 7 raw fields that a live form can realistically collect (Time, Amount, Product, Card Identifier, Network Brand, Funding Type, Email Domain). Performance dropped (ROC-AUC 0.81, PR-AUC 0.16), but this model **can run live**. We explicitly trade theoretical accuracy for portability and live-demo honesty. This is a deliberate design choice, not a shortfall we are hiding.
 
 ### c. Feature Dominance & Robustness Check
 During the development of v2, we identified that an early iteration over-indexed heavily on a single feature: `amt_is_round` (0.34 importance). This is a known artifact of how the synthetic IEEE-CIS dataset generated transaction amounts, not a generalized real-world fraud signal. As a deliberate robustness check, we removed this feature and retrained the model (v2.0.1). The PR-AUC shifted by a mere 0.004 (noise level), confirming that the remaining 22 live-engineered features carry real, non-artifact signal.
@@ -146,13 +146,13 @@ uv run uvicorn api.main:app --reload --port 8000
 
 ## SCOPE NOTE
 
-Per the track brief, teams are permitted to build a detector, a verifier, or an auto-responder. As a deliberate scope choice, **we built a pure Detector.** 
+Per the project scope, the system can act as a detector, a verifier, or an auto-responder. As a deliberate design choice, **we built a pure Detector.** 
 
 Our focus was on engineering a robust, live-compatible risk scoring engine with strict temporal isolation and a transparent false-positive cost curve. While the dashboard includes a placeholder for an "Evidence Packet" (which acts as a light, verifier-adjacent extension to ground decisions), the core architecture is entirely focused on detection and risk quantification, leaving the final verification and response to human operators.
 
 ## DEFENSE-ONLY CHECK (UI Evasion Audit)
 
-*   **Input Fields (Txn ID, Date/Time, Amount, Product, Card1, Card4, Card6, Email):** Safe. These accept only raw form data and do not expose how the model transforms them (e.g., time cyclically encoded to sine/cosine, cards mapped to historical frequencies).
+*   **Input Fields (Txn ID, Date/Time, Amount, Product, Card Identifier, Network Brand, Funding Type, Email):** Safe. These accept only raw form data and do not expose how the model transforms them (e.g., time cyclically encoded to sine/cosine, cards mapped to historical frequencies).
 *   **Top Metric Bar (Model, Threshold, Features, Total Scored):** Safe. Exposes aggregate counts and active settings, but no internal model weights.
 *   **Data Table (Txn ID, Amount, Risk, Threshold, Decision):** Safe. Displays the final calibrated risk probability. It does not display the 22-dimensional feature vector, preventing attackers from mapping specific inputs to specific feature shifts.
 *   **Evidence Packet (Expanded View):** Safe. Only displays high-level semantic claims and grounding validity (if generated). It does not expose SHAP values, feature importances, or decision tree paths for the specific transaction.
