@@ -110,4 +110,5 @@ class ReportResponse(BaseModel):
     total_scored: int = 0
     metrics: dict[str, Any]
     sensitivity: list[dict[str, Any]]
+    pr_curve: list[dict[str, Any]] = []
     recent_transactions: list[dict[str, Any]]

@@ -5,14 +5,14 @@ BASE_URL = "https://fraud-risk-scorer.onrender.com"
 TXN_ID = 2987000
 
 payload = {
-    "TransactionID": TXN_ID,
+    "TransactionID": 1000001,
     "TransactionDT": 86400,
-    "TransactionAmt": 46.725,
-    "ProductCD": "0",
-    "card1": 14260,
-    "card4": "3",
-    "card6": "1",
-    "P_emaildomain": "20"
+    "TransactionAmt": 150.0,
+    "ProductCD": "W",
+    "card1": 4000,
+    "card4": "visa",
+    "card6": "debit",
+    "P_emaildomain": "gmail.com"
 }
 
 print(f"Scoring transaction {TXN_ID} on LIVE...")

@@ -137,12 +137,24 @@
             ? "https://fraud-risk-scorer.onrender.com" 
             : window.location.origin;
 
+        // Operating point presets
+        const THRESHOLD_PRESETS = [
+            { value: 0.035, label: 'High capture', category: 'aggressive' },
+            { value: 0.045, label: 'High capture', category: 'aggressive' },
+            { value: 0.050, label: 'Balanced (default)', category: 'balanced' },
+            { value: 0.070, label: 'Tight ops', category: 'conservative' },
+            { value: 0.090, label: 'High precision', category: 'conservative' },
+            { value: 0.100, label: 'High precision', category: 'conservative' },
+            { value: 0.150, label: 'Strict', category: 'conservative' },
+        ];
+
         function App() {
-            const [report, setReport] = React.useState({ model_version: 'Loading...', threshold: 0, feature_count: 0, total_scored: 0 });
+            const [report, setReport] = React.useState({ model_version: 'Loading...', threshold: 0.05, feature_count: 0, total_scored: 0 });
             const [txns, setTxns] = React.useState([]);
             const [expandedTxn, setExpandedTxn] = React.useState(null);
+            const [prCurve, setPrCurve] = React.useState([]);
+            const [activeThreshold, setActiveThreshold] = React.useState(0.050);
             
-            // Details map: { [txnId]: { evidence: {...}, audit: {...}, loadingEvidence: false, loadingAudit: false } }
             const [detailsMap, setDetailsMap] = React.useState({});
             
             const [form, setForm] = React.useState({
@@ -157,6 +169,18 @@
             });
             const [scoring, setScoring] = React.useState(false);
 
+            // Find closest PR curve point for the active threshold
+            const activeStats = React.useMemo(() => {
+                if (!prCurve.length) return { review_rate: 0, fraud_capture: 0, precision: 0 };
+                let closest = prCurve[0];
+                let minDist = Math.abs(prCurve[0].threshold - activeThreshold);
+                for (const p of prCurve) {
+                    const dist = Math.abs(p.threshold - activeThreshold);
+                    if (dist < minDist) { minDist = dist; closest = p; }
+                }
+                return closest;
+            }, [prCurve, activeThreshold]);
+
             React.useEffect(() => {
                 fetch(`${API}/report`)
                     .then(res => res.json())
@@ -165,11 +189,10 @@
                             model_version: data.model_version,
                             threshold: data.threshold,
                             feature_count: data.feature_count,
-                            total_scored: data.total_scored !== undefined ? data.total_scored : (data.recent_transactions ? data.recent_transactions.length : 0)
+                            total_scored: data.total_scored !== undefined ? data.total_scored : 0
                         });
-                        if (data.recent_transactions) {
-                            setTxns(data.recent_transactions);
-                        }
+                        if (data.recent_transactions) setTxns(data.recent_transactions);
+                        if (data.pr_curve) setPrCurve(data.pr_curve);
                     })
                     .catch(e => console.error("Report error:", e));
             }, []);
@@ -275,7 +298,7 @@
                     <header className="panel bg-[#1C2128] shadow-md flex items-center justify-between p-3 font-mono text-[13px]">
                         <div className="flex items-center gap-6">
                             <span><span className="text-on-surface-variant">Model:</span> {report.model_version}</span>
-                            <span><span className="text-on-surface-variant">Threshold:</span> <span className="text-brand-danger">{(report.threshold * 100).toFixed(2)}%</span></span>
+                            <span><span className="text-on-surface-variant">Threshold:</span> <span className="text-brand-danger">{(activeThreshold * 100).toFixed(1)}%</span></span>
                             <span><span className="text-on-surface-variant">Features:</span> {report.feature_count}</span>
                         </div>
                         <div>
@@ -343,6 +366,51 @@
                                     </button>
                                 </div>
                             </div>
+
+                            {/* Threshold Control Panel */}
+                            <div className="panel-header border-t border-outline-variant mt-0">
+                                <h2 className="text-[14px] font-semibold m-0 text-on-surface">Operating Threshold</h2>
+                            </div>
+                            <div className="p-4 flex flex-col gap-3">
+                                {/* Preset buttons */}
+                                <div className="flex flex-wrap gap-1">
+                                    {THRESHOLD_PRESETS.map(p => {
+                                        const isActive = Math.abs(activeThreshold - p.value) < 0.001;
+                                        const catColor = p.category === 'aggressive' ? 'border-[#F0883E]' : p.category === 'balanced' ? 'border-brand-primary' : 'border-brand-success';
+                                        const activeBg = p.category === 'aggressive' ? 'bg-[#F0883E]/20 text-[#F0883E]' : p.category === 'balanced' ? 'bg-brand-primary/20 text-brand-primary' : 'bg-brand-success/20 text-brand-success';
+                                        return (
+                                            <button key={p.value}
+                                                className={`px-2 py-1 text-[11px] font-mono border rounded transition-all ${isActive ? `${catColor} ${activeBg} font-bold` : 'border-outline-variant text-on-surface-variant hover:border-on-surface-variant'}`}
+                                                onClick={() => setActiveThreshold(p.value)}
+                                            >
+                                                {(p.value * 100).toFixed(1)}%
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                                {/* Label for current preset */}
+                                <div className="text-[11px] text-on-surface-variant">
+                                    {THRESHOLD_PRESETS.find(p => Math.abs(p.value - activeThreshold) < 0.001)?.label || 'Custom'}
+                                </div>
+                                {/* Live stats from PR curve */}
+                                <div className="grid grid-cols-3 gap-2">
+                                    <div className="bg-background border border-outline-variant rounded p-2 text-center">
+                                        <div className="text-[10px] text-on-surface-variant uppercase tracking-wider">Review Rate</div>
+                                        <div className="font-mono text-[16px] font-bold text-[#F0883E]">{(activeStats.review_rate * 100).toFixed(1)}%</div>
+                                    </div>
+                                    <div className="bg-background border border-outline-variant rounded p-2 text-center">
+                                        <div className="text-[10px] text-on-surface-variant uppercase tracking-wider">Fraud Capture</div>
+                                        <div className="font-mono text-[16px] font-bold text-brand-danger">{(activeStats.fraud_capture * 100).toFixed(1)}%</div>
+                                    </div>
+                                    <div className="bg-background border border-outline-variant rounded p-2 text-center">
+                                        <div className="text-[10px] text-on-surface-variant uppercase tracking-wider">Precision</div>
+                                        <div className="font-mono text-[16px] font-bold text-brand-success">{(activeStats.precision * 100).toFixed(1)}%</div>
+                                    </div>
+                                </div>
+                                <div className="text-[10px] text-on-surface-variant leading-tight">
+                                    Changing threshold reclassifies scored transactions live. Lower threshold = catch more fraud but review more transactions.
+                                </div>
+                            </div>
                         </section>
 
                         {/* Right Column: Table */}
@@ -367,13 +435,16 @@
                                             <tr><td colSpan="6" className="text-center text-on-surface-variant py-8">No transactions scored yet.</td></tr>
                                         ) : txns.map(t => {
                                             const isExpanded = expandedTxn === t.transaction_id;
-                                            const isFlag = t.decision === 'FLAG';
+                                            // Live reclassification based on active threshold
+                                            const liveDecision = t.risk_probability >= activeThreshold ? 'FLAG' : 'PASS';
+                                            const isFlag = liveDecision === 'FLAG';
                                             const riskPct = Math.min(t.risk_probability * 100, 100);
-                                            const riskColor = riskPct > (t.threshold * 100) ? 'bg-brand-danger text-brand-danger' : 'bg-brand-success text-brand-success';
+                                            const threshPct = activeThreshold * 100;
+                                            const riskColor = isFlag ? 'bg-brand-danger text-brand-danger' : 'bg-brand-success text-brand-success';
                                             const details = detailsMap[t.transaction_id] || {};
                                             
                                             return (
-                                                <React.Fragment key={t.transaction_id}>
+                                                <React.Fragment key={t.transaction_id + '-' + t.created_at}>
                                                     <tr className={`clickable animate-reveal ${isExpanded ? 'bg-surface-variant' : ''}`} onClick={() => toggleRow(t)}>
                                                         <td className={isFlag ? "border-l-[3px] border-l-brand-danger pl-[9px]" : "pl-[12px]"}>{t.transaction_id}</td>
                                                         <td className="text-right">₹{(t.amount || 0).toFixed(2)}</td>
@@ -383,8 +454,8 @@
                                                                 <span className={riskColor.split(' ')[1]}>{riskPct.toFixed(1)}</span>
                                                             </div>
                                                         </td>
-                                                        <td>{(t.threshold * 100).toFixed(1)}</td>
-                                                        <td><span className={`badge ${isFlag ? 'badge-danger' : 'badge-success'}`}>{isFlag ? 'FLAG' : 'PASS'}</span></td>
+                                                        <td>{threshPct.toFixed(1)}</td>
+                                                        <td><span className={`badge ${isFlag ? 'badge-danger' : 'badge-success'}`}>{liveDecision}</span></td>
                                                         <td><button className={`hover:text-brand-primary ${isExpanded ? 'text-brand-primary' : 'text-on-surface-variant'}`}><span className="material-symbols-outlined text-[16px]">{isExpanded ? 'expand_less' : 'expand_more'}</span></button></td>
                                                     </tr>
                                                     
