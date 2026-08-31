@@ -175,6 +175,7 @@ uv run uvicorn api.main:app --reload --port 8000
 - TransactionDT has no real-world timestamp interpretation
 - Synthetic UID constructed from card1+addr1+D1 (approximation)
 - Business costs are estimated, not researched
+- **Target Leakage / Temporal Assumption:** The `uid_prior_fraud_rate` feature assumes immediate label availability (it uses the `isFraud` label from a user's previous transaction immediately at the time of their next transaction). In reality, fraud reporting (chargebacks) typically lags by weeks or months, meaning this feature would not be fully available at prediction time in production (Section 10.1).
 - LLM evidence is AI-generated wording, not independently verified
 - SQLite for development (not production-grade)
 - No authentication in hackathon MVP
