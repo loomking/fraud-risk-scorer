@@ -78,13 +78,14 @@ def threshold_sweep(
     y_proba: np.ndarray,
     fp_cost: float = FP_COST_INR,
     fn_cost: float = FN_COST_INR,
-    n_thresholds: int = 200,
+    n_thresholds: int = 500,
 ) -> list[dict]:
     """
-    Sweep thresholds from 0.01 to 0.99 and compute cost at each.
+    Sweep thresholds from 0.0001 to 0.99 and compute cost at each.
     Returns list of cost metrics sorted by threshold.
     """
-    thresholds = np.linspace(0.01, 0.99, n_thresholds)
+    # Use geomspace for finer granularity near the floor (0.0001 to 0.99)
+    thresholds = np.geomspace(0.0001, 0.99, n_thresholds)
     results = []
     for t in thresholds:
         result = compute_cost_at_threshold(y_true, y_proba, t, fp_cost, fn_cost)
