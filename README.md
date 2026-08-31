@@ -85,18 +85,20 @@ Fraud and chargeback risk scoring for payment transactions using the IEEE-CIS Fr
 > **Scenario A (Headline):** FN Cost derived from MEAN fraud amount (₹12,536).
 > **Scenario B:** FN Cost derived from MEDIAN fraud amount (₹6,300).
 >
+> **CRITICAL DEPLOYMENT NOTE:** Scenario A (mean-based, threshold 0.0033) is the frozen threshold actually deployed in the live system. Scenario B (median-based) is presented as a comparative analysis, not currently active.
+>
 > *Note on Review Rate:* The 46.97% review rate in Scenario A reflects the outsized influence of the mean fraud amount, which is highly sensitive to a small number of catastrophic fraud transactions; the median-based Scenario B produces a materially lower, more operationally realistic review rate (34.19%).
 
 | Metric | Scenario A (Mean, ₹12,536 FN) | Scenario B (Median, ₹6,300 FN) |
 |---|---|---|
 | Threshold | **0.0033** (Frozen) | 0.0075 |
-| Recall (fraud capture) | **96.59%** (2,978 / 3,083) | 93.45% (2,881 / 3,083) |
-| Review rate | 46.97% | 34.19% |
-| Precision | 7.16% | 9.51% |
-| ROC-AUC | 0.9333 | 0.9333 |
-| PR-AUC | 0.6445 | 0.6445 |
+| Recall (fraud capture, Test) | **96.59%** (2,978 / 3,083) | 93.45% (2,881 / 3,083) |
+| Review rate (Test) | 46.97% | 34.19% |
+| Precision (Test) | 7.16% | 9.51% |
+| ROC-AUC (Test) | 0.9333 | 0.9333 |
+| PR-AUC (Test) | 0.6445 | 0.6445 |
 
-Confusion matrix at threshold 0.0033 (Scenario A): TN=46,866 | FP=38,632 | FN=105 | TP=2,978
+Confusion matrix at threshold 0.0033 (Scenario A, Test Set): TN=46,866 | FP=38,632 | FN=105 | TP=2,978
 
 ### Probability Calibration (Section 15)
 - Isotonic regression calibration on validation predictions
@@ -114,7 +116,7 @@ Confusion matrix at threshold 0.0033 (Scenario A): TN=46,866 | FP=38,632 | FN=10
 
 > Computed on validation set (88,581 rows) using Scenario A (Mean FN Cost). Threshold selection must not use test data.
 
-| FP Cost (₹) | Threshold | Review Rate | Fraud Capture | Cost/1000 (₹) |
+| FP Cost (₹) | Threshold | Review Rate (Val) | Fraud Capture (Val) | Cost/1000 (₹) |
 |---|---|---|---|---|
 | 25 | 0.0018 | 60.9% | 99.0% | 18,771 |
 | 50 | 0.0033 | 50.1% | 98.0% | 32,130 |

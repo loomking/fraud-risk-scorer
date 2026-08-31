@@ -38,13 +38,15 @@
 > **Scenario A (Headline):** FN Cost derived from MEAN fraud amount (₹12,536).
 > **Scenario B:** FN Cost derived from MEDIAN fraud amount (₹6,300).
 >
+> **CRITICAL DEPLOYMENT NOTE:** Scenario A (mean-based, threshold 0.0033) is the frozen threshold actually deployed in the live system. Scenario B (median-based) is presented as a comparative analysis, not currently active.
+>
 > *Note on Review Rate:* The 0.4697 (46.97%) review rate in Scenario A reflects the outsized influence of the mean fraud amount, which is highly sensitive to a small number of catastrophic fraud transactions; the median-based Scenario B produces a materially lower, more operationally realistic review rate (0.3419).
 
 | Metric | Scenario A (Mean, ₹12536 FN) | Scenario B (Median, ₹6300 FN) |
 |---|---|---|
-| Threshold | 0.0033 | 0.0075 |
-| Fraud Capture Rate | 0.9659 | 0.9345 |
-| Review Rate | 0.4697 | 0.3419 |
+| Threshold | 0.0033 (Frozen) | 0.0075 |
+| Fraud Capture Rate (Test) | 0.9659 | 0.9345 |
+| Review Rate (Test) | 0.4697 | 0.3419 |
 | FP Cost Assumption (₹) | 50 | 50 |
 | FN Cost Assumption (₹) | 12536 | 6300 |
 
@@ -52,9 +54,9 @@
 
 ## Threshold Sensitivity Analysis (Validation Set, Section 17)
 
-> Sensitivity analysis computed on validation set (threshold selection must not use test data).
+> Sensitivity analysis computed on validation set using Scenario A (Mean FN Cost). Threshold selection must not use test data.
 
-| FP Cost (₹) | Optimal Threshold | Review Rate | Fraud Capture | Cost/1000 txns (₹) |
+| FP Cost (₹) | Optimal Threshold | Review Rate (Val) | Fraud Capture (Val) | Cost/1000 txns (₹) |
 |---|---|---|---|---|
 | ₹25 | 0.0018 | 0.609 | 0.990 | ₹18771 |
 | ₹50 | 0.0033 | 0.501 | 0.980 | ₹32130 |
