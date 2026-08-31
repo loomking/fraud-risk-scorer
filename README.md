@@ -125,7 +125,7 @@ Confusion matrix at threshold 0.0033 (Scenario A, Test Set): TN=46,866 | FP=38,6
 ## Evidence Agent Architecture (Section 22-26)
 
 1. **Context builder:** Selects explicit fields from the scored transaction — no hidden DB access
-2. **LLM call:** Groq API, temperature=0, structured JSON output
+2. **LLM call:** Groq API (Model: `openai/gpt-oss-120b`), temperature=0, structured JSON output
 3. **Grounding validator:** Deterministic code that verifies every cited field exists in the supplied context and values match. This is the safety mechanism — not the prompt.
 4. **Deliberate hallucination test:** `tests/test_agent_grounding.py` injects fabricated fields (e.g., "IP_Address_Score") and asserts the validator catches them.
 

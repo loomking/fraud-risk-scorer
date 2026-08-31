@@ -51,7 +51,7 @@ DEV_SUBSET_SIZE = 30_000
 
 # ── LLM / Evidence Agent ─────────────────────────────────────────────────────
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 LLM_TEMPERATURE = 0  # Required for reproducibility (Section 23)
 
 # ── Database ──────────────────────────────────────────────────────────────────
