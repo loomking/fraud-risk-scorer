@@ -90,7 +90,7 @@ function DocsContent() {
             <Layers className="w-8 h-8 mb-6 text-white/80" />
             <h3 className="text-2xl font-semibold mb-4" style={{ letterSpacing: '-0.02em' }}>The Two Models</h3>
             <p className="text-white/70 text-sm leading-relaxed mb-4">
-              <strong>v1.0.0 (462 features):</strong> Our research/offline model. It achieved ROC-AUC 0.90 but relied on 339 undocumented proprietary V-columns. It is superseded by v2.0.1 in the deployed system.
+              <strong>v1.0.0 (462 features):</strong> Our research/offline model. It achieved ROC-AUC 0.9010 but relied on 339 undocumented proprietary V-columns. It is superseded by v2.0.1 in the deployed system.
             </p>
             <p className="text-white/70 text-sm leading-relaxed">
               <strong>v2.0.1 (22 features):</strong> The live-serving model. Engineered exclusively from 7 realistic form fields. We explicitly traded theoretical accuracy for operational viability.
@@ -187,7 +187,7 @@ function ArchitectureContent() {
           <Card>
             <h3 className="text-xl font-semibold mb-4" style={{ letterSpacing: '-0.02em' }}>The Scoring Pipeline</h3>
             <p className="text-black/60 text-base leading-relaxed mb-4">
-              When a transaction hits the API, the system validates the 7 required fields via Pydantic. It transforms these inputs into 22 engineered features using pre-trained frequency maps loaded exclusively from the training set.
+              When a transaction hits the API, the system validates the 8 required fields via Pydantic. It transforms these inputs into 22 engineered features using pre-trained frequency maps loaded exclusively from the training set.
             </p>
             <p className="text-black/60 text-base leading-relaxed">
               XGBoost outputs a raw score, which passes through an isotonic regression model fitted on the validation set. This outputs a true, calibrated probability. We then compare this probability against a frozen 5.0% production threshold to emit the final PASS or FLAG decision.
