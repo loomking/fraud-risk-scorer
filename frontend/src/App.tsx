@@ -69,7 +69,24 @@ function DashboardApp() {
             feature_count: data.feature_count || 0,
             total_scored: data.total_scored || 0
         });
-        if (data.recent_transactions) setTxns(data.recent_transactions);
+        if (data.recent_transactions && data.recent_transactions.length > 0) {
+          setTxns(data.recent_transactions);
+          const latest = data.recent_transactions[0];
+          
+          // Pre-fill form to exactly match the latest transaction so it doesn't look disconnected
+          setForm(prev => ({
+              ...prev,
+              txnId: latest.transaction_id,
+              amt: latest.amount || prev.amt,
+          }));
+          
+          setLastScoredTxn({
+              transaction_id: latest.transaction_id,
+              risk_probability: latest.risk_probability,
+              threshold: latest.threshold,
+              decision: latest.decision,
+          });
+        }
         if (data.pr_curve) setPrCurve(data.pr_curve);
       })
       .catch(e => console.error("Report error:", e));
