@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
 import { Shield, ShieldAlert } from 'lucide-react';
 
 interface Transaction {
     transaction_id: number;
     risk_probability: number;
     decision: string;
-    TransactionAmt: number;
+    amount: number;
+    threshold: number;
 }
 
 interface TransactionCarouselProps {
@@ -24,7 +24,7 @@ export default function TransactionCarousel({ transactions, detailsMap, activeTh
     const progress = useRef<number>(0);
     const mouse = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
 
-    const [metrics, setMetrics] = useState({
+    const [metrics] = useState({
         cardW: 280,
         cardH: 176,
     });
@@ -56,8 +56,7 @@ export default function TransactionCarousel({ transactions, detailsMap, activeTh
         mouse.current.y += (mouse.current.targetY - mouse.current.y) * 0.08;
 
         const cards = cardsRefs.current;
-        const h = 250; // Fixed container height for the strip
-        const { cardH } = metrics;
+
 
         const continuousProgress = progress.current;
         const roundedIndex = Math.round(continuousProgress);
@@ -86,8 +85,6 @@ export default function TransactionCarousel({ transactions, detailsMap, activeTh
             }
 
             const gap = 20;
-            const peekAmount = -30; 
-            const D = 1000; 
 
             let x = 0;
             let z = 0;
@@ -209,8 +206,8 @@ export default function TransactionCarousel({ transactions, detailsMap, activeTh
                                                     backfaceVisibility: 'hidden',
                                                 }}
                                             >
-                                                {/* Gradient background matching site palette */}
                                                 <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-[#F2F4F7] opacity-80" />
+                                                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-indigo-500/10 to-blue-400/5 rounded-bl-full pointer-events-none" />
                                                 
                                                 <div className="absolute inset-0 p-5 flex flex-col justify-between">
                                                     <div className="flex justify-between items-start">
@@ -225,8 +222,7 @@ export default function TransactionCarousel({ transactions, detailsMap, activeTh
                                                     </div>
                                                     
                                                     <div className="flex flex-col items-end">
-                                                        <span className="text-[10px] font-bold text-black/40 uppercase tracking-wider mb-1">Amount</span>
-                                                        <span className="font-mono text-xl font-semibold text-black/90">${(txn.TransactionAmt || 0).toFixed(2)}</span>
+                                                        <span className="font-mono text-xl font-semibold text-black/90">₹{(txn.amount || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -247,8 +243,14 @@ export default function TransactionCarousel({ transactions, detailsMap, activeTh
                                                 
                                                 <div className="absolute inset-0 p-4 flex flex-col gap-3 font-['JetBrains_Mono'] text-xs text-black/70">
                                                     <div className="flex justify-between items-center pb-2 border-b border-black/5">
-                                                        <span className="font-bold text-[9px] uppercase text-black/40 tracking-wider">Risk Prob</span>
-                                                        <span className={`font-medium ${isFlag ? 'text-[#ff4d4d]' : 'text-green-600'}`}>{(txn.risk_probability * 100).toFixed(2)}%</span>
+                                                        <div className="flex flex-col">
+                                                            <span className="font-bold text-[9px] uppercase text-black/40 tracking-wider">Risk Prob</span>
+                                                            <span className={`font-medium ${isFlag ? 'text-[#ff4d4d]' : 'text-green-600'}`}>{(txn.risk_probability * 100).toFixed(1)}%</span>
+                                                        </div>
+                                                        <div className="flex flex-col items-end">
+                                                            <span className="font-bold text-[9px] uppercase text-black/40 tracking-wider">Threshold</span>
+                                                            <span className="font-medium text-black/60">&gt; {txn.threshold.toFixed(3)}</span>
+                                                        </div>
                                                     </div>
                                                     
                                                     <div className="flex flex-col gap-2 overflow-hidden h-full">

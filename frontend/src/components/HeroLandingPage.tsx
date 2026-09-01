@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, ArrowRight, Shield, LayoutDashboard, ArrowDown, Activity } from 'lucide-react';
+import { Menu, X, ArrowRight, Shield, LayoutDashboard } from 'lucide-react';
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

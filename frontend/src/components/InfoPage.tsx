@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, ArrowRight, Shield, Activity, Database, Lock, Layers, Server, Brain, Eye } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowDown, Shield, Activity, Database, Lock, Layers, Eye } from 'lucide-react';
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

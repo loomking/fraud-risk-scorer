@@ -59,7 +59,7 @@ export default function ThresholdControl({ activeThreshold, setActiveThreshold, 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="bg-white border border-black/8 rounded-2xl shadow-sm relative overflow-hidden"
+      className="bg-gradient-to-r from-white via-purple-50/30 to-indigo-50/50 border border-purple-100/50 rounded-2xl shadow-sm relative overflow-hidden"
     >
       {/* Header */}
       <div className="flex items-center gap-3 p-5 border-b border-black/5">
