@@ -28,7 +28,7 @@ def build_evidence_context(
     risk_probability: float,
     threshold: float,
     decision: str,
-    causal_features: dict[str, Any] | None = None,
+    computed_features: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
     Build the structured context supplied to the LLM (Section 22).
@@ -43,26 +43,15 @@ def build_evidence_context(
         "card4": transaction_data.get("card4"),
         "card6": transaction_data.get("card6"),
         "P_emaildomain": transaction_data.get("P_emaildomain"),
-        "R_emaildomain": transaction_data.get("R_emaildomain"),
-        "addr1": transaction_data.get("addr1"),
-        "DeviceType": transaction_data.get("DeviceType"),
-        "DeviceInfo": transaction_data.get("DeviceInfo"),
         "risk_probability": risk_probability,
         "threshold": threshold,
         "decision": decision,
     }
 
-    # Add causal historical features if provided (all computed causally)
-    if causal_features:
-        for key in [
-            "uid_txn_count_hist",
-            "uid_avg_amt_hist",
-            "uid_max_amt_hist",
-            "uid_time_since_last",
-            "has_identity",
-        ]:
-            if key in causal_features:
-                context[key] = causal_features[key]
+    # Add the exact engineered features that the model consumed
+    if computed_features:
+        for key, val in computed_features.items():
+            context[key] = val
 
     # Remove None values for cleaner context
     context = {k: v for k, v in context.items() if v is not None}

@@ -82,20 +82,38 @@ We deliberately developed two versions of the model to highlight the tradeoff be
 ### c. Feature Dominance & Robustness Check
 During the development of v2, we identified that an early iteration over-indexed heavily on a single feature: `amt_is_round` (0.34 importance). This is a known artifact of how the synthetic IEEE-CIS dataset generated transaction amounts, not a generalized real-world fraud signal. As a deliberate robustness check, we removed this feature and retrained the model (v2.0.1). The PR-AUC shifted by a mere 0.004 (noise level), confirming that the remaining 22 live-engineered features carry real, non-artifact signal.
 
-### d. The False-Positive Cost Curve
+### d. Model Metrics (Independently Evaluated)
+
+> **These are two independently trained XGBoost models with separate calibration and evaluation runs. Their metrics must not be merged or presented as equivalent.**
+
+| Metric | v1.0.0 — Primary Reference (462 features) | v2.0.1 — Lightweight Interactive Demo (20 features) |
+|---|---|---|
+| ROC-AUC | 0.9010 | 0.8037 |
+| PR-AUC | 0.5064 | 0.1601 |
+| Brier Score | 0.0225 | 0.0305 |
+| Features | 462 (incl. proprietary V-columns) | 20 (live-form only) |
+| Calibration | Isotonic (val set) | Isotonic (val set) |
+| Temporal split | ✅ Same `temporal_split()` | ✅ Same `temporal_split()` |
+| Can serve live input? | ❌ No — V-columns cannot be computed from raw data | ✅ Yes — all features derived from 7 form fields |
+| Status | Archived reference model | **Live-serving on `/score`** |
+
+v2.0.1 is a *lightweight interactive demo model*. Its lower metrics are the expected and documented consequence of restricting to only 7 raw input fields that a live form can realistically collect. It exists to demonstrate the full end-to-end pipeline (scoring → threshold → evidence → audit) on live form input, not to claim parity with the 462-feature reference model.
+
+### e. The False-Positive Cost Curve
 The most critical operational metric in fraud detection is the tradeoff between how much fraud you catch and how many legitimate transactions you burden with a manual review. Based on our untouched test set, here is the real operating envelope of the v2.0.1 model:
 
 | Threshold | Review Rate | Fraud Capture | Precision |
 | :--- | :--- | :--- | :--- |
-| 0.035 | 25.4% | 70.6% | 9.7% |
-| 0.045 | 21.1% | 65.7% | 10.8% |
-| **0.050** | **17.8%** | **61.4%** | **12.0%** (Chosen Default) |
-| 0.070 | 11.5% | 49.6% | 15.0% |
-| 0.090 | 9.0% | 44.0% | 17.1% |
-| 0.100 | 7.9% | 40.5% | 18.0% |
-| 0.150 | 3.1% | 22.5% | 25.4% |
+| 0.035 | 28.2% | 73.6% | 9.1% |
+| 0.040 | 22.7% | 68.0% | 10.4% |
+| 0.045 | 20.7% | 65.6% | 11.0% |
+| **0.050** | **19.0%** | **63.1%** | **11.5%** (Chosen Default) |
+| 0.060 | 18.5% | 62.5% | 11.7% |
+| 0.070 | 12.7% | 52.6% | 14.4% |
+| 0.100 | 7.6% | 39.9% | 18.4% |
+| 0.150 | 4.6% | 29.4% | 22.4% |
 
-**Why 0.050?** We selected 0.050 as the default threshold because it represents a balanced operational burden (reviewing ~17.8% of transactions) while still capturing a meaningful majority (61.4%) of fraud. Pushing the threshold tighter (e.g., >0.070) enters steeply diminishing returns where we begin missing more than half of all fraudulent transactions. Crucially, the dashboard exposes this threshold as a live, adjustable control. The "right" threshold is a business decision dictated by the risk appetite and operational capacity of the fraud team, not a purely technical one.
+**Why 0.050?** We selected 0.050 as the default threshold because it represents a balanced operational burden (reviewing ~19.0% of transactions) while still capturing a meaningful majority (63.1%) of fraud. Pushing the threshold tighter (e.g., >0.070) enters steeply diminishing returns where we begin missing more than half of all fraudulent transactions. Crucially, the dashboard exposes this threshold as a live, adjustable control. The "right" threshold is a business decision dictated by the risk appetite and operational capacity of the fraud team, not a purely technical one.
 
 ## Evidence Agent Architecture (Section 22-26)
 
@@ -162,6 +180,7 @@ Our focus was on engineering a robust, live-compatible risk scoring engine with 
 **Verdict:** The dashboard interface is structurally safe. It provides enough transparency for an operator to trust the system, but zero actionable telemetry for an attacker attempting to construct a transaction that reliably scores below the threshold.
 
 ## Real vs Synthetic Components (Section 19)
+
 
 | Component | Type |
 |---|---|

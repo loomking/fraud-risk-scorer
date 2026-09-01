@@ -52,12 +52,18 @@ def generate_evidence_endpoint(transaction_id: int, db: Session = Depends(get_db
 
     raw_data = txn.raw_data if txn else {}
 
+    # Dynamically compute the 22 engineered features exactly as they were scored
+    from api.routes.score import _load_artifacts, _build_v2_feature_vector
+    _, feature_columns, freq_maps = _load_artifacts()
+    _, features_dict = _build_v2_feature_vector(raw_data, feature_columns, freq_maps)
+
     # Build evidence context (Section 22)
     context = build_evidence_context(
         transaction_data=raw_data,
         risk_probability=score.calibrated_probability,
         threshold=score.threshold,
         decision=score.decision,
+        computed_features=features_dict,
     )
 
     # Generate evidence

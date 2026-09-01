@@ -61,7 +61,7 @@ def run():
 
     # ── Define feature sets ───────────────────────────────────────────────
     features_with = list(FEATURE_COLUMNS_V2)  # v2.0.0 (includes amt_is_round)
-    features_without = [f for f in FEATURE_COLUMNS_V2 if f != "amt_is_round"]  # v2.0.1
+    features_without = [f for f in FEATURE_COLUMNS_V2 if f not in ("amt_is_round", "dow_sin", "dow_cos")]  # v2.0.1
 
     logger.info(f"  v2.0.0 features: {len(features_with)}")
     logger.info(f"  v2.0.1 features: {len(features_without)} (amt_is_round removed)")

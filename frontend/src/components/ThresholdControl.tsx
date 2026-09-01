@@ -1,5 +1,5 @@
-import { motion } from "motion/react";
-import { Activity } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { Activity, ArrowDownRight, Shield, AlertTriangle } from "lucide-react";
 
 interface PRCurvePoint {
   threshold: number;
@@ -8,10 +8,18 @@ interface PRCurvePoint {
   precision: number;
 }
 
+interface LastScoredTxn {
+  transaction_id: number;
+  risk_probability: number;
+  threshold: number;
+  decision: string;
+}
+
 interface Props {
   activeThreshold: number;
   setActiveThreshold: (t: number) => void;
   prCurve: PRCurvePoint[];
+  lastScoredTxn: LastScoredTxn | null;
 }
 
 const THRESHOLD_PRESETS = [
@@ -24,7 +32,9 @@ const THRESHOLD_PRESETS = [
   { value: 0.150, label: 'Strict', category: 'conservative' },
 ];
 
-export default function ThresholdControl({ activeThreshold, setActiveThreshold, prCurve }: Props) {
+const FROZEN_THRESHOLD = 0.05;
+
+export default function ThresholdControl({ activeThreshold, setActiveThreshold, prCurve, lastScoredTxn }: Props) {
   
   let activeStats = { review_rate: 0, fraud_capture: 0, precision: 0 };
   if (prCurve.length > 0) {
@@ -39,64 +49,132 @@ export default function ThresholdControl({ activeThreshold, setActiveThreshold, 
 
   const currentPreset = THRESHOLD_PRESETS.find(p => Math.abs(p.value - activeThreshold) < 0.001);
 
+  // What-if comparison for the last scored txn
+  const whatIfDecision = lastScoredTxn 
+    ? (lastScoredTxn.risk_probability >= activeThreshold ? 'FLAG' : 'PASS')
+    : null;
+  const productionDecision = lastScoredTxn?.decision || null;
+  const decisionsMatch = whatIfDecision === productionDecision;
+
   return (
-    <motion.div 
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.1 }}
-      className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md relative overflow-hidden mt-4"
-    >
-      <div className="flex items-center gap-2 mb-6">
-        <Activity className="w-5 h-5 text-white/70" />
-        <h2 className="text-xl font-['Instrument_Serif'] text-white">Operating Threshold</h2>
+    <>
+      {/* Section Divider */}
+      <div className="flex items-center gap-3 mt-6 mb-2">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+        <span className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-['Instrument_Sans'] whitespace-nowrap">Threshold Analysis</span>
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-2">
-        {THRESHOLD_PRESETS.map((p) => {
-          const isActive = Math.abs(activeThreshold - p.value) < 0.001;
-          const catColor = p.category === 'aggressive' ? 'border-[#F0883E]/50' : p.category === 'balanced' ? 'border-[#3054ff]/50' : 'border-[#238636]/50';
-          const activeBg = p.category === 'aggressive' ? 'bg-[#F0883E]/20 text-[#F0883E]' : p.category === 'balanced' ? 'bg-[#3054ff]/30 text-white' : 'bg-[#238636]/20 text-[#238636]';
-          
-          return (
-            <button 
-              key={p.value}
-              onClick={() => setActiveThreshold(p.value)}
-              className={`px-3 py-1.5 text-xs font-mono border rounded-lg transition-all ${isActive ? `${catColor} ${activeBg} font-semibold shadow-[0_0_10px_rgba(255,255,255,0.05)]` : 'border-white/10 text-white/50 hover:bg-white/5 hover:text-white/80'}`}
+      <motion.div 
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.1 }}
+        className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md relative overflow-hidden"
+      >
+        <div className="flex items-center gap-2 mb-5">
+          <Activity className="w-5 h-5 text-white/70" />
+          <h2 className="text-xl font-['Instrument_Serif'] text-white">Operating Threshold</h2>
+          <span className="ml-auto text-[10px] bg-white/10 text-white/50 px-2 py-0.5 rounded-full font-mono font-['Instrument_Sans']">what-if only</span>
+        </div>
+
+        {/* Decision comparison banner — only shows when a txn has been scored */}
+        <AnimatePresence>
+          {lastScoredTxn && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mb-5"
             >
-              {(p.value * 100).toFixed(1)}%
-            </button>
-          );
-        })}
-      </div>
-      
-      <div className="text-xs text-white/50 mb-6 font-['Instrument_Sans']">
-        {currentPreset?.label || 'Custom Strategy'}
-      </div>
+              <div className="bg-black/40 border border-white/10 rounded-xl p-4 space-y-2.5">
+                <div className="text-[10px] uppercase tracking-wider text-white/40 font-['Instrument_Sans'] mb-2">
+                  Last scored: Txn #{lastScoredTxn.transaction_id} · p = {lastScoredTxn.risk_probability.toFixed(4)}
+                </div>
 
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-black/40 border border-white/5 rounded-xl p-3 text-center backdrop-blur-sm">
-          <div className="text-[10px] text-white/40 uppercase tracking-wider mb-1 font-['Instrument_Sans']">Review Rate</div>
-          <motion.div key={activeStats.review_rate} initial={{ scale: 1.1, opacity: 0.5 }} animate={{ scale: 1, opacity: 1 }} className="font-mono text-lg font-semibold text-[#F0883E]">
-            {(activeStats.review_rate * 100).toFixed(1)}%
-          </motion.div>
+                {/* Production decision (frozen) */}
+                <div className="flex items-center gap-2">
+                  <Shield className="w-3.5 h-3.5 text-white/40 shrink-0" />
+                  <span className="text-xs text-white/60 font-['Instrument_Sans']">Production (frozen {(FROZEN_THRESHOLD * 100).toFixed(1)}%):</span>
+                  <span className={`ml-auto text-xs font-mono font-bold px-2 py-0.5 rounded ${productionDecision === 'FLAG' ? 'bg-[#ff4d4d]/20 text-[#ff4d4d]' : 'bg-[#238636]/20 text-[#238636]'}`}>
+                    {productionDecision}
+                  </span>
+                </div>
+
+                {/* What-if at slider threshold */}
+                <div className="flex items-center gap-2">
+                  <ArrowDownRight className="w-3.5 h-3.5 text-white/40 shrink-0" />
+                  <span className="text-xs text-white/60 font-['Instrument_Sans']">At your threshold ({(activeThreshold * 100).toFixed(1)}%):</span>
+                  <span className={`ml-auto text-xs font-mono font-bold px-2 py-0.5 rounded ${whatIfDecision === 'FLAG' ? 'bg-[#ff4d4d]/20 text-[#ff4d4d]' : 'bg-[#238636]/20 text-[#238636]'}`}>
+                    would be {whatIfDecision}
+                  </span>
+                </div>
+
+                {/* Mismatch alert */}
+                {!decisionsMatch && (
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex items-center gap-2 mt-1 pt-2 border-t border-white/5"
+                  >
+                    <AlertTriangle className="w-3.5 h-3.5 text-[#F0883E] shrink-0" />
+                    <span className="text-[11px] text-[#F0883E]/80 font-['Instrument_Sans']">
+                      Decision would change at this threshold
+                    </span>
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="flex flex-wrap gap-2 mb-2">
+          {THRESHOLD_PRESETS.map((p) => {
+            const isActive = Math.abs(activeThreshold - p.value) < 0.001;
+            const catColor = p.category === 'aggressive' ? 'border-[#F0883E]/50' : p.category === 'balanced' ? 'border-[#3054ff]/50' : 'border-[#238636]/50';
+            const activeBg = p.category === 'aggressive' ? 'bg-[#F0883E]/20 text-[#F0883E]' : p.category === 'balanced' ? 'bg-[#3054ff]/30 text-white' : 'bg-[#238636]/20 text-[#238636]';
+            
+            return (
+              <button 
+                key={p.value}
+                onClick={() => setActiveThreshold(p.value)}
+                className={`px-3 py-1.5 text-xs font-mono border rounded-lg transition-all ${isActive ? `${catColor} ${activeBg} font-semibold shadow-[0_0_10px_rgba(255,255,255,0.05)]` : 'border-white/10 text-white/50 hover:bg-white/5 hover:text-white/80'}`}
+              >
+                {(p.value * 100).toFixed(1)}%
+              </button>
+            );
+          })}
         </div>
-        <div className="bg-black/40 border border-white/5 rounded-xl p-3 text-center backdrop-blur-sm">
-          <div className="text-[10px] text-white/40 uppercase tracking-wider mb-1 font-['Instrument_Sans']">Fraud Capture</div>
-          <motion.div key={activeStats.fraud_capture} initial={{ scale: 1.1, opacity: 0.5 }} animate={{ scale: 1, opacity: 1 }} className="font-mono text-lg font-semibold text-[#ff4d4d]">
-            {(activeStats.fraud_capture * 100).toFixed(1)}%
-          </motion.div>
+        
+        <div className="text-xs text-white/50 mb-6 font-['Instrument_Sans']">
+          {currentPreset?.label || 'Custom Strategy'}
         </div>
-        <div className="bg-black/40 border border-white/5 rounded-xl p-3 text-center backdrop-blur-sm">
-          <div className="text-[10px] text-white/40 uppercase tracking-wider mb-1 font-['Instrument_Sans']">Precision</div>
-          <motion.div key={activeStats.precision} initial={{ scale: 1.1, opacity: 0.5 }} animate={{ scale: 1, opacity: 1 }} className="font-mono text-lg font-semibold text-[#238636]">
-            {(activeStats.precision * 100).toFixed(1)}%
-          </motion.div>
+
+        <div className="grid grid-cols-3 gap-3">
+          <div className="bg-black/40 border border-white/5 rounded-xl p-3 text-center backdrop-blur-sm">
+            <div className="text-[10px] text-white/40 uppercase tracking-wider mb-1 font-['Instrument_Sans']">Review Rate</div>
+            <motion.div key={activeStats.review_rate} initial={{ scale: 1.1, opacity: 0.5 }} animate={{ scale: 1, opacity: 1 }} className="font-mono text-lg font-semibold text-[#F0883E]">
+              {(activeStats.review_rate * 100).toFixed(1)}%
+            </motion.div>
+          </div>
+          <div className="bg-black/40 border border-white/5 rounded-xl p-3 text-center backdrop-blur-sm">
+            <div className="text-[10px] text-white/40 uppercase tracking-wider mb-1 font-['Instrument_Sans']">Fraud Capture</div>
+            <motion.div key={activeStats.fraud_capture} initial={{ scale: 1.1, opacity: 0.5 }} animate={{ scale: 1, opacity: 1 }} className="font-mono text-lg font-semibold text-[#ff4d4d]">
+              {(activeStats.fraud_capture * 100).toFixed(1)}%
+            </motion.div>
+          </div>
+          <div className="bg-black/40 border border-white/5 rounded-xl p-3 text-center backdrop-blur-sm">
+            <div className="text-[10px] text-white/40 uppercase tracking-wider mb-1 font-['Instrument_Sans']">Precision</div>
+            <motion.div key={activeStats.precision} initial={{ scale: 1.1, opacity: 0.5 }} animate={{ scale: 1, opacity: 1 }} className="font-mono text-lg font-semibold text-[#238636]">
+              {(activeStats.precision * 100).toFixed(1)}%
+            </motion.div>
+          </div>
         </div>
-      </div>
-      
-      <div className="mt-4 text-[11px] text-white/40 leading-relaxed font-['Instrument_Sans']">
-        Live reclassification based on PR curve mapping. Lower threshold captures more fraud but strictly increases manual review overhead.
-      </div>
-    </motion.div>
+        
+        <div className="mt-4 text-[11px] text-white/40 leading-relaxed font-['Instrument_Sans']">
+          This panel does <strong className="text-white/60">not</strong> change the live /score decision. Production enforces a frozen {(FROZEN_THRESHOLD * 100).toFixed(1)}% threshold. Use this to explore how different thresholds would affect review rate, fraud capture, and precision on the validation PR curve.
+        </div>
+      </motion.div>
+    </>
   );
 }
+

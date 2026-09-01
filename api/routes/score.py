@@ -67,7 +67,7 @@ def _load_artifacts():
     return _model, _feature_columns, _freq_maps
 
 
-def _build_v2_feature_vector(txn_data: dict, feature_columns: list, freq_maps: dict) -> np.ndarray:
+def _build_v2_feature_vector(txn_data: dict, feature_columns: list, freq_maps: dict) -> tuple[np.ndarray, dict]:
     """
     Build the full 22-feature vector from raw form fields.
     
@@ -153,9 +153,11 @@ def _build_v2_feature_vector(txn_data: dict, feature_columns: list, freq_maps: d
     # ── Assemble vector in correct column order ───────────────────────────
     vec = np.zeros(len(feature_columns))
     for i, col in enumerate(feature_columns):
-        vec[i] = features.get(col, 0.0)
+        val = features.get(col, 0.0)
+        vec[i] = val
+        features[col] = val
 
-    return np.nan_to_num(vec, nan=0.0, posinf=1e10, neginf=-1e10)
+    return np.nan_to_num(vec, nan=0.0, posinf=1e10, neginf=-1e10), features
 
 
 @router.post("", response_model=ScoreResponse)
@@ -168,7 +170,7 @@ def score_transaction(request: ScoreRequest, db: Session = Depends(get_db)):
     txn_data = request.model_dump()
 
     # Build v2.0.1 feature vector from raw fields
-    feature_vector = _build_v2_feature_vector(txn_data, feature_columns, freq_maps)
+    feature_vector, features_dict = _build_v2_feature_vector(txn_data, feature_columns, freq_maps)
 
     # Score
     X = feature_vector.reshape(1, -1)

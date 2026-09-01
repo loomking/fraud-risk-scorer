@@ -30,7 +30,7 @@ function DashboardApp() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoSrc = "https://stream.mux.com/T6oQJQ02cQ6N01TR6iHwZkKFkbepS34dkkIc9iukgy400g.m3u8";
 
-  const [report, setReport] = useState({ model_version: 'Loading...', threshold: 0.05, feature_count: 0, total_scored: 0 });
+  const [report, setReport] = useState({ model_version: 'v2.0.1', threshold: 0.05, feature_count: 20, total_scored: 0 });
   const [txns, setTxns] = useState<any[]>([]);
   const [expandedTxn, setExpandedTxn] = useState<number | null>(null);
   const [prCurve, setPrCurve] = useState<any[]>([]);
@@ -38,6 +38,7 @@ function DashboardApp() {
   
   const [detailsMap, setDetailsMap] = useState<Record<number, any>>({});
   const [scoring, setScoring] = useState(false);
+  const [lastScoredTxn, setLastScoredTxn] = useState<{transaction_id: number; risk_probability: number; threshold: number; decision: string} | null>(null);
   
   const [form, setForm] = useState({
       txnId: 1000001,
@@ -125,6 +126,12 @@ function DashboardApp() {
           setTxns(prev => [newTxn, ...prev]);
           setReport(prev => ({ ...prev, total_scored: prev.total_scored + 1 }));
           setForm(prev => ({ ...prev, txnId: prev.txnId + 1 }));
+          setLastScoredTxn({
+            transaction_id: data.transaction_id,
+            risk_probability: data.risk_probability,
+            threshold: data.threshold,
+            decision: data.decision,
+          });
 
       } catch (e: any) {
           alert(`Network error: ${e.message}`);
@@ -223,6 +230,7 @@ function DashboardApp() {
               activeThreshold={activeThreshold} 
               setActiveThreshold={setActiveThreshold}
               prCurve={prCurve}
+              lastScoredTxn={lastScoredTxn}
             />
           </div>
 

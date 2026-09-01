@@ -8,10 +8,11 @@
 | Property | Value |
 |---|---|
 | Model | XGBoost |
-| Model Version | v1.0.0 |
-| Feature Pipeline Version | v1.0.0 |
-| Calibration Version | v1.0.0 |
-| Threshold Config Version | v1.0.0 |
+| Primary Reference Model Version (462 features) | v1.0.0 (Research/Offline) |
+| Live-serving Demo Model Version (22 features) | v2.0.1 (Live `/score` endpoint) |
+| Feature Pipeline Version | v1.0.0 (Full) / v2.0.1 (Live) |
+| Calibration Version | v1.0.0 / v2.0.1 |
+| Threshold Config Version | v1.0.0 / v2.0.1 |
 | Feature Count | 462 |
 | Split | Temporal (70/15/15, chronological) |
 

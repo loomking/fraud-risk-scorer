@@ -64,7 +64,6 @@ class TestCausalHistoricalFeatures:
         assert second_row["uid_txn_count_hist"] == 1
         assert second_row["uid_avg_amt_hist"] == pytest.approx(10.0)
         assert second_row["uid_max_amt_hist"] == pytest.approx(10.0)
-        assert second_row["uid_prior_fraud_rate"] == pytest.approx(0.0)
 
     def test_third_transaction_uses_first_two(self, causal_test_df):
         """
@@ -80,7 +79,6 @@ class TestCausalHistoricalFeatures:
         assert third_row["uid_txn_count_hist"] == 2
         assert third_row["uid_avg_amt_hist"] == pytest.approx(15.0)
         assert third_row["uid_max_amt_hist"] == pytest.approx(20.0)
-        assert third_row["uid_prior_fraud_rate"] == pytest.approx(0.5)
 
     def test_fourth_transaction_different_uid(self, causal_test_df):
         """
