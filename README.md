@@ -1,6 +1,24 @@
-# Fraud Risk Scorer
+<div align="center">
+  <h1>🛡️ Fraud Risk Scorer</h1>
+  <p><b>An End-to-End ML Pipeline & LLM Evidence Agent for Fraud Detection</b></p>
+  <p>
+    <a href="https://github.com/loomking/fraud-risk-scorer/actions"><img src="https://img.shields.io/badge/build-passing-success?style=flat-square" alt="Build Status"></a>
+    <a href="https://python.org"><img src="https://img.shields.io/badge/python-3.11-blue?style=flat-square" alt="Python Version"></a>
+    <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-005571?style=flat-square&logo=fastapi" alt="FastAPI"></a>
+    <a href="https://react.dev"><img src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React"></a>
+    <a href="https://xgboost.readthedocs.io/en/stable/"><img src="https://img.shields.io/badge/XGBoost-1793D1?style=flat-square&logo=xgboost" alt="XGBoost"></a>
+  </p>
+</div>
 
-> **AI Risk Manager**: A fraud decision system whose predictions are temporally valid, whose threshold reflects an explicit business cost, whose evidence is mechanically grounded to supplied transaction data, and whose decisions are reconstructable after the fact.
+**Fraud Risk Scorer** is a production-ready AI risk management system designed for payment transactions. It features an XGBoost machine learning model that scores transactions for fraud risk using strictly causal, temporally-isolated features. High-risk transactions are then passed to an LLM Evidence Agent (powered by Groq) that generates structured, auditable evidence grounded *only* in the explicit transaction context. 
+
+The entire system is deterministically auditable: from the raw input fields, through the cost-based decision threshold, to the final narrative evidence.
+
+## Highlights
+- **Strict Leakage Prevention:** Temporal data splitting and causal historical aggregations.
+- **Two Model Tiers:** A 462-feature theoretical reference model, and a lightweight 22-feature live-serving model engineered exclusively from 7 realistic form fields.
+- **The LLM Invariant:** The LLM *cannot* make the fraud decision; it only drafts verifiable evidence for transactions already flagged by the statistical model.
+- **Cost-Optimized Thresholds:** The binary PASS/FLAG cutoff is mapped to an explicit false-positive vs. false-negative business cost curve.
 
 ## Decision Chain
 
