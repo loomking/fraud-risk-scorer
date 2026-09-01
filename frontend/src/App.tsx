@@ -6,6 +6,7 @@ import TransactionsTable from "./components/TransactionsTable";
 import HeroLandingPage from "./components/HeroLandingPage";
 import InfoPage from "./components/InfoPage";
 import TransactionCarousel from "./components/TransactionCarousel";
+import StorefrontDemo from "./components/StorefrontDemo";
 
 const API = (window.location.origin === "null" || window.location.protocol === "file:" || window.location.hostname === "localhost") 
     ? "http://localhost:10000" 
@@ -26,6 +27,10 @@ export default function App() {
 
   if (['#docs', '#api', '#architecture'].includes(route)) {
     return <InfoPage route={route} />;
+  }
+
+  if (route === '#demo') {
+    return <StorefrontDemo />;
   }
 
   return <DashboardApp />;

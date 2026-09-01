@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, ArrowRight, Shield, LayoutDashboard } from 'lucide-react';
+import { Menu, X, ArrowRight, Shield, LayoutDashboard, ShoppingCart } from 'lucide-react';
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -27,6 +27,7 @@ export default function HeroLandingPage() {
 
           {/* Center Nav */}
           <div className="hidden md:flex items-center gap-8">
+            <a href="#demo" className="text-base text-indigo-600 hover:text-indigo-800 font-semibold transition-colors duration-200 flex items-center gap-1.5"><ShoppingCart className="w-4 h-4" />Store Demo</a>
             <a href="#docs" className="text-base text-gray-600 hover:text-black font-medium transition-colors duration-200">Documentation</a>
             <a href="#api" className="text-base text-gray-600 hover:text-black font-medium transition-colors duration-200">Evidence API</a>
             <a href="#architecture" className="text-base text-gray-600 hover:text-black font-medium transition-colors duration-200">Architecture</a>
