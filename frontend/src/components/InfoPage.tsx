@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, ArrowRight, Shield, Activity, Database, Lock, Layers, Server, Brain, Eye } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Shield, Activity, Database, Lock, Layers, Server, Brain, Eye, Github } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface Props {
@@ -162,11 +162,24 @@ function ArchitectureContent() {
           <Card>
             <Activity className="w-8 h-8 mb-6 text-black/40" />
             <h3 className="text-2xl font-semibold mb-6" style={{ letterSpacing: '-0.02em' }}>The Decision Chain</h3>
-            <div className="flex flex-wrap items-center gap-2 mb-6">
-              {['Raw Input', 'Feature Pipeline', 'XGBoost', 'Isotonic Calibration', 'Threshold', 'PASS/FLAG', 'Evidence Agent', 'Audit Log'].map((step, i) => (
+            <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-3 md:gap-4 p-8 md:p-12 bg-[#F5F5F5] rounded-3xl border border-black/5 mb-6">
+              {['Raw Transaction', 'Input Validation', 'Feature Pipeline', 'XGBoost Model', 'Isotonic Calibration', 'Risk Probability', 'Cost-Based Threshold', 'PASS/FLAG'].map((step, i) => (
                 <React.Fragment key={step}>
-                  <span className="bg-white border border-black/10 text-black/80 text-[13px] font-medium px-4 py-2 rounded-xl shadow-sm whitespace-nowrap">{step}</span>
-                  {i < 7 && <ArrowRight className="w-4 h-4 text-black/30 shrink-0" />}
+                  <span className="bg-white border border-black/10 text-black/80 text-sm md:text-base font-medium px-5 py-3 rounded-xl shadow-sm whitespace-nowrap">{step}</span>
+                  {i < 7 && <ArrowRight className="hidden md:block w-5 h-5 text-black/30 shrink-0" />}
+                  {i < 7 && <ArrowDown className="md:hidden w-5 h-5 text-black/30 shrink-0 my-1" />}
+                </React.Fragment>
+              ))}
+              
+              <div className="w-full h-px bg-black/10 my-4 md:my-6 relative">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#F5F5F5] px-4 text-xs font-bold text-black/40 uppercase tracking-wider">If FLAG</div>
+              </div>
+              
+              {['Evidence Agent', 'Audit Trail'].map((step, i) => (
+                <React.Fragment key={step}>
+                  <span className="bg-white border border-black/10 text-black/80 text-sm md:text-base font-medium px-5 py-3 rounded-xl shadow-sm whitespace-nowrap">{step}</span>
+                  {i < 1 && <ArrowRight className="hidden md:block w-5 h-5 text-black/30 shrink-0" />}
+                  {i < 1 && <ArrowDown className="md:hidden w-5 h-5 text-black/30 shrink-0 my-1" />}
                 </React.Fragment>
               ))}
             </div>
@@ -216,34 +229,9 @@ function ApiContent() {
   return (
     <div className="space-y-24">
       
-      {/* WHY */}
       <section>
         <SectionTitle 
-          title="Why this design" 
-          subtitle="APIs must be defensive. We decouple scoring from evidence generation to ensure latency-sensitive operations never wait for LLM inference." 
-        />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <Server className="w-8 h-8 mb-6 text-black/40" />
-            <h3 className="text-2xl font-semibold mb-4 leading-snug" style={{ letterSpacing: '-0.02em' }}>Synchronous Scoring</h3>
-            <p className="text-black/60 text-base leading-relaxed">
-              The <code>/score</code> endpoint only runs the deterministic XGBoost pipeline and database logging. It is designed to be fast enough for real-time use in the critical path of a payment checkout.
-            </p>
-          </Card>
-          <Card>
-            <Brain className="w-8 h-8 mb-6 text-black/40" />
-            <h3 className="text-2xl font-semibold mb-4 leading-snug" style={{ letterSpacing: '-0.02em' }}>Asynchronous Evidence</h3>
-            <p className="text-black/60 text-base leading-relaxed">
-              The <code>/evidence</code> endpoint is a distinct call. Evidence generation takes seconds, which is unacceptable for a payment gateway. Decoupling allows fraud analysts to request evidence post-authorization without degrading the customer experience.
-            </p>
-          </Card>
-        </div>
-      </section>
-
-      {/* WHAT */}
-      <section>
-        <SectionTitle 
-          title="What endpoints are available" 
+          title="Evidence API Reference" 
           subtitle="A complete RESTful interface for the risk pipeline." 
         />
         <div className="grid grid-cols-1 gap-6">
@@ -310,23 +298,7 @@ function ApiContent() {
         </div>
       </section>
 
-      {/* HOW */}
-      <section>
-        <SectionTitle 
-          title="How grounding validation works" 
-          subtitle="The programmatic safety net for LLM outputs." 
-        />
-        <div className="grid grid-cols-1 gap-6">
-          <Card dark>
-            <p className="text-white/70 text-base leading-relaxed mb-4">
-              When the endpoint returns the evidence payload, the <code>grounding_valid</code> boolean represents the output of a deterministic code check, not a secondary LLM verification prompt.
-            </p>
-            <p className="text-white/70 text-base leading-relaxed">
-              The validator iterates over every claim in the <code>evidence</code> array. It cross-references the keys in <code>sources</code> and the values in <code>source_values</code> against the exact feature vector that was logged in the database during the <code>/score</code> call. Any mismatch immediately invalidates the entire packet, preventing hallucinated data from reaching the analyst.
-            </p>
-          </Card>
-        </div>
-      </section>
+
 
     </div>
   );
@@ -384,12 +356,17 @@ export default function InfoPage({ route }: Props) {
             </a>
           ))}
         </nav>
-        <button
+        <div className="flex items-center gap-4">
+          <a href="https://github.com/loomking/fraud-risk-scorer" target="_blank" rel="noopener noreferrer" className="text-black/50 hover:text-black transition-colors hidden md:block">
+            <Github className="w-5 h-5" />
+          </a>
+          <button
           onClick={() => window.location.hash = '#dashboard'}
           className="bg-black text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-gray-800 transition-colors"
         >
           Launch Dashboard
         </button>
+        </div>
       </header>
 
       {/* Hero Header */}
@@ -410,6 +387,24 @@ export default function InfoPage({ route }: Props) {
       >
         <ContentComponent />
       </motion.main>
+
+      {/* ─── Footer ─── */}
+      <footer className="bg-[#F5F5F5] border-t border-black/10 px-6 py-8 mt-12">
+        <div className="max-w-[88rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <Shield className="w-5 h-5 text-black/40" />
+            <span className="text-sm text-black/40 font-medium">Fraud Risk Scorer · v2.0.1</span>
+          </div>
+          <div className="flex items-center gap-6 text-sm text-black/40">
+            <a href="https://github.com/loomking/fraud-risk-scorer" target="_blank" rel="noopener noreferrer" className="hover:text-black transition-colors">
+              <Github className="w-4 h-4" />
+            </a>
+            <a href="#docs" className="hover:text-black transition-colors">Docs</a>
+            <a href="#api" className="hover:text-black transition-colors">API</a>
+            <a href="#architecture" className="hover:text-black transition-colors">Architecture</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

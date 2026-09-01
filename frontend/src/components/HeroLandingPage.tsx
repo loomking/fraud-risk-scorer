@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, ArrowRight, Shield, LayoutDashboard } from 'lucide-react';
+import { Menu, X, ArrowRight, Shield, LayoutDashboard, Github, ArrowDown, Activity } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function HeroLandingPage() {
@@ -27,7 +27,10 @@ export default function HeroLandingPage() {
           </div>
 
           {/* Right */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
+            <a href="https://github.com/loomking/fraud-risk-scorer" target="_blank" rel="noopener noreferrer" className="text-black/50 hover:text-black transition-colors hidden md:block">
+              <Github className="w-5 h-5" />
+            </a>
             <button
               onClick={() => window.location.hash = '#dashboard'}
               className="hidden md:inline-flex items-center gap-2 bg-black text-white text-base font-medium px-7 py-2.5 rounded-full hover:bg-gray-800 transition-colors duration-200"
@@ -137,25 +140,24 @@ export default function HeroLandingPage() {
       {/* ─── Info Section ─── */}
       <section className="bg-[#F5F5F5] px-6 py-24">
         <div className="max-w-[88rem] mx-auto">
-          {/* Row 1 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16 items-start">
-            <div>
-              <h2 className="text-black text-4xl md:text-5xl font-semibold leading-tight mb-8" style={{ letterSpacing: '-0.03em' }}>
-                Meet the Scorer.
-              </h2>
-              <button
-                onClick={() => window.location.hash = '#docs'}
-                className="inline-flex items-center gap-3 bg-black text-white text-base font-medium pl-8 pr-2 py-2 rounded-full hover:bg-gray-800 transition-colors duration-200"
-              >
-                Discover it
-                <span className="bg-white rounded-full p-2 flex items-center justify-center">
-                  <ArrowRight className="w-4 h-4 text-black" />
-                </span>
-              </button>
+          {/* Row 1 — Real Numbers Strip */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 items-center bg-white rounded-3xl p-8 border border-black/5 shadow-sm">
+            <div className="flex flex-col">
+              <span className="text-black text-3xl font-semibold tracking-tight">0.8037</span>
+              <span className="text-black/50 text-sm font-medium mt-1">Live Test ROC-AUC</span>
             </div>
-            <p className="text-black/60 text-2xl md:text-3xl leading-relaxed">
-              A production-grade fraud detection pipeline that scores transactions with XGBoost, enforces cost-optimized thresholds, and generates grounded LLM evidence for every flagged transaction.
-            </p>
+            <div className="flex flex-col">
+              <span className="text-black text-3xl font-semibold tracking-tight">0.1601</span>
+              <span className="text-black/50 text-sm font-medium mt-1">Live Test PR-AUC</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-black text-3xl font-semibold tracking-tight">590,540</span>
+              <span className="text-black/50 text-sm font-medium mt-1">Real Transactions</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-black text-3xl font-semibold tracking-tight">3.5%</span>
+              <span className="text-black/50 text-sm font-medium mt-1">Fraud Rate</span>
+            </div>
           </div>
 
           {/* Row 2 — Feature cards */}
@@ -170,20 +172,20 @@ export default function HeroLandingPage() {
               </p>
             </div>
             {/* Card 2 */}
-            <div className="rounded-2xl p-7 min-h-80 flex flex-col justify-between bg-[#1A1A2E] text-white">
+            <div className="rounded-2xl p-7 min-h-80 flex flex-col justify-between bg-gray-50 border border-black/5 text-gray-900">
               <h3 className="text-2xl font-semibold leading-snug" style={{ letterSpacing: '-0.02em' }}>
                 Evidence,<br/>not guesswork.
               </h3>
-              <p className="text-white/60 text-base">
+              <p className="text-black/60 text-base">
                 Every claim in the evidence packet is mechanically grounded to the actual transaction data. Hallucinations are caught and rejected.
               </p>
             </div>
             {/* Card 3 */}
-            <div className="rounded-2xl p-7 min-h-80 flex flex-col justify-between bg-[#1A1A2E] text-white">
+            <div className="rounded-2xl p-7 min-h-80 flex flex-col justify-between bg-gray-50 border border-black/5 text-gray-900">
               <h3 className="text-2xl font-semibold leading-snug" style={{ letterSpacing: '-0.02em' }}>
                 Fully<br/>auditable.
               </h3>
-              <p className="text-white/60 text-base">
+              <p className="text-black/60 text-base">
                 Append-only audit trail with model version, feature hash, and cost assumptions. Reconstruct any past decision from scratch.
               </p>
             </div>
@@ -191,37 +193,102 @@ export default function HeroLandingPage() {
         </div>
       </section>
 
-      {/* ─── Use Cases Section ─── */}
+
+
+      {/* ─── Model Comparison Section ─── */}
       <section className="bg-[#F5F5F5] px-6 py-24">
-        <div className="max-w-[88rem] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-          <div className="md:pr-12 md:pt-2">
-            <p className="text-black/50 text-sm mb-2">Fraud Risk Scorer in Practice</p>
-            <h2 className="text-5xl md:text-6xl font-semibold leading-none mb-6" style={{ letterSpacing: '-0.04em' }}>
-              How it works
+        <div className="max-w-[88rem] mx-auto">
+          <div className="mb-12">
+            <h2 className="text-4xl md:text-5xl font-semibold leading-none mb-4" style={{ letterSpacing: '-0.03em' }}>
+              The Portability Tradeoff
             </h2>
-            <p className="text-black/60 text-base leading-relaxed max-w-sm">
-              From raw transaction data through feature engineering, ML scoring, cost-based thresholding, and grounded LLM evidence — the full pipeline is fast enough for real-time use.
+            <p className="text-black/60 text-lg leading-relaxed max-w-2xl">
+              We deliberately built two models to demonstrate the gap between theoretical data-science accuracy and real-world operational viability.
             </p>
           </div>
-          <div className="relative rounded-3xl overflow-hidden min-h-[480px] md:min-h-[600px] bg-gradient-to-br from-gray-100 to-gray-200 border border-black/5">
-            <div className="relative z-10 p-10 md:p-12 flex flex-col justify-between h-full">
-              <div>
-                <h3 className="text-4xl md:text-5xl font-semibold leading-tight mb-5 text-black" style={{ letterSpacing: '-0.03em' }}>
-                  Live Scoring
-                </h3>
-                <p className="text-black/60 text-base max-w-md mb-8">
-                  Submit any transaction with 7 fields — amount, time, product code, card details, and email domain. The system instantly returns a calibrated risk probability and a PASS or FLAG decision with full audit trail.
-                </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-3xl p-8 md:p-10 border border-black/5 shadow-sm">
+              <div className="inline-block bg-black/5 text-black/60 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-6">Research / Offline Model</div>
+              <h3 className="text-3xl font-semibold text-black mb-2" style={{ letterSpacing: '-0.02em' }}>v1.0.0</h3>
+              <p className="text-black/50 text-base mb-8">462 features. Achieved exceptional performance using hundreds of proprietary V-columns. Superseded in production because those columns cannot be collected on a live form.</p>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gray-50 border border-black/5 rounded-xl p-4">
+                  <div className="text-[10px] text-black/40 uppercase tracking-wider font-bold mb-1">ROC-AUC</div>
+                  <div className="text-2xl font-mono font-bold text-black/80">0.9010</div>
+                </div>
+                <div className="bg-gray-50 border border-black/5 rounded-xl p-4">
+                  <div className="text-[10px] text-black/40 uppercase tracking-wider font-bold mb-1">PR-AUC</div>
+                  <div className="text-2xl font-mono font-bold text-black/80">0.5064</div>
+                </div>
               </div>
-              <button
-                onClick={() => window.location.hash = '#dashboard'}
-                className="inline-flex items-center gap-3 w-fit group"
-              >
-                <span className="w-9 h-9 rounded-full bg-black/10 backdrop-blur flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                  <ArrowRight className="w-4 h-4 text-black" />
-                </span>
-                <span className="text-black font-medium text-base">Try it now</span>
-              </button>
+            </div>
+
+            <div className="bg-[#1A1A2E] text-white rounded-3xl p-8 md:p-10 border border-black/5 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#3054ff]/20 blur-[80px] rounded-full pointer-events-none" />
+              <div className="relative z-10">
+                <div className="inline-block bg-[#3054ff]/20 text-white font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full mb-6 border border-[#3054ff]/30 flex items-center gap-2 w-fit">
+                  <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" /> Live Production Model
+                </div>
+                <h3 className="text-3xl font-semibold mb-2" style={{ letterSpacing: '-0.02em' }}>v2.0.1</h3>
+                <p className="text-white/70 text-base mb-8">22 features. Engineered entirely from 7 realistic raw fields. This is the model actually serving the live <code>/score</code> endpoint, trading theoretical accuracy for live operational viability.</p>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                    <div className="text-[10px] text-white/50 uppercase tracking-wider font-bold mb-1">ROC-AUC</div>
+                    <div className="text-2xl font-mono font-bold text-white">0.8037</div>
+                  </div>
+                  <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                    <div className="text-[10px] text-white/50 uppercase tracking-wider font-bold mb-1">PR-AUC</div>
+                    <div className="text-2xl font-mono font-bold text-white">0.1601</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Failure Stories Section ─── */}
+      <section className="bg-white px-6 py-24 border-t border-black/5">
+        <div className="max-w-[88rem] mx-auto">
+          <div className="mb-12">
+            <h2 className="text-4xl md:text-5xl font-semibold leading-none mb-4" style={{ letterSpacing: '-0.03em' }}>
+              What We Caught
+            </h2>
+            <p className="text-black/60 text-lg leading-relaxed max-w-2xl">
+              Every real system has failure modes. Here's what we found and fixed before shipping.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-gray-50 border border-black/5 rounded-2xl p-6 group hover:bg-gray-100 transition-colors">
+              <div className="flex items-start gap-4">
+                <div className="bg-red-100 text-red-600 font-bold text-xs uppercase tracking-wider px-2 py-1 rounded mt-0.5">Bug</div>
+                <div>
+                  <h4 className="text-black font-medium leading-snug mb-2">Target leakage silently inflated PR-AUC from 0.4968 to 0.6445.</h4>
+                  <a href="https://github.com/loomking/fraud-risk-scorer/blob/master/what_broke.md" target="_blank" className="text-xs text-blue-600 font-medium hover:underline inline-flex items-center gap-1">Read the fix <ArrowRight className="w-3 h-3" /></a>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 border border-black/5 rounded-2xl p-6 group hover:bg-gray-100 transition-colors">
+              <div className="flex items-start gap-4">
+                <div className="bg-orange-100 text-orange-600 font-bold text-xs uppercase tracking-wider px-2 py-1 rounded mt-0.5">Issue</div>
+                <div>
+                  <h4 className="text-black font-medium leading-snug mb-2">Groq model deprecation broke the live evidence agent.</h4>
+                  <a href="https://github.com/loomking/fraud-risk-scorer/blob/master/what_broke.md" target="_blank" className="text-xs text-blue-600 font-medium hover:underline inline-flex items-center gap-1">Read the fix <ArrowRight className="w-3 h-3" /></a>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 border border-black/5 rounded-2xl p-6 group hover:bg-gray-100 transition-colors">
+              <div className="flex items-start gap-4">
+                <div className="bg-red-100 text-red-600 font-bold text-xs uppercase tracking-wider px-2 py-1 rounded mt-0.5">Bug</div>
+                <div>
+                  <h4 className="text-black font-medium leading-snug mb-2">`.gitignore` rules silently excluded core model code from version control.</h4>
+                  <a href="https://github.com/loomking/fraud-risk-scorer/blob/master/reports/what_broke.md" target="_blank" className="text-xs text-blue-600 font-medium hover:underline inline-flex items-center gap-1">Read the fix <ArrowRight className="w-3 h-3" /></a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -235,6 +302,9 @@ export default function HeroLandingPage() {
             <span className="text-sm text-black/40 font-medium">Fraud Risk Scorer · v2.0.1</span>
           </div>
           <div className="flex items-center gap-6 text-sm text-black/40">
+            <a href="https://github.com/loomking/fraud-risk-scorer" target="_blank" rel="noopener noreferrer" className="hover:text-black transition-colors">
+              <Github className="w-4 h-4" />
+            </a>
             <a href="#docs" className="hover:text-black transition-colors">Docs</a>
             <a href="#api" className="hover:text-black transition-colors">API</a>
             <a href="#architecture" className="hover:text-black transition-colors">Architecture</a>
