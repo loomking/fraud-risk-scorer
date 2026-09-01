@@ -43,7 +43,7 @@ export default function StorefrontDemo() {
         card1: form.card1,
         card4: form.card4,
         card6: form.card6,
-        P_emaildomain: form.email
+        P_emaildomain: form.email.includes('@') ? form.email.split('@')[1] : form.email
     };
 
     try {
