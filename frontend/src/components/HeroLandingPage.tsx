@@ -9,7 +9,7 @@ export default function HeroLandingPage() {
     <div className="relative min-h-screen flex flex-col bg-[#F5F5F5] text-gray-900 antialiased overflow-x-hidden selection:bg-black/10">
 
       {/* ─── Navbar ─── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-5">
+      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-white/80 backdrop-blur-xl border-b border-black/8">
         <div className="max-w-[88rem] mx-auto flex items-center justify-between">
           {/* Brand */}
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => window.location.hash = ''}>
@@ -200,7 +200,7 @@ export default function HeroLandingPage() {
               How it works
             </h2>
             <p className="text-black/60 text-base leading-relaxed max-w-sm">
-              From raw transaction data through feature engineering, ML scoring, cost-based thresholding, and grounded LLM evidence — the full pipeline in under 200ms.
+              From raw transaction data through feature engineering, ML scoring, cost-based thresholding, and grounded LLM evidence — the full pipeline is fast enough for real-time use.
             </p>
           </div>
           <div className="relative rounded-3xl overflow-hidden min-h-[480px] md:min-h-[600px] bg-gradient-to-br from-gray-100 to-gray-200 border border-black/5">
