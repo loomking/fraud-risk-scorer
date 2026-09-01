@@ -5,6 +5,7 @@ import ThresholdControl from "./components/ThresholdControl";
 import TransactionsTable from "./components/TransactionsTable";
 import HeroLandingPage from "./components/HeroLandingPage";
 import InfoPage from "./components/InfoPage";
+import TransactionCarousel from "./components/TransactionCarousel";
 
 const API = (window.location.origin === "null" || window.location.protocol === "file:" || window.location.hostname === "localhost") 
     ? "http://localhost:10000" 
@@ -194,7 +195,12 @@ function DashboardApp() {
           </div>
 
           {/* Right Column — Transactions */}
-          <div className="lg:col-span-8 flex flex-col h-[calc(100vh-120px)] sticky top-24">
+          <div className="lg:col-span-8 flex flex-col h-[calc(100vh-120px)] sticky top-24 overflow-hidden">
+            <TransactionCarousel 
+              transactions={txns}
+              detailsMap={detailsMap}
+              activeThreshold={activeThreshold}
+            />
             <TransactionsTable 
               transactions={txns}
               activeThreshold={activeThreshold}
