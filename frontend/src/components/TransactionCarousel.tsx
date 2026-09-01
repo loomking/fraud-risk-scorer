@@ -29,6 +29,17 @@ export default function TransactionCarousel({ transactions, detailsMap, activeTh
         cardH: 176,
     });
 
+    // Snap to the front (index 0) whenever the newest transaction changes
+    useEffect(() => {
+        if (transactions.length > 0) {
+            // Find the nearest multiple of cardCount ahead of current progress
+            // so it smoothly or instantly places index 0 at the active position
+            const nearestMultiple = Math.ceil(progress.current / cardCount) * cardCount;
+            // Snapping directly ensures the new card appears immediately
+            progress.current = nearestMultiple;
+        }
+    }, [transactions[0]?.transaction_id, cardCount]);
+
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             const rx = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
