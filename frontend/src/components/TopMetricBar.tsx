@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { Shield } from "lucide-react";
 
 interface Props {
   modelVersion: string;
@@ -12,35 +13,36 @@ export default function TopMetricBar({ modelVersion, activeThreshold, featureCou
     <motion.header 
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed top-0 left-0 w-full z-50 bg-[#131314]/60 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex items-center justify-between shadow-xl"
+      className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-black/8 px-6 py-4 flex items-center justify-between"
     >
-      <div className="flex items-center gap-2">
-        <span className="font-semibold text-lg tracking-tight text-white">Fraud Risk Scorer</span>
-        <span className="bg-[#3054ff]/20 text-[#b4c0ff] text-xs px-2 py-0.5 rounded-full border border-[#3054ff]/30">v2.0.1</span>
+      <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => window.location.hash = ''}>
+        <Shield className="w-6 h-6 text-black" strokeWidth={2} />
+        <span className="font-semibold text-lg tracking-tight text-black" style={{ letterSpacing: '-0.03em' }}>Fraud Risk Scorer</span>
+        <span className="bg-black/8 text-black/60 text-xs px-2 py-0.5 rounded-full font-mono font-medium">v2.0.1</span>
       </div>
 
-      <div className="hidden md:flex items-center gap-8 text-sm text-white/70">
+      <div className="hidden md:flex items-center gap-8 text-sm text-black/50">
         <div className="flex items-center gap-2">
           <span>Model:</span>
-          <span className="text-white">{modelVersion}</span>
+          <span className="text-black font-medium">{modelVersion}</span>
         </div>
         <div className="flex items-center gap-2">
           <span>Threshold:</span>
-          <span className="text-[#ff4d4d] font-mono">{(activeThreshold * 100).toFixed(1)}%</span>
+          <span className="text-red-600 font-mono font-medium">{(activeThreshold * 100).toFixed(1)}%</span>
         </div>
         <div className="flex items-center gap-2">
           <span>Features:</span>
-          <span className="text-white">{featureCount}</span>
+          <span className="text-black font-medium">{featureCount}</span>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 text-sm text-white/70">
-        <span>Total Scored:</span>
+      <div className="flex items-center gap-2 text-sm text-black/50">
+        <span>Scored:</span>
         <motion.span 
           key={totalScored}
           initial={{ opacity: 0, scale: 1.5 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-white font-mono bg-white/10 px-2 py-0.5 rounded"
+          className="text-black font-mono font-medium bg-black/5 px-2 py-0.5 rounded"
         >
           {totalScored}
         </motion.span>

@@ -1,144 +1,246 @@
 import { useState } from 'react';
-import { Menu, X, ArrowRight, ShieldCheck, LayoutDashboard } from 'lucide-react';
+import { Menu, X, ArrowRight, Shield, LayoutDashboard } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function HeroLandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="relative min-h-screen flex flex-col font-['Inter'] text-gray-200 antialiased bg-[#0A0A0B] overflow-x-hidden selection:bg-[#4d8eff] selection:text-white">
-      {/* Sleek CSS Background */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#111827] via-[#0A0A0B] to-[#0A0A0B] pointer-events-none" />
+    <div className="relative min-h-screen flex flex-col bg-[#F5F5F5] text-gray-900 antialiased overflow-x-hidden selection:bg-black/10">
 
-      {/* Decorative Gradients */}
-      <div className="fixed top-[-20%] left-[20%] w-[600px] h-[600px] bg-[#3054ff]/10 blur-[120px] mix-blend-screen pointer-events-none rounded-full" />
-      <div className="fixed bottom-[-10%] right-[20%] w-[500px] h-[500px] bg-indigo-900/10 blur-[120px] mix-blend-screen pointer-events-none rounded-full" />
-      
-      {/* Top Navigation */}
-      <header className="fixed top-0 w-full z-50 bg-[#131314]/60 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/20 flex items-center justify-between px-6 md:px-10 h-16 max-w-[1600px] left-1/2 -translate-x-1/2">
-        {/* Brand Logo */}
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.location.hash = ''}>
-          <ShieldCheck className="text-[#3b82f6] w-7 h-7" />
-          <span className="font-['Inter'] font-bold text-lg tracking-tighter text-[#adc6ff]">
-            RISK_CORE_v2.1
-          </span>
-        </div>
-        
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8">
-          <a className="font-['Inter'] font-medium text-sm text-[#c2c6d6] hover:text-white hover:bg-white/10 px-3 py-1.5 rounded transition-all duration-200" href="#docs">Documentation</a>
-          <a className="font-['Inter'] font-medium text-sm text-[#c2c6d6] hover:text-white hover:bg-white/10 px-3 py-1.5 rounded transition-all duration-200" href="#api">Evidence API</a>
-          <a className="font-['Inter'] font-medium text-sm text-[#c2c6d6] hover:text-white hover:bg-white/10 px-3 py-1.5 rounded transition-all duration-200" href="#architecture">Architecture</a>
-        </nav>
-        
-        {/* Actions */}
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={() => window.location.hash = '#dashboard'}
-            className="hidden md:flex items-center gap-2 bg-transparent border border-white/10 hover:border-[#adc6ff]/30 hover:shadow-[0_0_15px_rgba(173,198,255,0.15)] transition-all duration-200 px-4 py-2 rounded-lg font-['Inter'] font-medium text-sm text-white"
-          >
-            <LayoutDashboard className="w-[18px] h-[18px]" />
-            View Dashboard
-          </button>
-          
-          {/* Mobile Menu Toggle */}
-          <button 
-            className="md:hidden text-white hover:bg-white/10 p-2 rounded transition-colors"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X /> : <Menu />}
-          </button>
-        </div>
-      </header>
-      
-      {/* Mobile Menu Overlay */}
-      {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-16 bg-[#0A0A0B]/95 backdrop-blur-md z-40 p-6 border-t border-white/10">
-          <nav className="flex flex-col gap-6">
-            <a href="#docs" onClick={() => setMobileMenuOpen(false)} className="font-['Inter'] font-medium text-white text-lg">Documentation</a>
-            <a href="#api" onClick={() => setMobileMenuOpen(false)} className="font-['Inter'] font-medium text-white text-lg">Evidence API</a>
-            <a href="#architecture" onClick={() => setMobileMenuOpen(false)} className="font-['Inter'] font-medium text-white text-lg">Architecture</a>
-            <div className="h-px bg-white/10 my-2" />
-            <button 
+      {/* ─── Navbar ─── */}
+      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-5">
+        <div className="max-w-[88rem] mx-auto flex items-center justify-between">
+          {/* Brand */}
+          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => window.location.hash = ''}>
+            <Shield className="w-7 h-7 text-black" strokeWidth={2} />
+            <span className="text-2xl font-semibold tracking-tight text-black" style={{ letterSpacing: '-0.03em' }}>
+              Fraud Risk Scorer
+            </span>
+          </div>
+
+          {/* Center Nav */}
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#docs" className="text-base text-gray-600 hover:text-black font-medium transition-colors duration-200">Documentation</a>
+            <a href="#api" className="text-base text-gray-600 hover:text-black font-medium transition-colors duration-200">Evidence API</a>
+            <a href="#architecture" className="text-base text-gray-600 hover:text-black font-medium transition-colors duration-200">Architecture</a>
+          </div>
+
+          {/* Right */}
+          <div className="flex items-center gap-3">
+            <button
               onClick={() => window.location.hash = '#dashboard'}
-              className="flex items-center justify-center gap-2 bg-transparent border border-white/20 px-4 py-3 rounded-lg font-['Inter'] font-medium text-white w-full"
+              className="hidden md:inline-flex items-center gap-2 bg-black text-white text-base font-medium px-7 py-2.5 rounded-full hover:bg-gray-800 transition-colors duration-200"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              Open Dashboard
+            </button>
+            <button
+              className="md:hidden text-black hover:bg-black/5 p-2 rounded-lg transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X /> : <Menu />}
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 top-16 bg-[#F5F5F5]/98 backdrop-blur-md z-40 p-6">
+          <nav className="flex flex-col gap-5">
+            <a href="#docs" onClick={() => setMobileMenuOpen(false)} className="text-black text-lg font-medium">Documentation</a>
+            <a href="#api" onClick={() => setMobileMenuOpen(false)} className="text-black text-lg font-medium">Evidence API</a>
+            <a href="#architecture" onClick={() => setMobileMenuOpen(false)} className="text-black text-lg font-medium">Architecture</a>
+            <div className="h-px bg-black/10 my-1" />
+            <button
+              onClick={() => { window.location.hash = '#dashboard'; setMobileMenuOpen(false); }}
+              className="flex items-center justify-center gap-2 bg-black text-white px-6 py-3 rounded-full font-medium w-full"
             >
               <LayoutDashboard className="w-5 h-5" />
-              View Dashboard
+              Open Dashboard
             </button>
           </nav>
         </div>
       )}
 
-      {/* Main Hero Section */}
-      <main className="flex-grow flex items-center justify-center pt-24 pb-16 px-4 md:px-10 w-full max-w-[1600px] mx-auto z-10 relative">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex flex-col items-center text-center max-w-4xl bg-[rgba(17,24,39,0.6)] backdrop-blur-[12px] border border-white/10 p-8 md:p-16 rounded-2xl relative overflow-hidden"
-        >
-          {/* Decorative inner glow effect for the card */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#4d8eff]/10 to-transparent pointer-events-none rounded-2xl"></div>
-          
-          {/* Pill Badge */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2a2a2b]/50 border border-white/10 mb-8 backdrop-blur-md"
-          >
-            <span className="w-2 h-2 rounded-full bg-[#4edea3] shadow-[0_0_8px_rgba(78,222,163,0.8)]"></span>
-            <span className="font-['Inter'] text-xs font-semibold text-[#4edea3] tracking-[0.05em] uppercase">
-              ENTERPRISE GRADE FRAUD DETECTION
-            </span>
-          </motion.div>
-          
-          {/* Headline */}
-          <motion.h1 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="font-['Inter'] font-bold text-[36px] md:text-[48px] leading-[1.1] md:leading-[56px] tracking-[-0.02em] text-transparent bg-clip-text bg-gradient-to-r from-white via-[#adc6ff] to-[#4d8eff] mb-6 drop-shadow-[0_0_20px_rgba(77,142,255,0.5)]"
-          >
-            REVEAL THE TRUTH BEHIND EVERY TRANSACTION
-          </motion.h1>
-          
-          {/* Subheadline */}
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="font-['Inter'] text-[16px] md:text-[18px] text-[#c2c6d6] mb-10 max-w-2xl mx-auto leading-relaxed"
-          >
-            High-precision real-time ML scoring coupled with grounded LLM evidence to expose fraudulent patterns instantly.
-          </motion.p>
-          
-          {/* Primary CTA */}
-          <motion.button 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            onClick={() => window.location.hash = '#dashboard'}
-            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-[#3054ff] text-white font-['Inter'] font-semibold text-sm shadow-[0_0_20px_rgba(48,84,255,0.4)] hover:shadow-[0_0_30px_rgba(48,84,255,0.6)] hover:bg-[#2040e0] transition-all duration-300 hover:-translate-y-0.5"
-          >
-            <span className="absolute inset-0 w-full h-full rounded-xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-            <span className="relative z-10">Start Scoring</span>
-            <ArrowRight className="w-4 h-4 relative z-10 transition-transform group-hover:translate-x-1" />
-          </motion.button>
-          
-          {/* Decorative UI Elements (Simulated data streams) */}
-          <div className="mt-16 w-full flex justify-between items-end opacity-40 select-none overflow-hidden h-24">
-            <div className="h-12 w-px bg-gradient-to-t from-[#adc6ff]/0 to-[#adc6ff]"></div>
-            <div className="h-24 w-px bg-gradient-to-t from-[#4edea3]/0 to-[#4edea3]"></div>
-            <div className="h-8 w-px bg-gradient-to-t from-[#ffb95f]/0 to-[#ffb95f]"></div>
-            <div className="h-16 w-px bg-gradient-to-t from-[#4d8eff]/0 to-[#4d8eff]"></div>
-            <div className="h-32 w-px bg-gradient-to-t from-white/0 to-white/50"></div>
-            <div className="h-10 w-px bg-gradient-to-t from-[#ffb4ab]/0 to-[#ffb4ab]"></div>
-            <div className="h-20 w-px bg-gradient-to-t from-[#adc6ff]/0 to-[#adc6ff]"></div>
+      {/* ─── Hero Section ─── */}
+      <main className="flex-1 px-6 pt-20 pb-6 flex items-end">
+        <div className="relative w-full max-w-[88rem] mx-auto rounded-2xl overflow-hidden" style={{ height: 'calc(100vh - 96px)' }}>
+
+          {/* Background Video */}
+          <video
+            autoPlay muted loop playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260423_161253_c72b1869-400f-45ed-ac0c-52f68c2ed5bd.mp4"
+          />
+
+          {/* Content Overlay */}
+          <div className="relative z-10 flex flex-col items-start justify-start h-full p-8 md:p-12 pt-28 md:pt-36">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="text-black text-5xl md:text-6xl font-semibold leading-tight max-w-xl mb-4"
+              style={{ letterSpacing: '-0.04em' }}
+            >
+              Detect Fraud.<br/>Prove It.
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-black/60 text-base md:text-lg max-w-md mb-8 leading-relaxed"
+              style={{ fontFamily: "'Inter', ui-sans-serif, system-ui, sans-serif" }}
+            >
+              Real-time ML scoring with grounded LLM evidence generation. Every flagged transaction gets a verifiable, auditable explanation.
+            </motion.p>
+
+            <motion.button
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              onClick={() => window.location.hash = '#dashboard'}
+              className="inline-flex items-center gap-3 bg-black text-white text-base md:text-lg font-medium pl-8 pr-2 py-2 rounded-full hover:bg-gray-800 transition-colors duration-200"
+            >
+              Start Scoring
+              <span className="bg-white rounded-full p-2 flex items-center justify-center">
+                <ArrowRight className="w-5 h-5 text-black" />
+              </span>
+            </motion.button>
+
+            {/* Brand Marquee */}
+            <div className="mt-20 md:mt-24 w-full max-w-md overflow-hidden">
+              <style>{`
+                @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+                .marquee-track { display: flex; width: max-content; animation: marquee 22s linear infinite; }
+              `}</style>
+              <div className="marquee-track">
+                {[...Array(2)].map((_, rep) => (
+                  <div key={rep} className="flex items-center">
+                    <span className="mx-7 shrink-0 text-black/50 whitespace-nowrap" style={{ fontFamily: 'Georgia, serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '15px' }}>Razorpay</span>
+                    <span className="mx-7 shrink-0 text-black/50 whitespace-nowrap" style={{ fontFamily: 'Arial, sans-serif', fontWeight: 900, letterSpacing: '0.08em', fontSize: '13px', textTransform: 'uppercase' }}>IEEE-CIS</span>
+                    <span className="mx-7 shrink-0 text-black/50 whitespace-nowrap" style={{ fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 600, letterSpacing: '0.01em', fontSize: '15px', fontStyle: 'italic' }}>XGBoost</span>
+                    <span className="mx-7 shrink-0 text-black/50 whitespace-nowrap" style={{ fontFamily: "'Courier New', monospace", fontWeight: 700, letterSpacing: '0.12em', fontSize: '13px', textTransform: 'uppercase' }}>FastAPI</span>
+                    <span className="mx-7 shrink-0 text-black/50 whitespace-nowrap" style={{ fontFamily: "'Palatino Linotype', 'Book Antiqua', serif", fontWeight: 400, letterSpacing: '-0.01em', fontSize: '16px' }}>Groq</span>
+                    <span className="mx-7 shrink-0 text-black/50 whitespace-nowrap" style={{ fontFamily: "Impact, 'Arial Narrow', sans-serif", fontWeight: 400, letterSpacing: '0.04em', fontSize: '14px' }}>SQLAlchemy</span>
+                    <span className="mx-7 shrink-0 text-black/50 whitespace-nowrap" style={{ fontFamily: 'Verdana, sans-serif', fontWeight: 700, letterSpacing: '-0.03em', fontSize: '13px' }}>React</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </motion.div>
+        </div>
       </main>
+
+      {/* ─── Info Section ─── */}
+      <section className="bg-[#F5F5F5] px-6 py-24">
+        <div className="max-w-[88rem] mx-auto">
+          {/* Row 1 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16 items-start">
+            <div>
+              <h2 className="text-black text-4xl md:text-5xl font-semibold leading-tight mb-8" style={{ letterSpacing: '-0.03em' }}>
+                Meet the Scorer.
+              </h2>
+              <button
+                onClick={() => window.location.hash = '#docs'}
+                className="inline-flex items-center gap-3 bg-black text-white text-base font-medium pl-8 pr-2 py-2 rounded-full hover:bg-gray-800 transition-colors duration-200"
+              >
+                Discover it
+                <span className="bg-white rounded-full p-2 flex items-center justify-center">
+                  <ArrowRight className="w-4 h-4 text-black" />
+                </span>
+              </button>
+            </div>
+            <p className="text-black/60 text-2xl md:text-3xl leading-relaxed">
+              A production-grade fraud detection pipeline that scores transactions with XGBoost, enforces cost-optimized thresholds, and generates grounded LLM evidence for every flagged transaction.
+            </p>
+          </div>
+
+          {/* Row 2 — Feature cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Card 1 — spans 2 cols */}
+            <div className="lg:col-span-2 rounded-2xl p-7 min-h-80 flex flex-col justify-between bg-gradient-to-br from-blue-50 to-indigo-50 border border-black/5">
+              <h3 className="text-black text-2xl font-semibold leading-snug" style={{ letterSpacing: '-0.02em' }}>
+                Scores that<br/>you can trust
+              </h3>
+              <p className="text-black/60 text-base max-w-xs">
+                Every risk probability is isotonically calibrated and computed on features with strict temporal isolation — no leakage, no cheating.
+              </p>
+            </div>
+            {/* Card 2 */}
+            <div className="rounded-2xl p-7 min-h-80 flex flex-col justify-between bg-[#1A1A2E] text-white">
+              <h3 className="text-2xl font-semibold leading-snug" style={{ letterSpacing: '-0.02em' }}>
+                Evidence,<br/>not guesswork.
+              </h3>
+              <p className="text-white/60 text-base">
+                Every claim in the evidence packet is mechanically grounded to the actual transaction data. Hallucinations are caught and rejected.
+              </p>
+            </div>
+            {/* Card 3 */}
+            <div className="rounded-2xl p-7 min-h-80 flex flex-col justify-between bg-[#1A1A2E] text-white">
+              <h3 className="text-2xl font-semibold leading-snug" style={{ letterSpacing: '-0.02em' }}>
+                Fully<br/>auditable.
+              </h3>
+              <p className="text-white/60 text-base">
+                Append-only audit trail with model version, feature hash, and cost assumptions. Reconstruct any past decision from scratch.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Use Cases Section ─── */}
+      <section className="bg-[#F5F5F5] px-6 py-24">
+        <div className="max-w-[88rem] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          <div className="md:pr-12 md:pt-2">
+            <p className="text-black/50 text-sm mb-2">Fraud Risk Scorer in Practice</p>
+            <h2 className="text-5xl md:text-6xl font-semibold leading-none mb-6" style={{ letterSpacing: '-0.04em' }}>
+              How it works
+            </h2>
+            <p className="text-black/60 text-base leading-relaxed max-w-sm">
+              From raw transaction data through feature engineering, ML scoring, cost-based thresholding, and grounded LLM evidence — the full pipeline in under 200ms.
+            </p>
+          </div>
+          <div className="relative rounded-3xl overflow-hidden min-h-[480px] md:min-h-[600px] bg-gradient-to-br from-gray-100 to-gray-200 border border-black/5">
+            <div className="relative z-10 p-10 md:p-12 flex flex-col justify-between h-full">
+              <div>
+                <h3 className="text-4xl md:text-5xl font-semibold leading-tight mb-5 text-black" style={{ letterSpacing: '-0.03em' }}>
+                  Live Scoring
+                </h3>
+                <p className="text-black/60 text-base max-w-md mb-8">
+                  Submit any transaction with 7 fields — amount, time, product code, card details, and email domain. The system instantly returns a calibrated risk probability and a PASS or FLAG decision with full audit trail.
+                </p>
+              </div>
+              <button
+                onClick={() => window.location.hash = '#dashboard'}
+                className="inline-flex items-center gap-3 w-fit group"
+              >
+                <span className="w-9 h-9 rounded-full bg-black/10 backdrop-blur flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                  <ArrowRight className="w-4 h-4 text-black" />
+                </span>
+                <span className="text-black font-medium text-base">Try it now</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Footer ─── */}
+      <footer className="bg-[#F5F5F5] border-t border-black/10 px-6 py-8">
+        <div className="max-w-[88rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <Shield className="w-5 h-5 text-black/40" />
+            <span className="text-sm text-black/40 font-medium">Fraud Risk Scorer · v2.0.1</span>
+          </div>
+          <div className="flex items-center gap-6 text-sm text-black/40">
+            <a href="#docs" className="hover:text-black transition-colors">Docs</a>
+            <a href="#api" className="hover:text-black transition-colors">API</a>
+            <a href="#architecture" className="hover:text-black transition-colors">Architecture</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

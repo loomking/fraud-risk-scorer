@@ -170,14 +170,7 @@ function DashboardApp() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-[#0A0A0B] text-[#e5e2e3] overflow-hidden font-['Inter'] selection:bg-[#3054ff]/30">
-      
-      {/* Sleek CSS Background */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#111827] via-[#0A0A0B] to-[#0A0A0B] pointer-events-none" />
-
-      {/* Decorative Gradients */}
-      <div className="fixed top-[-20%] left-[20%] w-[600px] h-[600px] bg-[#3054ff]/10 blur-[120px] mix-blend-screen pointer-events-none rounded-full" />
-      <div className="fixed bottom-[-10%] right-[20%] w-[500px] h-[500px] bg-indigo-900/10 blur-[120px] mix-blend-screen pointer-events-none rounded-full" />
+    <div className="relative w-full min-h-screen bg-[#F5F5F5] text-gray-900 overflow-hidden font-['Inter'] selection:bg-black/10">
 
       <TopMetricBar 
         modelVersion={report.model_version}

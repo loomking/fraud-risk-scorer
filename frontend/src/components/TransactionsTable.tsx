@@ -26,18 +26,16 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.2 }}
-      className="bg-[#0B101E]/60 border border-[#3054ff]/20 shadow-[0_4px_30px_rgba(0,0,0,0.3)] rounded-2xl backdrop-blur-xl relative overflow-hidden h-full flex flex-col"
+      className="bg-white border border-black/8 rounded-2xl shadow-sm relative overflow-hidden h-full flex flex-col"
     >
-      <div className="absolute top-[-20%] right-[-10%] w-[400px] h-[400px] bg-[#3054ff]/10 blur-[80px] pointer-events-none rounded-full" />
-      
-      <div className="p-6 border-b border-[#3054ff]/20 flex items-center justify-between z-10 bg-[#13192B]/50">
-        <h2 className="text-xl font-semibold text-white">Recent Transactions</h2>
+      <div className="p-6 border-b border-black/8 flex items-center justify-between z-10">
+        <h2 className="text-xl font-semibold text-black" style={{ letterSpacing: '-0.02em' }}>Recent Transactions</h2>
       </div>
 
       <div className="flex-1 overflow-auto z-10">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-[#13192B]/90 text-[10px] uppercase tracking-wider text-[#adc6ff]/50 border-b border-[#3054ff]/20 font-medium sticky top-0 backdrop-blur-xl z-20">
+            <tr className="bg-gray-50 text-[10px] uppercase tracking-wider text-black/40 border-b border-black/8 font-semibold sticky top-0 z-20">
               <th className="px-6 py-4 font-semibold">Txn ID</th>
               <th className="px-6 py-4 font-semibold text-right">Amount</th>
               <th className="px-6 py-4 font-semibold">Risk Score</th>
@@ -48,7 +46,7 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
           <tbody className="font-mono text-sm">
             {transactions.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-center py-12 text-white/30 font-medium">
+                <td colSpan={5} className="text-center py-12 text-black/30 font-medium font-sans">
                   No transactions scored yet.
                 </td>
               </tr>
@@ -63,25 +61,25 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
                 <Fragment key={t.transaction_id + '-' + t.created_at}>
                   <tr 
                     onClick={() => onToggleRow(t)}
-                    className={`cursor-pointer transition-colors border-b border-[#3054ff]/10 ${isExpanded ? 'bg-[#3054ff]/10' : 'hover:bg-white/5'} ${isFlag ? 'border-l-4 border-l-[#ff4d4d]' : 'border-l-4 border-l-transparent'}`}
+                    className={`cursor-pointer transition-colors border-b border-black/5 ${isExpanded ? 'bg-gray-50' : 'hover:bg-gray-50/50'} ${isFlag ? 'border-l-4 border-l-red-500' : 'border-l-4 border-l-transparent'}`}
                   >
-                    <td className="px-6 py-4 font-medium text-white/90">{t.transaction_id}</td>
-                    <td className="px-6 py-4 text-right text-white/70">₹{(t.amount || 0).toFixed(2)}</td>
+                    <td className="px-6 py-4 font-medium text-black/80">{t.transaction_id}</td>
+                    <td className="px-6 py-4 text-right text-black/60">₹{(t.amount || 0).toFixed(2)}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-16 h-1.5 bg-black/50 rounded-full overflow-hidden">
-                          <div className={`h-full ${isFlag ? 'bg-[#ff4d4d]' : 'bg-[#238636]'}`} style={{ width: `${riskPct}%` }} />
+                        <div className="w-16 h-1.5 bg-black/5 rounded-full overflow-hidden">
+                          <div className={`h-full ${isFlag ? 'bg-red-500' : 'bg-green-600'}`} style={{ width: `${riskPct}%` }} />
                         </div>
-                        <span className={isFlag ? 'text-[#ff4d4d]' : 'text-[#238636]'}>{riskPct.toFixed(1)}</span>
+                        <span className={isFlag ? 'text-red-600' : 'text-green-600'}>{riskPct.toFixed(1)}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold tracking-widest ${isFlag ? 'bg-[#ff4d4d]/20 text-[#ff4d4d] border border-[#ff4d4d]/30' : 'bg-[#238636]/20 text-[#238636] border border-[#238636]/30'}`}>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold tracking-widest ${isFlag ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-700 border border-green-200'}`}>
                         {liveDecision}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      {isExpanded ? <ChevronUp className="w-5 h-5 inline text-white/70" /> : <ChevronDown className="w-5 h-5 inline text-white/30" />}
+                      {isExpanded ? <ChevronUp className="w-5 h-5 inline text-black/40" /> : <ChevronDown className="w-5 h-5 inline text-black/20" />}
                     </td>
                   </tr>
 
@@ -91,36 +89,36 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="bg-[#111827]/80 border-b border-[#3054ff]/10"
+                        className="bg-gray-50/50 border-b border-black/8"
                       >
                         <td colSpan={5} className="p-0">
-                          <div className={`p-6 grid grid-cols-1 md:grid-cols-2 gap-6 ${isFlag ? 'border-l-4 border-l-[#ff4d4d]' : 'border-l-4 border-l-transparent'}`}>
+                          <div className={`p-6 grid grid-cols-1 md:grid-cols-2 gap-6 ${isFlag ? 'border-l-4 border-l-red-500' : 'border-l-4 border-l-transparent'}`}>
                             
                             {/* Evidence Packet */}
                             <div className="flex flex-col gap-3">
-                              <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-[#adc6ff]/50 font-medium">
+                              <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-black/40">
                                 <FileText className="w-4 h-4" /> Evidence Packet
                               </h3>
-                              <div className="bg-[#0A0A0B]/80 border border-[#3054ff]/20 rounded-xl p-4 font-mono text-[11px] text-[#c2c6d6] h-full">
+                              <div className="bg-white border border-black/8 rounded-xl p-4 font-mono text-[11px] text-black/70 h-full">
                                 {!isFlag ? (
-                                  <div className="text-white/30 italic flex items-center justify-center h-full">Not generated for PASS decisions.</div>
+                                  <div className="text-black/30 italic flex items-center justify-center h-full font-sans">Not generated for PASS decisions.</div>
                                 ) : details.loadingEvidence ? (
-                                  <div className="animate-pulse text-[#3054ff]">Generating evidence...</div>
+                                  <div className="animate-pulse text-blue-600">Generating evidence...</div>
                                 ) : details.evidenceError ? (
-                                  <div className="text-[#ff4d4d]">{details.evidenceError}</div>
+                                  <div className="text-red-600">{details.evidenceError}</div>
                                 ) : details.evidence ? (
                                   <div className="flex flex-col gap-3">
-                                    <div className="text-white/70 leading-relaxed">{details.evidence.summary}</div>
-                                    <div className={`font-semibold ${details.evidence.grounding_valid ? 'text-[#238636]' : 'text-[#ff4d4d]'}`}>
+                                    <div className="text-black/60 leading-relaxed font-sans">{details.evidence.summary}</div>
+                                    <div className={`font-semibold ${details.evidence.grounding_valid ? 'text-green-600' : 'text-red-600'}`}>
                                       Grounding: {details.evidence.grounding_valid ? '✓ Valid' : '✗ Failed'}
                                     </div>
                                     <div className="flex flex-col gap-2 mt-2">
                                       {details.evidence.evidence?.map((item: any, i: number) => (
-                                        <div key={i} className="bg-white/5 p-2 rounded border border-white/5">
-                                          <span className="text-[#3054ff] font-bold">CLAIM:</span> {item.claim}
+                                        <div key={i} className="bg-gray-50 p-2 rounded border border-black/5">
+                                          <span className="text-blue-700 font-bold">CLAIM:</span> {item.claim}
                                           <div className="mt-1.5 flex flex-wrap gap-1.5">
                                             {item.sources?.map((s: string, si: number) => (
-                                              <span key={si} className="bg-black/50 px-1.5 py-0.5 border border-white/10 rounded text-[9px] text-white/50">{s}</span>
+                                              <span key={si} className="bg-white px-1.5 py-0.5 border border-black/8 rounded text-[9px] text-black/50">{s}</span>
                                             ))}
                                           </div>
                                         </div>
@@ -133,35 +131,35 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
 
                             {/* Audit Trail */}
                             <div className="flex flex-col gap-3">
-                              <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-[#adc6ff]/50 font-medium">
+                              <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-black/40">
                                 <Activity className="w-4 h-4" /> Audit Trail
                               </h3>
-                              <div className="bg-[#0A0A0B]/80 border border-[#3054ff]/20 rounded-xl p-4 font-mono text-[11px] text-[#c2c6d6] h-full max-h-[300px] overflow-auto flex flex-col gap-2">
+                              <div className="bg-white border border-black/8 rounded-xl p-4 font-mono text-[11px] text-black/70 h-full max-h-[300px] overflow-auto flex flex-col gap-2">
                                 {details.loadingAudit ? (
-                                  <div className="animate-pulse text-white/50">Fetching audit trail...</div>
+                                  <div className="animate-pulse text-black/40">Fetching audit trail...</div>
                                 ) : details.auditError ? (
-                                  <div className="text-[#ff4d4d]">{details.auditError}</div>
+                                  <div className="text-red-600">{details.auditError}</div>
                                 ) : details.audit?.length > 0 ? (
                                   details.audit.map((ev: any, i: number) => {
-                                    let evColor = 'text-white/90';
-                                    if (ev.event_type === 'score_computed') evColor = 'text-[#3054ff]';
-                                    if (ev.event_type === 'decision_made') evColor = 'text-[#b4c0ff]';
-                                    if (ev.event_type === 'evidence_generated') evColor = 'text-[#238636]';
-                                    if (ev.event_type === 'grounding_failure') evColor = 'text-[#ff4d4d]';
+                                    let evColor = 'text-black/70';
+                                    if (ev.event_type === 'score_computed') evColor = 'text-blue-700';
+                                    if (ev.event_type === 'decision_made') evColor = 'text-indigo-700';
+                                    if (ev.event_type === 'evidence_generated') evColor = 'text-green-700';
+                                    if (ev.event_type === 'grounding_failure') evColor = 'text-red-600';
                                     
                                     return (
-                                      <div key={i} className="border-l-2 border-white/10 pl-3 py-1 mb-1 relative">
-                                        <div className="absolute left-[-5px] top-2 w-2 h-2 rounded-full bg-white/20" />
-                                        <div className="text-white/30 text-[9px] mb-0.5">[{ev.created_at}]</div>
+                                      <div key={i} className="border-l-2 border-black/10 pl-3 py-1 mb-1 relative">
+                                        <div className="absolute left-[-5px] top-2 w-2 h-2 rounded-full bg-black/15" />
+                                        <div className="text-black/30 text-[9px] mb-0.5">[{ev.created_at}]</div>
                                         <div className={evColor}>{ev.event_type}</div>
                                         {ev.event_data && (
-                                          <div className="text-white/40 mt-1 break-words">{JSON.stringify(ev.event_data)}</div>
+                                          <div className="text-black/40 mt-1 break-words">{JSON.stringify(ev.event_data)}</div>
                                         )}
                                       </div>
                                     );
                                   })
                                 ) : (
-                                  <div className="text-white/30">No events found.</div>
+                                  <div className="text-black/30 font-sans">No events found.</div>
                                 )}
                               </div>
                             </div>
