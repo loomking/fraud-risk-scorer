@@ -12,7 +12,7 @@ export default function TopMetricBar({ modelVersion, activeThreshold, featureCou
     <motion.header 
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-md border-b border-white/10 px-6 py-4 flex items-center justify-between font-['Instrument_Sans']"
+      className="fixed top-0 left-0 w-full z-50 bg-[#131314]/60 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex items-center justify-between shadow-xl"
     >
       <div className="flex items-center gap-2">
         <span className="font-semibold text-lg tracking-tight text-white">Fraud Risk Scorer</span>

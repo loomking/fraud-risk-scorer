@@ -26,18 +26,18 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.2 }}
-      className="bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md relative overflow-hidden h-full flex flex-col"
+      className="bg-[#0B101E]/60 border border-[#3054ff]/20 shadow-[0_4px_30px_rgba(0,0,0,0.3)] rounded-2xl backdrop-blur-xl relative overflow-hidden h-full flex flex-col"
     >
-      <div className="absolute top-[-20%] right-[-10%] w-[400px] h-[400px] bg-indigo-500/10 blur-[80px] pointer-events-none rounded-full" />
+      <div className="absolute top-[-20%] right-[-10%] w-[400px] h-[400px] bg-[#3054ff]/10 blur-[80px] pointer-events-none rounded-full" />
       
-      <div className="p-6 border-b border-white/10 flex items-center justify-between z-10 bg-black/20">
-        <h2 className="text-xl font-['Instrument_Serif'] text-white">Recent Transactions</h2>
+      <div className="p-6 border-b border-[#3054ff]/20 flex items-center justify-between z-10 bg-[#13192B]/50">
+        <h2 className="text-xl font-semibold text-white">Recent Transactions</h2>
       </div>
 
       <div className="flex-1 overflow-auto z-10">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-white/5 text-[10px] uppercase tracking-wider text-white/50 border-b border-white/10 font-['Instrument_Sans'] sticky top-0 backdrop-blur-xl z-20">
+            <tr className="bg-[#13192B]/90 text-[10px] uppercase tracking-wider text-[#adc6ff]/50 border-b border-[#3054ff]/20 font-medium sticky top-0 backdrop-blur-xl z-20">
               <th className="px-6 py-4 font-semibold">Txn ID</th>
               <th className="px-6 py-4 font-semibold text-right">Amount</th>
               <th className="px-6 py-4 font-semibold">Risk Score</th>
@@ -48,7 +48,7 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
           <tbody className="font-mono text-sm">
             {transactions.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-center py-12 text-white/30 font-['Instrument_Sans']">
+                <td colSpan={5} className="text-center py-12 text-white/30 font-medium">
                   No transactions scored yet.
                 </td>
               </tr>
@@ -63,7 +63,7 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
                 <Fragment key={t.transaction_id + '-' + t.created_at}>
                   <tr 
                     onClick={() => onToggleRow(t)}
-                    className={`cursor-pointer transition-colors border-b border-white/5 ${isExpanded ? 'bg-white/10' : 'hover:bg-white/5'} ${isFlag ? 'border-l-4 border-l-[#ff4d4d]' : 'border-l-4 border-l-transparent'}`}
+                    className={`cursor-pointer transition-colors border-b border-[#3054ff]/10 ${isExpanded ? 'bg-[#3054ff]/10' : 'hover:bg-white/5'} ${isFlag ? 'border-l-4 border-l-[#ff4d4d]' : 'border-l-4 border-l-transparent'}`}
                   >
                     <td className="px-6 py-4 font-medium text-white/90">{t.transaction_id}</td>
                     <td className="px-6 py-4 text-right text-white/70">₹{(t.amount || 0).toFixed(2)}</td>
@@ -91,17 +91,17 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="bg-black/40 border-b border-white/10"
+                        className="bg-[#111827]/80 border-b border-[#3054ff]/10"
                       >
                         <td colSpan={5} className="p-0">
                           <div className={`p-6 grid grid-cols-1 md:grid-cols-2 gap-6 ${isFlag ? 'border-l-4 border-l-[#ff4d4d]' : 'border-l-4 border-l-transparent'}`}>
                             
                             {/* Evidence Packet */}
                             <div className="flex flex-col gap-3">
-                              <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-white/50 font-['Instrument_Sans']">
+                              <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-[#adc6ff]/50 font-medium">
                                 <FileText className="w-4 h-4" /> Evidence Packet
                               </h3>
-                              <div className="bg-black/60 border border-white/10 rounded-xl p-4 font-mono text-[11px] text-white/80 h-full">
+                              <div className="bg-[#0A0A0B]/80 border border-[#3054ff]/20 rounded-xl p-4 font-mono text-[11px] text-[#c2c6d6] h-full">
                                 {!isFlag ? (
                                   <div className="text-white/30 italic flex items-center justify-center h-full">Not generated for PASS decisions.</div>
                                 ) : details.loadingEvidence ? (
@@ -133,10 +133,10 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
 
                             {/* Audit Trail */}
                             <div className="flex flex-col gap-3">
-                              <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-white/50 font-['Instrument_Sans']">
+                              <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-[#adc6ff]/50 font-medium">
                                 <Activity className="w-4 h-4" /> Audit Trail
                               </h3>
-                              <div className="bg-black/60 border border-white/10 rounded-xl p-4 font-mono text-[11px] text-white/80 h-full max-h-[300px] overflow-auto flex flex-col gap-2">
+                              <div className="bg-[#0A0A0B]/80 border border-[#3054ff]/20 rounded-xl p-4 font-mono text-[11px] text-[#c2c6d6] h-full max-h-[300px] overflow-auto flex flex-col gap-2">
                                 {details.loadingAudit ? (
                                   <div className="animate-pulse text-white/50">Fetching audit trail...</div>
                                 ) : details.auditError ? (

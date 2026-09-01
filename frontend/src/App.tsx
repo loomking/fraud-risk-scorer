@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import Hls from "hls.js";
+import { useEffect, useState } from "react";
 import TopMetricBar from "./components/TopMetricBar";
 import ScoringForm from "./components/ScoringForm";
 import ThresholdControl from "./components/ThresholdControl";
 import TransactionsTable from "./components/TransactionsTable";
 import HeroLandingPage from "./components/HeroLandingPage";
+import InfoPage from "./components/InfoPage";
 
 const API = (window.location.origin === "null" || window.location.protocol === "file:" || window.location.hostname === "localhost") 
     ? "http://localhost:10000" 
@@ -23,13 +23,14 @@ export default function App() {
     return <HeroLandingPage />;
   }
 
+  if (['#docs', '#api', '#architecture'].includes(route)) {
+    return <InfoPage route={route} />;
+  }
+
   return <DashboardApp />;
 }
 
 function DashboardApp() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const videoSrc = "https://stream.mux.com/T6oQJQ02cQ6N01TR6iHwZkKFkbepS34dkkIc9iukgy400g.m3u8";
-
   const [report, setReport] = useState({ model_version: 'v2.0.1', threshold: 0.05, feature_count: 20, total_scored: 0 });
   const [txns, setTxns] = useState<any[]>([]);
   const [expandedTxn, setExpandedTxn] = useState<number | null>(null);
@@ -52,24 +53,6 @@ function DashboardApp() {
   });
 
   useEffect(() => {
-    // Setup Background Video
-    const video = videoRef.current;
-    if (video) {
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(videoSrc);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          video.play().catch(e => console.log("Auto-play prevented:", e));
-        });
-      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-        video.src = videoSrc;
-        video.addEventListener("loadedmetadata", () => {
-          video.play().catch(e => console.log("Auto-play prevented:", e));
-        });
-      }
-    }
-
     // Fetch initial report
     fetch(`${API}/report`)
       .then(res => res.json())
@@ -187,24 +170,14 @@ function DashboardApp() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-black text-white overflow-hidden font-['Instrument_Sans'] selection:bg-[#3054ff]/30">
+    <div className="relative w-full min-h-screen bg-[#0A0A0B] text-[#e5e2e3] overflow-hidden font-['Inter'] selection:bg-[#3054ff]/30">
       
-      {/* Background Video Layer */}
-      <video
-        ref={videoRef}
-        muted
-        loop
-        playsInline
-        className="fixed inset-0 w-full h-full object-cover opacity-30 pointer-events-none"
-        poster="https://images.unsplash.com/photo-1647356191320-d7a1f80ca777?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGRhcmslMjB0ZWNobm9sb2d5JTIwbmV1cmFsJTIwbmV0d29ya3xlbnwxfHx8fDE3Njg5NzIyNTV8MA&ixlib=rb-4.1.0&q=80&w=1080"
-      />
-      
-      {/* Video Overlay */}
-      <div className="fixed inset-0 bg-black/70 backdrop-blur-[4px] pointer-events-none" />
+      {/* Sleek CSS Background */}
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#111827] via-[#0A0A0B] to-[#0A0A0B] pointer-events-none" />
 
       {/* Decorative Gradients */}
-      <div className="fixed top-[-20%] left-[20%] w-[600px] h-[600px] bg-[#3054ff]/20 blur-[120px] mix-blend-screen pointer-events-none rounded-full" />
-      <div className="fixed bottom-[-10%] right-[20%] w-[500px] h-[500px] bg-indigo-900/30 blur-[120px] mix-blend-screen pointer-events-none rounded-full" />
+      <div className="fixed top-[-20%] left-[20%] w-[600px] h-[600px] bg-[#3054ff]/10 blur-[120px] mix-blend-screen pointer-events-none rounded-full" />
+      <div className="fixed bottom-[-10%] right-[20%] w-[500px] h-[500px] bg-indigo-900/10 blur-[120px] mix-blend-screen pointer-events-none rounded-full" />
 
       <TopMetricBar 
         modelVersion={report.model_version}
