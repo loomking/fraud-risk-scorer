@@ -188,9 +188,9 @@ function DashboardApp() {
 
       {/* Main Content Area */}
       <div className="relative z-10 max-w-[1440px] mx-auto mt-24 px-6 pb-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
-          {/* Left Column */}
+          {/* Left Column — Form only */}
           <div className="lg:col-span-4 flex flex-col gap-6">
             <ScoringForm 
               form={form} 
@@ -198,16 +198,9 @@ function DashboardApp() {
               scoring={scoring} 
               onScore={handleScore} 
             />
-            
-            <ThresholdControl 
-              activeThreshold={activeThreshold} 
-              setActiveThreshold={setActiveThreshold}
-              prCurve={prCurve}
-              lastScoredTxn={lastScoredTxn}
-            />
           </div>
 
-          {/* Right Column */}
+          {/* Right Column — Transactions */}
           <div className="lg:col-span-8 flex flex-col h-[calc(100vh-120px)] sticky top-24">
             <TransactionsTable 
               transactions={txns}
@@ -218,6 +211,16 @@ function DashboardApp() {
             />
           </div>
 
+        </div>
+        
+        {/* Threshold Analysis — Full width below the grid */}
+        <div className="mt-6">
+          <ThresholdControl 
+            activeThreshold={activeThreshold} 
+            setActiveThreshold={setActiveThreshold}
+            prCurve={prCurve}
+            lastScoredTxn={lastScoredTxn}
+          />
         </div>
       </div>
     </div>
