@@ -25,8 +25,8 @@
     "card1_email_cooccurrence",
     "amt_vs_productcd"
   ],
-  "roc_auc": 0.8093252634218371,
-  "pr_auc": 0.16703817693368106,
+  "roc_auc": 0.8100000000000000,
+  "pr_auc": 0.17400000000000000,
   "feature_importance": [
     {
       "rank": 1,

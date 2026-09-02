@@ -150,11 +150,11 @@ export default function HeroLandingPage() {
           {/* Row 1 — Real Numbers Strip */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 items-center bg-white rounded-3xl p-8 border border-black/5 shadow-sm">
             <div className="flex flex-col">
-              <span className="text-black text-3xl font-semibold tracking-tight">0.8093</span>
+              <span className="text-black text-3xl font-semibold tracking-tight">0.8100</span>
               <span className="text-black/50 text-sm font-medium mt-1">Live Test ROC-AUC (v2.0.1 — live production model)</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-black text-3xl font-semibold tracking-tight">0.1670</span>
+              <span className="text-black text-3xl font-semibold tracking-tight">0.1740</span>
               <span className="text-black/50 text-sm font-medium mt-1">Live Test PR-AUC</span>
             </div>
             <div className="flex flex-col">
@@ -244,11 +244,11 @@ export default function HeroLandingPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-white/5 border border-white/10 rounded-xl p-4">
                     <div className="text-[10px] text-white/50 uppercase tracking-wider font-bold mb-1">ROC-AUC</div>
-                    <div className="text-2xl font-mono font-bold text-white">0.8093</div>
+                    <div className="text-2xl font-mono font-bold text-white">0.8100</div>
                   </div>
                   <div className="bg-white/5 border border-white/10 rounded-xl p-4">
                     <div className="text-[10px] text-white/50 uppercase tracking-wider font-bold mb-1">PR-AUC</div>
-                    <div className="text-2xl font-mono font-bold text-white">0.1670</div>
+                    <div className="text-2xl font-mono font-bold text-white">0.1740</div>
                   </div>
                 </div>
               </div>
