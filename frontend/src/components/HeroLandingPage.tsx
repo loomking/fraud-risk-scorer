@@ -151,7 +151,7 @@ export default function HeroLandingPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 items-center bg-white rounded-3xl p-8 border border-black/5 shadow-sm">
             <div className="flex flex-col">
               <span className="text-black text-3xl font-semibold tracking-tight">0.8037</span>
-              <span className="text-black/50 text-sm font-medium mt-1">Live Test ROC-AUC</span>
+              <span className="text-black/50 text-sm font-medium mt-1">Live Test ROC-AUC (v2.0.1 — live production model)</span>
             </div>
             <div className="flex flex-col">
               <span className="text-black text-3xl font-semibold tracking-tight">0.1601</span>
@@ -274,7 +274,7 @@ export default function HeroLandingPage() {
               <div className="flex items-start gap-4">
                 <div className="bg-red-100 text-red-600 font-bold text-xs uppercase tracking-wider px-2 py-1 rounded mt-0.5">Bug</div>
                 <div>
-                  <h4 className="text-black font-medium leading-snug mb-2">Target leakage silently inflated PR-AUC from 0.4968 to 0.6445.</h4>
+                  <h4 className="text-black font-medium leading-snug mb-2">Target leakage silently inflated PR-AUC from 0.5064 to 0.6445.</h4>
                   <a href="https://github.com/loomking/fraud-risk-scorer/blob/master/what_broke.md" target="_blank" className="text-xs text-blue-600 font-medium hover:underline inline-flex items-center gap-1">Read the fix <ArrowRight className="w-3 h-3" /></a>
                 </div>
               </div>
