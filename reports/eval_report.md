@@ -44,8 +44,8 @@
 
 | Metric | Value |
 |---|---|
-| **PR-AUC** | **0.1601** |
-| ROC-AUC | 0.8037 |
+| **PR-AUC** | **0.1670** |
+| ROC-AUC | 0.8093 |
 
 ### Confusion Matrix (Test Set, v2.0.1, threshold=0.035)
 
