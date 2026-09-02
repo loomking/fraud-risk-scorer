@@ -34,6 +34,28 @@
 | **Actual Legit** | TN=38101 | FP=47397 |
 | **Actual Fraud** | FN=125 | TP=2958 |
 
+---
+
+## Live Production Model (v2.0.1)
+
+> **Note:** The v2.0.1 model sacrifices theoretical offline metrics for operational viability (strict leakage prevention, custom categorical safety, and real-time inference using only 22 features).
+
+### Headline Metrics (v2.0.1 Test Set)
+
+| Metric | Value |
+|---|---|
+| **PR-AUC** | **0.1601** |
+| ROC-AUC | 0.8037 |
+
+### Confusion Matrix (Test Set, v2.0.1, threshold=0.035)
+
+|  | Predicted Legit | Predicted Fraud |
+|---|---|---|
+| **Actual Legit** | TN=85059 | FP=439 |
+| **Actual Fraud** | FN=2848 | TP=235 |
+
+---
+
 ## Business Metrics (Test Set)
 
 | Metric | Value |
