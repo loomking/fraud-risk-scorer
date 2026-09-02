@@ -95,7 +95,7 @@ The model is trained on the IEEE-CIS Fraud Detection dataset (provided by Vesta 
 ### b. Model Versions & The Portability Tradeoff
 We deliberately developed two versions of the model to highlight the tradeoff between theoretical accuracy and operational reality:
 *   **v1.0.0 (462 features):** Achieved exceptional performance (ROC-AUC 0.9010, PR-AUC 0.5064) by utilizing the full IEEE-CIS dataset, which includes hundreds of proprietary, anonymized "V-columns" (Vesta-engineered features). This is our research/offline model, superseded by v2.0.1 in the deployed system.
-*   **v2.0.1 (20 features):** Engineered entirely from just 7 raw fields that a live form can realistically collect (Time, Amount, Product, Card Identifier, Network Brand, Funding Type, Email Domain). Performance dropped (ROC-AUC 0.8037, PR-AUC 0.1601), but this model is deployed for live inference. We explicitly trade theoretical accuracy for portability and live-demo honesty. This is a deliberate design choice, not a shortfall we are hiding.
+*   **v2.0.1 (20 features):** Engineered entirely from just 7 raw fields that a live form can realistically collect (Time, Amount, Product, Card Identifier, Network Brand, Funding Type, Email Domain). Performance dropped (ROC-AUC 0.8093, PR-AUC 0.1670), but this model is deployed for live inference. We explicitly trade theoretical accuracy for portability and live-demo honesty. This is a deliberate design choice, not a shortfall we are hiding.
 
 ### c. Feature Dominance & Robustness Check
 During the development of v2, we identified that an early iteration over-indexed heavily on a single feature: `amt_is_round` (0.34 importance). This is a known artifact of how the synthetic IEEE-CIS dataset generated transaction amounts, not a generalized real-world fraud signal. As a deliberate robustness check, we removed this feature and retrained the model (v2.0.1). The PR-AUC shifted by a mere 0.004 (noise level), confirming that the remaining 22 live-engineered features carry real, non-artifact signal.
@@ -106,8 +106,8 @@ During the development of v2, we identified that an early iteration over-indexed
 
 | Metric | v1.0.0 — Primary Reference (462 features) | v2.0.1 — Lightweight Interactive Demo (20 features) |
 |---|---|---|
-| ROC-AUC | 0.9010 | 0.8037 |
-| PR-AUC | 0.5064 | 0.1601 |
+| ROC-AUC | 0.9010 | 0.8093 |
+| PR-AUC | 0.5064 | 0.1670 |
 | Brier Score | 0.0225 | 0.0305 |
 | Features | 462 (incl. proprietary V-columns) | 20 (live-form only) |
 | Calibration | Isotonic (val set) | Isotonic (val set) |
