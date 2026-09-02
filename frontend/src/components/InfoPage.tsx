@@ -128,7 +128,7 @@ function DocsContent() {
               <strong>v1.0.0 (462 features):</strong> Our research/offline model. It achieved ROC-AUC 0.9010 but relied on 339 undocumented proprietary V-columns. It is superseded by v2.0.1 in the deployed system.
             </p>
             <p className="text-white/70 text-sm leading-relaxed">
-              <strong>v2.0.1 (22 features):</strong> The live-serving model. Engineered exclusively from 7 realistic form fields. We explicitly traded theoretical accuracy for operational viability.
+              <strong>v2.0.1 (20 features):</strong> The live-serving model. Engineered exclusively from 7 realistic form fields. We explicitly traded theoretical accuracy for operational viability.
             </p>
           </Card>
         </div>

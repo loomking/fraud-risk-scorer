@@ -60,6 +60,11 @@ def run():
     del train_df, val_df, test_df
 
     # ── Define feature sets ───────────────────────────────────────────────
+    # Note: build_features_v2 natively returns a DataFrame with 23 features.
+    # However, for the live v2.0.1 model, we explicitly slice out 3 features post-engineering:
+    # 1. `amt_is_round` - highly dominant (0.34 importance) but flagged as an artifact of synthetic data generation.
+    # 2. `dow_sin` & `dow_cos` - day-of-week alignment relies on an artificial dataset start-date anchor which we cannot safely project to real-world live data.
+    # This explicit 23 -> 20 slice ensures the live model is robust and artifact-free.
     features_with = list(FEATURE_COLUMNS_V2)  # v2.0.0 (includes amt_is_round)
     features_without = [f for f in FEATURE_COLUMNS_V2 if f not in ("amt_is_round", "dow_sin", "dow_cos")]  # v2.0.1
 

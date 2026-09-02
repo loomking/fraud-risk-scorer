@@ -70,7 +70,7 @@ The v1.0.0 model achieved ROC-AUC 0.90 and PR-AUC 0.51 using 462 features — bu
 
 ### The Fix
 
-We built v2.0.1 from scratch — a separate model trained exclusively on 22 features engineered from 7 raw form fields (TransactionDT, TransactionAmt, ProductCD, card1, card4, card6, P_emaildomain). Performance dropped to ROC-AUC 0.80 and PR-AUC 0.16, which we documented transparently. This is a deliberate, honest tradeoff: the live model is weaker but actually works on real input. The 462-feature model is retained as an archived research reference.
+We built v2.0.1 from scratch — a separate model trained exclusively on 20 features engineered from 7 predictor fields (TransactionDT, TransactionAmt, ProductCD, card1, card4, card6, P_emaildomain). Performance dropped to ROC-AUC 0.81 and PR-AUC 0.17, which we documented transparently. This is a deliberate, honest tradeoff: the live model is weaker but actually works on real input. The 462-feature model is retained as an archived research reference.
 
 ---
 
@@ -125,7 +125,7 @@ In the first iteration of v2, the feature `amt_is_round` (a boolean for whether 
 ### The Fix
 
 - Dropped `amt_is_round` and retrained as v2.0.1.
-- PR-AUC shifted by only 0.004 (noise level), confirming the remaining 22 features carry real, non-artifact signal.
+- PR-AUC shifted by only 0.004 (noise level), confirming the remaining 20 features carry real, non-artifact signal.
 - This robustness check is documented in the README and evaluation report.
 
 ---

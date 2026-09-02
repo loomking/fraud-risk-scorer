@@ -239,7 +239,7 @@ export default function HeroLandingPage() {
                   <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" /> Live Production Model
                 </div>
                 <h3 className="text-3xl font-semibold mb-2" style={{ letterSpacing: '-0.02em' }}>v2.0.1</h3>
-                <p className="text-white/70 text-base mb-8">22 features. Engineered entirely from 7 realistic raw fields. This is the model actually serving the live <code>/score</code> endpoint, trading theoretical accuracy for live operational viability.</p>
+                <p className="text-white/70 text-base mb-8">20 features. Engineered entirely from 7 realistic raw fields. This is the model actually serving the live <code>/score</code> endpoint, trading theoretical accuracy for live operational viability.</p>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-white/5 border border-white/10 rounded-xl p-4">

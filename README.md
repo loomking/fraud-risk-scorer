@@ -98,7 +98,7 @@ We deliberately developed two versions of the model to highlight the tradeoff be
 *   **v2.0.1 (20 features):** Engineered entirely from just 7 raw fields that a live form can realistically collect (Time, Amount, Product, Card Identifier, Network Brand, Funding Type, Email Domain). Performance dropped (ROC-AUC 0.8100, PR-AUC 0.1740), but this model is deployed for live inference. We explicitly trade theoretical accuracy for portability and live-demo honesty. This is a deliberate design choice, not a shortfall we are hiding.
 
 ### c. Feature Dominance & Robustness Check
-During the development of v2, we identified that an early iteration over-indexed heavily on a single feature: `amt_is_round` (0.34 importance). This is a known artifact of how the synthetic IEEE-CIS dataset generated transaction amounts, not a generalized real-world fraud signal. As a deliberate robustness check, we removed this feature and retrained the model (v2.0.1). The PR-AUC shifted by a mere 0.004 (noise level), confirming that the remaining 22 live-engineered features carry real, non-artifact signal.
+During the development of v2, we identified that an early iteration over-indexed heavily on a single feature: `amt_is_round` (0.34 importance). This is a known artifact of how the synthetic IEEE-CIS dataset generated transaction amounts, not a generalized real-world fraud signal. As a deliberate robustness check, we removed this feature and retrained the model (v2.0.1). The PR-AUC shifted by a mere 0.004 (noise level), confirming that the remaining 20 features carry real, non-artifact signal.
 
 ### d. Model Metrics (Independently Evaluated)
 

@@ -9,7 +9,7 @@
 |---|---|
 | Model | XGBoost |
 | Primary Reference Model Version (462 features) | v1.0.0 (Research/Offline) |
-| Live-serving Demo Model Version (22 features) | v2.0.1 (Live `/score` endpoint) |
+| Live-serving Demo Model Version (20 features) | v2.0.1 (Live `/score` endpoint) |
 | Feature Pipeline Version | v1.0.0 (Full) / v2.0.1 (Live) |
 | Calibration Version | v1.0.0 / v2.0.1 |
 | Threshold Config Version | v1.0.0 / v2.0.1 |
@@ -38,7 +38,7 @@
 
 ## Live Production Model (v2.0.1)
 
-> **Note:** The v2.0.1 model sacrifices theoretical offline metrics for operational viability (strict leakage prevention, custom categorical safety, and real-time inference using only 22 features).
+> **Note:** The v2.0.1 model sacrifices theoretical offline metrics for operational viability (strict leakage prevention, custom categorical safety, and real-time inference using only 20 features).
 
 ### Headline Metrics (v2.0.1 Test Set)
 
