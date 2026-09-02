@@ -274,7 +274,7 @@ export default function TransactionCarousel({ transactions, detailsMap, activeTh
                                                             ))
                                                         ) : (
                                                             <div className="text-[10px] text-black/40 italic flex h-full items-center justify-center">
-                                                                {isFlag ? (details.loadingEvidence ? 'Generating evidence...' : 'No evidence found.') : 'Standard authorization.'}
+                                                                {isFlag ? (details.loadingEvidence ? 'Generating evidence...' : 'Flagged for review.') : 'Standard authorization.'}
                                                             </div>
                                                         )}
                                                     </div>

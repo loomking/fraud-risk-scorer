@@ -23,11 +23,11 @@ export default function ScoringForm({ form, setForm, scoring, onScore }: Props) 
       <div className="flex flex-col gap-5">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className={labelClasses}>Txn ID</label>
+            <label className={labelClasses}>Txn ID <span className="normal-case tracking-normal font-normal text-black/30 ml-1 text-[10px]">(Reference)</span></label>
             <input type="number" className={inputClasses} value={form.txnId} onChange={e => setForm({...form, txnId: +e.target.value})} />
           </div>
           <div>
-            <label className={labelClasses}>Date/Time (s)</label>
+            <label className={labelClasses}>Date/Time (s) <span className="normal-case tracking-normal font-normal text-black/30 ml-1 text-[10px]">(Seconds elapsed)</span></label>
             <input type="number" className={inputClasses} value={form.txnDt} onChange={e => setForm({...form, txnDt: +e.target.value})} />
           </div>
         </div>
@@ -38,18 +38,18 @@ export default function ScoringForm({ form, setForm, scoring, onScore }: Props) 
             <input type="number" step="0.01" className={inputClasses} value={form.amt} onChange={e => setForm({...form, amt: +e.target.value})} />
           </div>
           <div>
-            <label className={labelClasses}>Product</label>
+            <label className={labelClasses}>Product <span className="normal-case tracking-normal font-normal text-black/30 ml-1 text-[10px]">(Purchase category)</span></label>
             <input type="text" className={inputClasses} value={form.product} onChange={e => setForm({...form, product: e.target.value})} />
           </div>
         </div>
 
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className={labelClasses}>Card Token</label>
+            <label className={labelClasses}>Card Token <span className="normal-case tracking-normal font-normal text-black/30 ml-1 text-[10px]">(Internal anonymized ID)</span></label>
             <input type="number" className={inputClasses} value={form.card1} onChange={e => setForm({...form, card1: +e.target.value})} />
           </div>
           <div>
-            <label className={labelClasses}>Network</label>
+            <label className={labelClasses}>Network <span className="normal-case tracking-normal font-normal text-black/30 ml-1 text-[10px]">(Brand)</span></label>
             <select className={inputClasses} value={form.card4} onChange={e => setForm({...form, card4: e.target.value})}>
               <option value="visa">visa</option>
               <option value="mastercard">mastercard</option>
@@ -58,7 +58,7 @@ export default function ScoringForm({ form, setForm, scoring, onScore }: Props) 
             </select>
           </div>
           <div>
-            <label className={labelClasses}>Funding</label>
+            <label className={labelClasses}>Funding <span className="normal-case tracking-normal font-normal text-black/30 ml-1 text-[10px]">(Credit/Debit)</span></label>
             <select className={inputClasses} value={form.card6} onChange={e => setForm({...form, card6: e.target.value})}>
               <option value="debit">debit</option>
               <option value="credit">credit</option>

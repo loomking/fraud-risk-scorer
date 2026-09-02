@@ -269,7 +269,7 @@ export default function HeroLandingPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-gray-50 border border-black/5 rounded-2xl p-6 group hover:bg-gray-100 transition-colors">
               <div className="flex items-start gap-4">
                 <div className="bg-red-100 text-red-600 font-bold text-xs uppercase tracking-wider px-2 py-1 rounded mt-0.5">Bug</div>
@@ -294,6 +294,15 @@ export default function HeroLandingPage() {
                 <div>
                   <h4 className="text-black font-medium leading-snug mb-2">`.gitignore` rules silently excluded core model code from version control.</h4>
                   <a href="https://github.com/loomking/fraud-risk-scorer/blob/master/reports/what_broke.md" target="_blank" className="text-xs text-blue-600 font-medium hover:underline inline-flex items-center gap-1">Read the fix <ArrowRight className="w-3 h-3" /></a>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 border border-black/5 rounded-2xl p-6 group hover:bg-gray-100 transition-colors">
+              <div className="flex items-start gap-4">
+                <div className="bg-red-100 text-red-600 font-bold text-xs uppercase tracking-wider px-2 py-1 rounded mt-0.5">Bug</div>
+                <div>
+                  <h4 className="text-black font-medium leading-snug mb-2">Categorical train/serve skew made categorical features silently useless in production.</h4>
+                  <a href="https://github.com/loomking/fraud-risk-scorer/blob/master/what_broke.md" target="_blank" className="text-xs text-blue-600 font-medium hover:underline inline-flex items-center gap-1">Read the fix <ArrowRight className="w-3 h-3" /></a>
                 </div>
               </div>
             </div>

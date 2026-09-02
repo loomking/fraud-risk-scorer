@@ -101,7 +101,7 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
                               </h3>
                               <div className="bg-white border border-black/8 rounded-xl p-4 font-mono text-[11px] text-black/70 h-full">
                                 {!isFlag ? (
-                                  <div className="text-black/30 italic flex items-center justify-center h-full font-sans">Not generated for PASS decisions.</div>
+                                  <div className="text-black/30 italic flex items-center justify-center h-full font-sans text-center px-4">No evidence generated -- this transaction passed automatically below the review threshold.</div>
                                 ) : details.loadingEvidence ? (
                                   <div className="animate-pulse text-blue-600">Generating evidence...</div>
                                 ) : details.evidenceError ? (
@@ -153,7 +153,7 @@ export default function TransactionsTable({ transactions, activeThreshold, detai
                                         <div className="text-black/30 text-[9px] mb-0.5">[{ev.created_at}]</div>
                                         <div className={evColor}>{ev.event_type}</div>
                                         {ev.event_data && (
-                                          <div className="text-black/40 mt-1 break-words">{JSON.stringify(ev.event_data)}</div>
+                                          <pre className="text-black/40 mt-1 whitespace-pre-wrap font-mono text-[9px] bg-black/[0.02] p-2 rounded">{JSON.stringify(ev.event_data, null, 2)}</pre>
                                         )}
                                       </div>
                                     );

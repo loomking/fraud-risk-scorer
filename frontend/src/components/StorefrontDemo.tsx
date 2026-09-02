@@ -259,6 +259,14 @@ export default function StorefrontDemo() {
         )}
 
       </main>
+
+      {/* B2B Footer Badge */}
+      <footer className="w-full py-6 flex justify-center mt-auto border-t border-black/5 bg-white">
+        <div className="flex items-center gap-2 text-black/40">
+          <Shield className="w-4 h-4" />
+          <span className="text-[11px] font-semibold uppercase tracking-wider">Powered by Fraud Risk Scorer</span>
+        </div>
+      </footer>
     </div>
   );
 }

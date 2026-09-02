@@ -127,6 +127,36 @@ function DocsContent() {
         </div>
       </section>
 
+      {/* GLOSSARY */}
+      <section>
+        <SectionTitle 
+          title="Feature Glossary" 
+          subtitle="Understanding the raw inputs and engineered signals used by the live v2.0.1 model." 
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card>
+            <h3 className="text-xl font-semibold mb-4" style={{ letterSpacing: '-0.02em' }}>Raw Form Inputs</h3>
+            <ul className="space-y-4 text-black/60 text-base">
+              <li><strong className="text-black/80">card1:</strong> An internal, anonymized token representing the card (not the actual PAN).</li>
+              <li><strong className="text-black/80">card4:</strong> The network brand (e.g., Visa, Mastercard).</li>
+              <li><strong className="text-black/80">card6:</strong> Funding type (Credit or Debit).</li>
+              <li><strong className="text-black/80">TransactionDT:</strong> Seconds elapsed since an arbitrary reference date, used to derive temporal metrics, not a real timestamp.</li>
+              <li><strong className="text-black/80">ProductCD:</strong> A coded category for the purchased product or service.</li>
+            </ul>
+          </Card>
+          <Card dark>
+            <h3 className="text-xl font-semibold mb-4 text-white/90" style={{ letterSpacing: '-0.02em' }}>Key Engineered Signals</h3>
+            <ul className="space-y-4 text-white/70 text-sm">
+              <li><strong className="text-white">card1_txn_count_1h/24h/7d:</strong> Velocity metrics tracking how often this specific card was used recently. High velocity indicates potential card-testing or a compromised credential.</li>
+              <li><strong className="text-white">time_since_last_card1:</strong> Time elapsed since the card's last transaction. A high value (or maxed out value) means this is a newly seen or long-dormant card, increasing risk.</li>
+              <li><strong className="text-white">amt_deviation_from_card1:</strong> How far the current amount deviates from this card's historical average. Extreme positive deviations signal potential account takeover.</li>
+              <li><strong className="text-white">is_free_email:</strong> A boolean flag if the domain is a known free provider (e.g., gmail.com). A value of 1 slightly increases baseline risk compared to enterprise domains.</li>
+              <li><strong className="text-white">card1_email_cooccurrence:</strong> Tracks how often this specific card has historically been paired with this exact email domain. A low co-occurrence frequency indicates a novel, unverified linkage.</li>
+            </ul>
+          </Card>
+        </div>
+      </section>
+
     </div>
   );
 }
