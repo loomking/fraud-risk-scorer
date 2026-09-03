@@ -11,7 +11,7 @@ interface Props {
 const InfoTooltip = ({ text }: { text: string }) => (
   <div className="relative group inline-flex items-center ml-1.5 align-middle">
     <Info className="w-3.5 h-3.5 text-black/30 hover:text-black/60 cursor-help transition-colors" />
-    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 w-48 p-2.5 bg-gray-900 text-white text-[11px] leading-relaxed normal-case tracking-normal rounded-lg shadow-xl z-20 text-center font-medium">
+    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 w-48 p-2.5 bg-gray-900 text-white text-[11px] leading-relaxed normal-case tracking-normal rounded-lg shadow-xl z-[100] text-center font-medium whitespace-normal break-words">
       {text}
       <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
     </div>

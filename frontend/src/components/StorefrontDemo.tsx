@@ -1,10 +1,20 @@
 import { useState } from 'react';
-import { Shield, ShoppingCart, ArrowRight, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { Shield, ShoppingCart, ArrowRight, ShieldAlert, CheckCircle2, Info } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const API = (window.location.origin === "null" || window.location.protocol === "file:" || window.location.hostname === "localhost") 
     ? "http://localhost:10000" 
     : window.location.origin;
+
+const InfoTooltip = ({ text }: { text: string }) => (
+  <div className="relative group inline-flex items-center ml-1.5 align-middle">
+    <Info className="w-3.5 h-3.5 text-black/30 hover:text-black/60 cursor-help transition-colors" />
+    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 w-48 p-2.5 bg-gray-900 text-white text-[11px] leading-relaxed normal-case tracking-normal rounded-lg shadow-xl z-[100] text-center font-medium whitespace-normal break-words">
+      {text}
+      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+    </div>
+  </div>
+);
 
 const PRODUCTS = [
   { id: 1, name: "Premium Leather Wallet", price: 1299.00, color: "bg-stone-200" },
@@ -25,13 +35,37 @@ export default function StorefrontDemo() {
     card1: 4000,
     card4: 'visa',
     card6: 'debit',
-    txnDt: 86400
+    txnDt: 86400,
+    reasons: {} as Record<string, string>
   });
 
   const cartTotal = cart.reduce((sum, item) => sum + item.price, 0);
 
   const addToCart = (p: typeof PRODUCTS[0]) => {
     setCart([...cart, p]);
+  };
+
+  const loadScenario = async (riskLevel: string) => {
+    try {
+      const res = await fetch(`${API}/scenario/${riskLevel}`);
+      const data = await res.json();
+      setForm({
+        email: data.email.value,
+        card1: data.card1.value,
+        card4: data.card4.value,
+        card6: data.card6.value,
+        txnDt: data.txnDt.value,
+        reasons: {
+          email: data.email.reason,
+          card1: data.card1.reason,
+          card4: data.card4.reason,
+          card6: data.card6.reason,
+          txnDt: data.txnDt.reason
+        }
+      });
+    } catch (e) {
+      console.error("Scenario load error", e);
+    }
   };
 
   const handleScore = async () => {
@@ -68,6 +102,9 @@ export default function StorefrontDemo() {
     }
     setScoring(false);
   };
+
+  const inputClasses = "w-full bg-white border border-black/10 rounded-lg px-4 py-3 text-black text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all";
+  const labelClasses = "flex items-center text-[10px] whitespace-nowrap font-semibold uppercase tracking-wider text-black/40 mb-1.5";
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] font-['Inter'] text-gray-900 selection:bg-black/10 flex flex-col">
@@ -157,13 +194,13 @@ export default function StorefrontDemo() {
             <div className="mb-6 flex flex-col gap-3">
               <div className="flex gap-3">
                 <button 
-                  onClick={() => setForm({...form, email: 'trusted@anonymous.com', card1: 7919, card4: 'mastercard', card6: 'debit', txnDt: 13151880})}
+                  onClick={() => loadScenario('low')}
                   className="flex-1 py-2.5 bg-green-50 text-green-700 border border-green-200 rounded-xl font-medium text-sm hover:bg-green-100 transition-colors"
                 >
                   Simulate a low-risk purchase
                 </button>
                 <button 
-                  onClick={() => setForm({...form, email: 'newuser@gmail.com', card1: 9917, card4: 'visa', card6: 'debit', txnDt: 10091975})}
+                  onClick={() => loadScenario('high')}
                   className="flex-1 py-2.5 bg-red-50 text-red-700 border border-red-200 rounded-xl font-medium text-sm hover:bg-red-100 transition-colors"
                 >
                   Simulate a high-risk purchase
@@ -190,8 +227,44 @@ export default function StorefrontDemo() {
 
               <div className="space-y-5 mb-8">
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-black/40 mb-1.5">Email Address</label>
-                  <input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} className="w-full bg-white border border-black/10 rounded-lg px-4 py-3 text-black text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" />
+                  <label className={labelClasses}>
+                    Email Address
+                    {form.reasons.email && <InfoTooltip text={form.reasons.email} />}
+                  </label>
+                  <input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} className={inputClasses} />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col justify-end h-full">
+                    <label className={labelClasses}>
+                      Card Bin (card1)
+                      {form.reasons.card1 && <InfoTooltip text={form.reasons.card1} />}
+                    </label>
+                    <input type="number" value={form.card1} onChange={e => setForm({...form, card1: +e.target.value})} className={inputClasses + " font-mono"} />
+                  </div>
+                  <div className="flex flex-col justify-end h-full">
+                    <label className={labelClasses}>
+                      Network (card4)
+                      {form.reasons.card4 && <InfoTooltip text={form.reasons.card4} />}
+                    </label>
+                    <select value={form.card4} onChange={e => setForm({...form, card4: e.target.value})} className={inputClasses}>
+                      <option value="visa">Visa</option>
+                      <option value="mastercard">Mastercard</option>
+                      <option value="discover">Discover</option>
+                      <option value="american express">Amex</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className={labelClasses}>
+                    Type (card6)
+                    {form.reasons.card6 && <InfoTooltip text={form.reasons.card6} />}
+                  </label>
+                  <select value={form.card6} onChange={e => setForm({...form, card6: e.target.value})} className={inputClasses}>
+                    <option value="debit">Debit</option>
+                    <option value="credit">Credit</option>
+                  </select>
                 </div>
               </div>
 

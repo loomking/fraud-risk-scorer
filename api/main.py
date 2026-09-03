@@ -19,6 +19,7 @@ from api.routes.score import router as score_router
 from api.routes.evidence import router as evidence_router
 from api.routes.audit import router as audit_router
 from api.routes.report import router as report_router
+from api.routes.scenario import router as scenario_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -57,6 +58,7 @@ app.add_middleware(
 # API Routes
 app.include_router(score_router, prefix="/score", tags=["Scoring"])
 app.include_router(evidence_router, prefix="/evidence", tags=["Evidence"])
+app.include_router(scenario_router, tags=["Scenarios"])
 app.include_router(audit_router, prefix="/audit", tags=["Audit"])
 app.include_router(report_router, prefix="/report", tags=["Report"])
 
