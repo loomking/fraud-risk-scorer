@@ -207,7 +207,10 @@ function DashboardApp() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Left Column — Form only */}
-          <div className="lg:col-span-4 flex flex-col gap-6">
+          <div className="lg:col-span-4 flex flex-col gap-3">
+            <div className="text-xs font-medium text-black/70 bg-black/5 px-4 py-3 rounded-xl border border-black/5 flex items-center justify-between">
+              <span>For a guided example with realistic results, <button onClick={() => window.location.hash = '#demo'} className="text-black font-semibold underline underline-offset-2 hover:text-indigo-600 transition-colors cursor-pointer">try the Store Demo instead</button>.</span>
+            </div>
             <ScoringForm 
               form={form} 
               setForm={setForm} 

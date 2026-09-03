@@ -25,6 +25,7 @@ export default function StorefrontDemo() {
     card1: 4000,
     card4: 'visa',
     card6: 'debit',
+    txnDt: 86400
   });
 
   const cartTotal = cart.reduce((sum, item) => sum + item.price, 0);
@@ -37,7 +38,7 @@ export default function StorefrontDemo() {
     setScoring(true);
     const payload = {
         TransactionID: Math.floor(1000000 + Math.random() * 9000000), // Generate random TxnID
-        TransactionDT: 86400, // Dummy
+        TransactionDT: form.txnDt, // Uses preset value
         TransactionAmt: cartTotal,
         ProductCD: 'W',
         card1: form.card1,
@@ -152,6 +153,27 @@ export default function StorefrontDemo() {
 
         {checkoutStep === 'checkout' && (
           <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl mx-auto mt-8">
+            
+            <div className="mb-6 flex flex-col gap-3">
+              <div className="flex gap-3">
+                <button 
+                  onClick={() => setForm({...form, email: 'trusted@anonymous.com', card1: 7919, card4: 'mastercard', card6: 'debit', txnDt: 13151880})}
+                  className="flex-1 py-2.5 bg-green-50 text-green-700 border border-green-200 rounded-xl font-medium text-sm hover:bg-green-100 transition-colors"
+                >
+                  Simulate a low-risk purchase
+                </button>
+                <button 
+                  onClick={() => setForm({...form, email: 'newuser@gmail.com', card1: 9917, card4: 'visa', card6: 'debit', txnDt: 10091975})}
+                  className="flex-1 py-2.5 bg-red-50 text-red-700 border border-red-200 rounded-xl font-medium text-sm hover:bg-red-100 transition-colors"
+                >
+                  Simulate a high-risk purchase
+                </button>
+              </div>
+              <p className="text-xs text-black/50 leading-relaxed px-1">
+                The high-risk scenario simulates a brand-new card with no prior transaction history — a genuinely common real-world fraud pattern, not because of anything inherent to a specific number.
+              </p>
+            </div>
+
             <div className="bg-white border border-black/8 rounded-3xl p-8 shadow-sm">
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-semibold tracking-tight text-black">Checkout</h2>
@@ -166,34 +188,10 @@ export default function StorefrontDemo() {
                 </div>
               </div>
 
-              <div className="space-y-5">
+              <div className="space-y-5 mb-8">
                 <div>
                   <label className="block text-[11px] font-semibold uppercase tracking-wider text-black/40 mb-1.5">Email Address</label>
                   <input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} className="w-full bg-white border border-black/10 rounded-lg px-4 py-3 text-black text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" />
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-black/40 mb-1.5">Card Bin (card1)</label>
-                    <input type="number" value={form.card1} onChange={e => setForm({...form, card1: +e.target.value})} className="w-full bg-white border border-black/10 rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-black/40 mb-1.5">Network (card4)</label>
-                    <select value={form.card4} onChange={e => setForm({...form, card4: e.target.value})} className="w-full bg-white border border-black/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all">
-                      <option value="visa">Visa</option>
-                      <option value="mastercard">Mastercard</option>
-                      <option value="discover">Discover</option>
-                      <option value="american express">Amex</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-black/40 mb-1.5">Type (card6)</label>
-                  <select value={form.card6} onChange={e => setForm({...form, card6: e.target.value})} className="w-full bg-white border border-black/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all">
-                    <option value="debit">Debit</option>
-                    <option value="credit">Credit</option>
-                  </select>
                 </div>
               </div>
 
