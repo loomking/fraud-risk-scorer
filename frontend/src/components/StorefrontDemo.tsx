@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Shield, ShoppingCart, ArrowRight, ShieldAlert, CheckCircle2, Info } from 'lucide-react';
+import { Shield, ShoppingCart, ArrowRight, ShieldAlert, CheckCircle2, Info, Wallet, Headphones, Keyboard, Watch } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const API = (window.location.origin === "null" || window.location.protocol === "file:" || window.location.hostname === "localhost") 
@@ -17,10 +17,10 @@ const InfoTooltip = ({ text }: { text: string }) => (
 );
 
 const PRODUCTS = [
-  { id: 1, name: "Premium Leather Wallet", price: 1299.00, color: "bg-stone-200" },
-  { id: 2, name: "Wireless Noise-Cancelling Headphones", price: 14500.00, color: "bg-slate-200" },
-  { id: 3, name: "Mechanical Keyboard (Cherry MX)", price: 8999.00, color: "bg-indigo-50" },
-  { id: 4, name: "Minimalist Watch", price: 4500.00, color: "bg-gray-200" }
+  { id: 1, name: "Premium Leather Wallet", price: 1299.00, icon: Wallet, color: "bg-[#e8f3ee] text-[#4f8a70]" },
+  { id: 2, name: "Wireless Noise-Cancelling Headphones", price: 14500.00, icon: Headphones, color: "bg-[#f0f4f8] text-[#5c7c99]" },
+  { id: 3, name: "Mechanical Keyboard (Cherry MX)", price: 8999.00, icon: Keyboard, color: "bg-[#fdf6e3] text-[#b58900]" },
+  { id: 4, name: "Minimalist Watch", price: 4500.00, icon: Watch, color: "bg-[#fdf0f0] text-[#c96a6a]" }
 ];
 
 export default function StorefrontDemo() {
@@ -153,25 +153,28 @@ export default function StorefrontDemo() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {PRODUCTS.map(p => (
-                <div key={p.id} className="bg-white border border-black/8 rounded-2xl overflow-hidden hover:shadow-md transition-shadow group flex flex-col">
-                  <div className={`w-full h-48 ${p.color} flex items-center justify-center`}>
-                    <span className="text-black/10 font-bold text-4xl">IMG</span>
-                  </div>
-                  <div className="p-5 flex flex-col flex-1">
-                    <h3 className="font-medium text-black line-clamp-2 mb-2">{p.name}</h3>
-                    <div className="mt-auto flex items-center justify-between">
-                      <span className="font-mono font-semibold">₹{p.price.toLocaleString('en-IN')}</span>
-                      <button 
-                        onClick={() => addToCart(p)}
-                        className="text-xs font-semibold px-3 py-1.5 bg-black/5 hover:bg-black/10 text-black rounded-lg transition-colors"
-                      >
-                        Add
-                      </button>
+              {PRODUCTS.map(p => {
+                const Icon = p.icon;
+                return (
+                  <div key={p.id} className="bg-white border border-black/8 rounded-2xl overflow-hidden hover:shadow-md transition-shadow group flex flex-col">
+                    <div className={`w-full h-48 ${p.color} flex items-center justify-center transition-colors duration-500`}>
+                      <Icon className="w-16 h-16 opacity-70 group-hover:scale-110 transition-transform duration-500" strokeWidth={1.5} />
+                    </div>
+                    <div className="p-5 flex flex-col flex-1">
+                      <h3 className="font-medium text-black line-clamp-2 mb-2">{p.name}</h3>
+                      <div className="mt-auto flex items-center justify-between">
+                        <span className="font-mono font-semibold">₹{p.price.toLocaleString('en-IN')}</span>
+                        <button 
+                          onClick={() => addToCart(p as any)}
+                          className="text-xs font-semibold px-3 py-1.5 bg-black/5 hover:bg-black/10 text-black rounded-lg transition-colors"
+                        >
+                          Add
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {cart.length > 0 && (
