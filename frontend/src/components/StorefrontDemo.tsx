@@ -110,7 +110,7 @@ export default function StorefrontDemo() {
     <div className="min-h-screen bg-[#F5F5F5] font-['Inter'] text-gray-900 selection:bg-black/10 flex flex-col">
       
       {/* Navbar */}
-      <nav className="px-6 py-4 bg-white border-b border-black/8 sticky top-0 z-50">
+      <nav className="px-6 py-4 bg-white/80 backdrop-blur-md border-b border-black/8 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCheckoutStep('shop')}>
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">

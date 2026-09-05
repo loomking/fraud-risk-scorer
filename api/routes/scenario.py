@@ -23,16 +23,16 @@ LOW_RISK_POOL = [
 
 HIGH_RISK_POOL = [
     {
-        "TransactionID": 3387028, "TransactionDT": 10091975, "card1": 9917, 
-        "card4": "visa", "card6": "debit", "P_emaildomain": "gmail.com"
+        "TransactionID": 3387028, "TransactionDT": 10091975, "card1": 12937, 
+        "card4": "mastercard", "card6": "credit", "P_emaildomain": "gmail.com"
     },
     {
-        "TransactionID": 3482177, "TransactionDT": 12943155, "card1": 9026, 
-        "card4": "visa", "card6": "credit", "P_emaildomain": "anonymous.com"
+        "TransactionID": 3482177, "TransactionDT": 12943155, "card1": 12402, 
+        "card4": "visa", "card6": "credit", "P_emaildomain": "gmail.com"
     },
     {
-        "TransactionID": 3066506, "TransactionDT": 1719967, "card1": 5812, 
-        "card4": "mastercard", "card6": "debit", "P_emaildomain": "hotmail.com"
+        "TransactionID": 3066506, "TransactionDT": 1719967, "card1": 16144, 
+        "card4": "discover", "card6": "debit", "P_emaildomain": "gmail.com"
     }
 ]
 
